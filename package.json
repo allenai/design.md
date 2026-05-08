@@ -1,0 +1,15 @@
+{
+  "name": "@allenai/design-system",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "compose:asta": "bun run scripts/compose.ts --base strata/DESIGN.md --overlay asta/DESIGN.src.md --out asta/DESIGN.md",
+    "compose:olmo-earth": "bun run scripts/compose.ts --base strata/DESIGN.md --overlay olmo-earth/DESIGN.src.md --out olmo-earth/DESIGN.md",
+    "compose": "bun run compose:asta && bun run compose:olmo-earth",
+    "lint": "npx @google/design.md lint strata/DESIGN.md && npx @google/design.md lint asta/DESIGN.md && npx @google/design.md lint olmo-earth/DESIGN.md"
+  },
+  "dependencies": {
+    "yaml": "^2.7.1"
+  }
+}
