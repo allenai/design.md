@@ -1,0 +1,1744 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ai2 Design Systems · Spec Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
+<style>
+  /* ────────────────────────────────────────────────────────────────
+     CSS custom properties — defaults are Strata.
+     applySystem() in JS overwrites these on the html element.
+     Transitions on color tokens animate the system swap.
+  ──────────────────────────────────────────────────────────────── */
+  :root {
+    /* Primitives */
+    --c-extra-dark-teal: #032629;
+    --c-dark-teal: #0a3235;
+    --c-cream: #faf2e9;
+    --c-teal: #105257;
+    --c-teal-20: #cbd2cc;
+    --c-teal-40: #9cb2af;
+    --c-teal-60: #6e9291;
+    --c-teal-80: #3f7274;
+    --c-pink: #f0529c;
+    --c-pink-20: #f8d2da;
+    --c-pink-40: #f6b2ca;
+    --c-pink-60: #f492bb;
+    --c-pink-80: #f272ab;
+    --c-green: #0fcb8c;
+    --c-green-20: #cbead6;
+    --c-green-40: #9ce2c4;
+    --c-green-60: #6ddbb1;
+    --c-green-80: #3ed39f;
+    --c-gray: #343434;
+    --c-gray-20: #d6d6d6;
+    --c-gray-40: #aeaeae;
+    --c-gray-60: #858585;
+    --c-gray-80: #5d5d5d;
+    --c-white: #ffffff;
+    --c-info-blue: #2a88ef;
+    --c-error-red: #fd4645;
+    --c-error-red-dark: #d02f2e;
+    --c-success-green: #549c35;
+    --c-warning-orange: #ffa31c;
+
+    /* Opacity primitives — true alpha-channel variants, distinct from
+       the tint primitives above. These adapt to whatever surface the
+       element is placed on. */
+    --c-extra-dark-teal-10: rgba(3, 38, 41, 0.10);
+    --c-extra-dark-teal-20: rgba(3, 38, 41, 0.20);
+    --c-extra-dark-teal-30: rgba(3, 38, 41, 0.30);
+    --c-extra-dark-teal-40: rgba(3, 38, 41, 0.40);
+    --c-extra-dark-teal-50: rgba(3, 38, 41, 0.50);
+    --c-extra-dark-teal-60: rgba(3, 38, 41, 0.60);
+    --c-extra-dark-teal-70: rgba(3, 38, 41, 0.70);
+    --c-extra-dark-teal-80: rgba(3, 38, 41, 0.80);
+    --c-extra-dark-teal-90: rgba(3, 38, 41, 0.90);
+    --c-cream-10: rgba(250, 242, 233, 0.10);
+    --c-cream-20: rgba(250, 242, 233, 0.20);
+    --c-cream-30: rgba(250, 242, 233, 0.30);
+    --c-cream-40: rgba(250, 242, 233, 0.40);
+    --c-cream-50: rgba(250, 242, 233, 0.50);
+    --c-cream-60: rgba(250, 242, 233, 0.60);
+    --c-cream-70: rgba(250, 242, 233, 0.70);
+    --c-cream-80: rgba(250, 242, 233, 0.80);
+    --c-cream-90: rgba(250, 242, 233, 0.90);
+
+    /* Semantic — Strata defaults */
+    --c-bg: var(--c-cream);
+    --c-bg-reversed: var(--c-extra-dark-teal);
+    --c-text: var(--c-dark-teal);
+    --c-text-reversed: var(--c-cream);
+    --c-text-disabled: var(--c-gray);
+    --c-text-error: var(--c-error-red);
+    --c-int-default: var(--c-teal);
+    --c-int-default-hover: var(--c-teal-80);
+    --c-int-primary: var(--c-pink);
+    --c-int-primary-hover: var(--c-pink-60);
+    --c-int-secondary: var(--c-green);
+    --c-int-secondary-hover: var(--c-green-60);
+    --c-link: var(--c-int-primary);
+    --c-link-reversed: var(--c-int-secondary);
+
+    /* Component overrides — Strata defaults */
+    --c-input-bg: var(--c-white);
+    --c-input-text: var(--c-text);
+    --c-input-disabled-bg: var(--c-gray-20);
+    --c-input-disabled-text: var(--c-text);
+
+    --c-chip-default-bg: var(--c-int-default);
+    --c-chip-default-fg: var(--c-cream);
+
+    /* Subtle surfaces — solid blends of the inverse-surface tone over
+       the page surface (50% and 10%). `subtle` is symmetric across
+       light/dark modes; `extra-subtle` shifts. `on-subtle` falls
+       through text-reversed and flips automatically. */
+    --c-subtle:          var(--c-extra-dark-teal-50);
+    --c-extra-subtle:    var(--c-extra-dark-teal-10);
+    --c-on-subtle:       var(--c-text-reversed);
+    /* extra-subtle uses the page text since the bg is too near-page
+       to support an inverse foreground */
+    --c-on-extra-subtle: var(--c-text);
+
+    /* Surface elevations (used for cards/panels) */
+    --c-surface: rgba(3, 38, 41, 0.04);
+    --c-surface-strong: rgba(3, 38, 41, 0.1);
+    --c-stroke: rgba(3, 38, 41, 0.2);
+
+    /* Hover for outlined primary (different per system) */
+    --c-outlined-primary-hover-bg: var(--c-pink-20);
+
+    /* Per-button slot tokens. Most buttons resolve to semantic aliases,
+       but these variants are re-toned in Asta to maintain contrast on
+       the dark surface. Defaults below are Strata. */
+    --btn-default-out-fg:        var(--c-int-default);
+    --btn-default-out-border:    var(--c-int-default);
+    --btn-default-out-hover-bg:  var(--c-teal-20);
+    --btn-default-out-hover-fg:  var(--c-int-default);
+
+    --btn-reversed-bg:           var(--c-cream);
+    --btn-reversed-fg:           var(--c-extra-dark-teal);
+    --btn-reversed-hover-bg:     var(--c-white);
+    --btn-reversed-hover-fg:     var(--c-extra-dark-teal);
+
+    --btn-reversed-out-fg:       var(--c-cream);
+    --btn-reversed-out-border:   var(--c-cream);
+    --btn-reversed-out-hover-bg: var(--c-white);
+    --btn-reversed-out-hover-fg: var(--c-extra-dark-teal);
+
+    /* Unified control-height scale — single source of truth for buttons,
+       inputs, and chips. The design system declares these share one scale,
+       so this lives at the theme level and any control consumes it. */
+    --control-h-sm: 32px;
+    --control-h-md: 36px;
+    --control-h-lg: 48px;
+
+    /* Form-CTA size — lg in Strata/OE, md in Asta. Animated. */
+    --form-cta-height: var(--control-h-lg);
+    --form-cta-pad: 16px;
+    --form-cta-font-size: 14px;
+
+    /* Chrome (page-level layout) */
+    --max-w: 1280px;
+    --pad-x: 32px;
+
+    color-scheme: light;
+  }
+
+  /* Dark-mode chrome when Asta is active */
+  html[data-system="asta"] {
+    color-scheme: dark;
+
+    --c-bg: var(--c-extra-dark-teal);
+    --c-bg-reversed: var(--c-cream);
+    --c-text: var(--c-cream);
+    --c-text-reversed: var(--c-dark-teal);
+
+    --c-int-primary: var(--c-green);
+    --c-int-primary-hover: var(--c-green-60);
+    --c-link: var(--c-green);
+    --c-link-reversed: var(--c-pink);
+
+    --c-input-bg: var(--c-dark-teal);
+    --c-input-text: var(--c-cream);
+    --c-input-disabled-bg: var(--c-extra-dark-teal);
+    --c-input-disabled-text: var(--c-gray-40);
+
+    --c-surface: rgba(250, 242, 233, 0.04);
+    --c-surface-strong: rgba(250, 242, 233, 0.08);
+    --c-stroke: rgba(250, 242, 233, 0.18);
+
+    /* Strata's overlay literally still uses pink-20 here; rendering faithful. */
+    --c-outlined-primary-hover-bg: var(--c-pink-20);
+
+    /* Asta overrides for the re-toned button slots (contrast on dark) */
+    --btn-default-out-fg:        var(--c-teal-40);
+    --btn-default-out-border:    var(--c-teal-40);
+    --btn-default-out-hover-bg:  var(--c-teal-80);
+    --btn-default-out-hover-fg:  var(--c-cream);
+
+    --btn-reversed-bg:           var(--c-extra-dark-teal);
+    --btn-reversed-fg:           var(--c-cream);
+    --btn-reversed-hover-bg:     var(--c-dark-teal);
+    --btn-reversed-hover-fg:     var(--c-cream);
+
+    --btn-reversed-out-fg:       var(--c-extra-dark-teal);
+    --btn-reversed-out-border:   var(--c-extra-dark-teal);
+    --btn-reversed-out-hover-bg: var(--c-extra-dark-teal);
+    --btn-reversed-out-hover-fg: var(--c-cream);
+
+    /* In dark mode, subtle/extra-subtle flip to cream-based alphas. */
+    --c-subtle:       var(--c-cream-50);
+    --c-extra-subtle: var(--c-cream-10);
+
+    --form-cta-height: var(--control-h-md);
+    --form-cta-pad: 12px;
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     Base
+  ──────────────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body {
+    margin: 0;
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: Manrope, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    transition:
+      background-color 220ms ease,
+      color 220ms ease;
+  }
+
+  /* Animate ONLY color-bearing tokens so the toggle reads as a swap.
+     Sizes/positions stay instant — that prevents layout shifts when
+     flicking between systems with arrow keys. */
+  body, body * {
+    transition-property:
+      background-color, color, border-color, fill, stroke, box-shadow, opacity;
+    transition-duration: 220ms;
+    transition-timing-function: ease;
+  }
+
+  /* Keep input focus rings instant (transitions on focus rings feel laggy) */
+  :focus-visible { outline: none; }
+  .segmented button:focus-visible {
+    outline: 2px solid var(--c-int-default);
+    outline-offset: 2px;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: "PP Telegraf", Manrope, Arial, sans-serif;
+    margin: 0;
+    color: var(--c-text);
+  }
+  h1 { font-size: 3rem; line-height: 1.1; font-weight: 700; }
+  h2 { font-size: 2rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; }
+  h3 { font-size: 1.5rem; line-height: 1.3; font-weight: 600; }
+  h4 { font-size: 1.25rem; line-height: 1.4; font-weight: 600; }
+
+  p { margin: 0; }
+  code, .mono { font-family: "Roboto Mono", monospace; font-size: 14px; }
+  a { color: var(--c-link); text-decoration: none; border-bottom: 1px solid currentColor; }
+
+  /* ────────────────────────────────────────────────────────────────
+     Topbar
+  ──────────────────────────────────────────────────────────────── */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--c-bg) 86%, transparent);
+    backdrop-filter: saturate(140%) blur(12px);
+    -webkit-backdrop-filter: saturate(140%) blur(12px);
+    border-bottom: 1px solid var(--c-stroke);
+  }
+  .topbar-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 14px var(--pad-x);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 24px;
+  }
+  .topbar-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .topbar-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--c-text) 60%, transparent);
+  }
+  .topbar-title {
+    font-family: "PP Telegraf", Manrope, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+  }
+  .topbar-desc {
+    font-size: 13px;
+    color: color-mix(in srgb, var(--c-text) 75%, transparent);
+    line-height: 1.4;
+    min-height: 36px; /* reserve ~2 lines so topbar height is constant */
+    max-width: 64ch;
+  }
+
+  /* Segmented toggle */
+  .segmented {
+    display: inline-flex;
+    background: var(--c-surface);
+    border: 1px solid var(--c-stroke);
+    border-radius: 999px;
+    padding: 4px;
+    gap: 2px;
+  }
+  .segmented button {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--c-text);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+  }
+  .segmented button:hover { background: var(--c-surface-strong); }
+  .segmented button[aria-pressed="true"] {
+    background: var(--c-int-primary);
+    color: var(--c-extra-dark-teal);
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     Page chrome
+  ──────────────────────────────────────────────────────────────── */
+  main { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--pad-x) 96px; }
+
+  .hero {
+    padding: 64px 0 24px;
+    margin-bottom: 32px;
+  }
+  .hero h1 { max-width: 880px; }
+  .hero p {
+    margin-top: 16px;
+    max-width: 720px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--c-text) 80%, transparent);
+    min-height: 5.6em; /* reserve ~3.5 lines so hero height is stable across systems */
+  }
+
+  section.spec { padding: 56px 0; border-top: 1px solid var(--c-stroke); }
+  .spec-head {
+    margin-bottom: 32px;
+  }
+  .spec-head .label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--c-text) 55%, transparent);
+    margin-bottom: 8px;
+  }
+  .spec-head h2 + p {
+    margin-top: 12px;
+    color: color-mix(in srgb, var(--c-text) 78%, transparent);
+    max-width: 64ch;
+  }
+
+  .subhead {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--c-text) 55%, transparent);
+    margin: 32px 0 12px;
+  }
+
+  /* (OlmoEarth's stub state is communicated via the hero blurb; no separate banner.) */
+
+  /* ────────────────────────────────────────────────────────────────
+     Foundations
+  ──────────────────────────────────────────────────────────────── */
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .swatch {
+    border-radius: 8px;
+    border: 1px solid var(--c-stroke);
+    overflow: hidden;
+    background: var(--c-surface);
+  }
+  .swatch-color {
+    height: 64px;
+    border-bottom: 1px solid var(--c-stroke);
+  }
+  .swatch-meta {
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .swatch-name { font-size: 12px; font-weight: 600; }
+  .swatch-hex { font-family: "Roboto Mono", monospace; font-size: 11px; opacity: 0.7; }
+
+  .alias-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 32px;
+  }
+  .alias-row {
+    display: grid;
+    grid-template-columns: 200px 16px 1fr;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--c-stroke);
+  }
+  .alias-name { font-family: "Roboto Mono", monospace; font-size: 12px; font-weight: 500; }
+  .alias-arrow { opacity: 0.5; font-size: 12px; }
+  .alias-value { display: flex; align-items: center; gap: 8px; }
+  .alias-dot {
+    width: 16px; height: 16px;
+    border-radius: 4px;
+    border: 1px solid var(--c-stroke);
+    flex-shrink: 0;
+  }
+  .alias-target { font-family: "Roboto Mono", monospace; font-size: 12px; opacity: 0.85; }
+
+  .type-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    align-items: baseline;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--c-stroke);
+    gap: 24px;
+  }
+  .type-row:last-child { border-bottom: 0; }
+  .type-label { font-family: "Roboto Mono", monospace; font-size: 12px; opacity: 0.7; }
+  .type-spec { display: flex; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+  .type-meta { font-family: "Roboto Mono", monospace; font-size: 11px; opacity: 0.5; }
+
+  .scale-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 100px;
+    align-items: center;
+    padding: 8px 0;
+    gap: 16px;
+    border-bottom: 1px solid var(--c-stroke);
+  }
+  .scale-row:last-child { border-bottom: 0; }
+  .scale-bar {
+    display: block;
+    height: 12px;
+    background: var(--c-int-default);
+    border-radius: 2px;
+    /* width is set inline = the token's actual pixel value, so the bar
+       reads as an honest depiction of its size on screen */
+  }
+  .scale-name { font-family: "Roboto Mono", monospace; font-size: 12px; }
+  .scale-val { font-family: "Roboto Mono", monospace; font-size: 11px; opacity: 0.6; text-align: right; }
+
+  .radii-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+  }
+  .radius-cell {
+    aspect-ratio: 1;
+    background: var(--c-surface);
+    border: 1px solid var(--c-stroke);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px;
+    color: var(--c-text);
+  }
+  .radius-cell .name { font-family: "Roboto Mono", monospace; font-size: 11px; font-weight: 600; }
+  .radius-cell .val { font-family: "Roboto Mono", monospace; font-size: 10px; opacity: 0.6; }
+
+  /* ────────────────────────────────────────────────────────────────
+     Variant tables (buttons / inputs / chips / avatars)
+     Grid-based so the lg column can collapse animatedly when Asta is active.
+  ──────────────────────────────────────────────────────────────── */
+  .vtable {
+    display: grid;
+    grid-template-columns: 130px 1fr 1fr 1fr;
+    gap: 0;
+    background: var(--c-surface);
+    border: 1px solid var(--c-stroke);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .vtable .cell {
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-top: 1px solid var(--c-stroke);
+    border-left: 1px solid var(--c-stroke);
+    min-height: 80px;            /* fixed so lg row never makes layout jump */
+    box-sizing: border-box;
+  }
+  .vtable .cell:nth-child(-n+4) { border-top: 0; }
+  .vtable .cell:nth-child(4n+1) { border-left: 0; }
+
+  .vtable .head {
+    background: var(--c-surface-strong);
+    font-family: "Roboto Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: lowercase;
+    letter-spacing: 0.04em;
+    color: color-mix(in srgb, var(--c-text) 70%, transparent);
+    min-height: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .vtable .row-label {
+    font-family: "Roboto Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--c-text) 75%, transparent);
+    background: var(--c-surface-strong);
+  }
+
+  /* When Asta is active, lg buttons are de-emphasised IN PLACE so layout never shifts.
+     The button still occupies its cell at full size, but is dimmed and struck-through to
+     read as "this exists in the system but is not used in Asta". The lg-note explains why. */
+  html[data-system="asta"] .vtable[data-collapse-lg="true"] .col-lg .btn {
+    opacity: 0.32;
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  /* "Reversed" intent row needs the reversed surface so reversed buttons read.
+     Both bg and text use the *-reversed semantic tokens, which already flip
+     correctly per theme — no system-specific overrides needed here. */
+  .vtable .cell.reversed-cell {
+    background: var(--c-bg-reversed);
+    color: var(--c-text-reversed);
+  }
+  .vtable .cell.row-label.reversed-cell {
+    color: color-mix(in srgb, var(--c-text-reversed) 75%, transparent);
+  }
+
+  /* Inline note when Asta hides lg buttons */
+  .lg-note {
+    display: none;
+    margin-top: -8px;
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    border-left: 3px solid var(--c-int-primary);
+    background: var(--c-surface);
+    font-size: 13px;
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--c-text) 80%, transparent);
+    border-radius: 0 6px 6px 0;
+  }
+  html[data-system="asta"] .lg-note { display: block; }
+
+  /* ────────────────────────────────────────────────────────────────
+     Buttons
+  ──────────────────────────────────────────────────────────────── */
+  .btn {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    font-family: Manrope, sans-serif;
+    font-weight: 600;
+    line-height: 1.2;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    background: transparent;
+    color: inherit;
+  }
+  .btn-sm { height: var(--control-h-sm); padding: 0 8px;  font-size: 14px; }
+  .btn-md { height: var(--control-h-md); padding: 0 12px; font-size: 14px; }
+  .btn-lg { height: var(--control-h-lg); padding: 0 16px; font-size: 14px; }
+
+  .btn-default          { background: var(--c-int-default); color: var(--c-cream); }
+  .btn-default:hover    { background: var(--c-int-default-hover); }
+  .btn-primary          { background: var(--c-int-primary); color: var(--c-extra-dark-teal); }
+  .btn-primary:hover    { background: var(--c-int-primary-hover); }
+  .btn-secondary        { background: var(--c-int-secondary); color: var(--c-extra-dark-teal); }
+  .btn-secondary:hover  { background: var(--c-int-secondary-hover); }
+  .btn-reversed         { background: var(--btn-reversed-bg); color: var(--btn-reversed-fg); }
+  .btn-reversed:hover   { background: var(--btn-reversed-hover-bg); color: var(--btn-reversed-hover-fg); }
+
+  .btn-default-out          { background: transparent; color: var(--btn-default-out-fg); border: 1px solid var(--btn-default-out-border); }
+  .btn-default-out:hover    { background: var(--btn-default-out-hover-bg); color: var(--btn-default-out-hover-fg); }
+  .btn-primary-out          { background: transparent; color: var(--c-int-primary); border: 1px solid var(--c-int-primary); }
+  .btn-primary-out:hover    { background: var(--c-outlined-primary-hover-bg); color: var(--c-extra-dark-teal); }
+  .btn-secondary-out        { background: transparent; color: var(--c-int-secondary); border: 1px solid var(--c-int-secondary); }
+  .btn-secondary-out:hover  { background: var(--c-green-20); color: var(--c-extra-dark-teal); }
+  .btn-reversed-out         { background: transparent; color: var(--btn-reversed-out-fg); border: 1px solid var(--btn-reversed-out-border); }
+  .btn-reversed-out:hover   { background: var(--btn-reversed-out-hover-bg); color: var(--btn-reversed-out-hover-fg); }
+
+  .btn-disabled { background: var(--c-gray-80); color: var(--c-cream); cursor: not-allowed; }
+
+  /* Outlined buttons need to absorb their border into declared height */
+  .btn[class*="-out"] { padding-top: 0; padding-bottom: 0; }
+
+  /* ────────────────────────────────────────────────────────────────
+     Inputs
+  ──────────────────────────────────────────────────────────────── */
+  .field {
+    appearance: none;
+    border-radius: 4px;
+    background: var(--c-input-bg);
+    color: var(--c-input-text);
+    border: 1px solid var(--c-stroke);
+    font-family: Manrope, sans-serif;
+    width: 100%;
+    max-width: 240px;
+  }
+  .field:focus { border-color: var(--c-int-default); outline: 2px solid color-mix(in srgb, var(--c-int-default) 35%, transparent); outline-offset: 0; }
+  .field-sm { height: var(--control-h-sm); padding: 0 8px;  font-size: 14px; }
+  .field-md { height: var(--control-h-md); padding: 0 12px; font-size: 16px; }
+  .field-lg { height: var(--control-h-lg); padding: 0 16px; font-size: 16px; }
+
+  .field-error { border-color: var(--c-error-red-dark); color: var(--c-error-red-dark); }
+  .field-error:focus { outline-color: color-mix(in srgb, var(--c-error-red-dark) 35%, transparent); }
+  .field-disabled { background: var(--c-input-disabled-bg); color: var(--c-input-disabled-text); cursor: not-allowed; }
+
+  /* "force focused" preview state for the docs */
+  .field-focus { border-color: var(--c-int-default); box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-int-default) 35%, transparent); }
+
+  /* ────────────────────────────────────────────────────────────────
+     Form controls
+  ──────────────────────────────────────────────────────────────── */
+  .ctrl-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 1fr;
+    gap: 16px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--c-stroke);
+  }
+  .ctrl-row:last-child { border-bottom: 0; }
+  .ctrl-row .label {
+    font-family: "Roboto Mono", monospace;
+    font-size: 11px;
+    color: color-mix(in srgb, var(--c-text) 70%, transparent);
+  }
+  .ctrl-cell { display: flex; align-items: center; gap: 10px; }
+  .ctrl-cell .caption { font-size: 13px; color: color-mix(in srgb, var(--c-text) 70%, transparent); }
+
+  /* Checkbox */
+  .cb {
+    width: 18px; height: 18px;
+    border: 1px solid var(--c-teal-80);
+    border-radius: 2px;
+    background: var(--c-white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .cb.checked { background: var(--c-int-default); border-color: var(--c-int-default); }
+  .cb.checked::after {
+    content: "";
+    width: 10px; height: 6px;
+    border-left: 2px solid var(--c-cream);
+    border-bottom: 2px solid var(--c-cream);
+    transform: rotate(-45deg) translate(1px, -1px);
+  }
+
+  /* Radio */
+  .rd {
+    width: 18px; height: 18px;
+    border: 1px solid var(--c-teal-80);
+    border-radius: 50%;
+    background: var(--c-white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .rd.checked { background: var(--c-int-default); border-color: var(--c-int-default); }
+  .rd.checked::after {
+    content: "";
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--c-cream);
+  }
+
+  /* Switch */
+  .sw {
+    width: 34px; height: 18px;
+    border-radius: 999px;
+    background: var(--c-white);
+    border: 1px solid var(--c-teal-80);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .sw::after {
+    content: "";
+    position: absolute;
+    top: 1px; left: 1px;
+    width: 14px; height: 14px;
+    background: var(--c-teal-80);
+    border-radius: 50%;
+    transition: transform 180ms ease, background-color 180ms ease;
+  }
+  .sw.on { background: var(--c-int-default); border-color: var(--c-int-default); }
+  .sw.on::after { transform: translateX(16px); background: var(--c-cream); }
+
+  /* Slider */
+  .sl {
+    height: 8px;
+    width: 100%;
+    max-width: 220px;
+    background: var(--c-teal-20);
+    border-radius: 4px;
+    position: relative;
+  }
+  .sl::before {
+    content: "";
+    position: absolute;
+    inset: 0 60% 0 0;
+    background: var(--c-int-default);
+    border-radius: 4px;
+  }
+  .sl::after {
+    content: "";
+    position: absolute;
+    top: 50%; left: 40%;
+    width: 16px; height: 16px;
+    background: var(--c-int-default);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 2px var(--c-bg);
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     Chips
+  ──────────────────────────────────────────────────────────────── */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
+    font-weight: 500;
+    line-height: 1.2;
+    padding: 0 10px;
+    border: 0;
+    background: transparent;
+  }
+  .chip-sm { height: var(--control-h-sm); padding: 0 8px;  font-size: 14px; }
+  .chip-md { height: var(--control-h-md); padding: 0 12px; font-size: 14px; }
+  .chip-lg { height: var(--control-h-lg); padding: 0 16px; font-size: 16px; }
+
+  .chip-default      { background: var(--c-chip-default-bg); color: var(--c-chip-default-fg); }
+  .chip-primary      { background: var(--c-int-primary); color: var(--c-extra-dark-teal); }
+  .chip-secondary    { background: var(--c-int-secondary); color: var(--c-extra-dark-teal); }
+  .chip-subtle       { background: var(--c-subtle); color: var(--c-on-subtle); }
+  .chip-extra-subtle { background: var(--c-extra-subtle); color: var(--c-on-extra-subtle); }
+
+  /* ────────────────────────────────────────────────────────────────
+     Avatars
+  ──────────────────────────────────────────────────────────────── */
+  .av {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px; /* rounded.3xs — square avatar by default */
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .av-xs { width: 24px; height: 24px; font-size: 11px; }
+  .av-sm { width: 32px; height: 32px; font-size: 13px; }
+  .av-md { width: 36px; height: 36px; font-size: 14px; }
+
+  .av-default      { background: var(--c-extra-dark-teal); color: var(--c-cream); }
+  .av-primary      { background: var(--c-int-primary); color: var(--c-extra-dark-teal); }
+  .av-secondary    { background: var(--c-int-secondary); color: var(--c-extra-dark-teal); }
+  .av-subtle       { background: var(--c-subtle); color: var(--c-on-subtle); }
+  .av-extra-subtle { background: var(--c-extra-subtle); color: var(--c-on-extra-subtle); }
+
+  /* ────────────────────────────────────────────────────────────────
+     Composed: form
+  ──────────────────────────────────────────────────────────────── */
+  .form-card {
+    background: var(--c-surface);
+    border: 1px solid var(--c-stroke);
+    border-radius: 12px;
+    padding: 32px;
+    max-width: 720px;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .form-grid .full { grid-column: 1 / -1; }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+  .form-field label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--c-text) 70%, transparent);
+  }
+  .form-field .help { font-size: 12px; color: color-mix(in srgb, var(--c-text) 65%, transparent); }
+  .form-field .field { max-width: none; }
+  .form-field textarea.field { height: 96px; padding-top: 10px; padding-bottom: 10px; resize: vertical; }
+  .form-field select.field {
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    appearance: none;
+    padding-right: 32px;
+  }
+  .form-actions {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    align-items: center;
+    min-height: var(--control-h-lg); /* matches Strata's lg CTA so the row never shrinks */
+  }
+
+  /* Both action buttons share the form-CTA size — they morph together on
+     system change so they always match each other. */
+  .form-actions .btn {
+    height: var(--form-cta-height);
+    padding: 0 var(--form-cta-pad);
+    font-size: var(--form-cta-font-size);
+    transition:
+      height 260ms ease,
+      padding 260ms ease,
+      background-color 220ms ease,
+      color 220ms ease,
+      border-color 220ms ease;
+  }
+
+  .radio-group { display: flex; gap: 24px; align-items: center; padding-top: 4px; }
+  .radio-group label { display: flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 14px; color: var(--c-text); }
+
+  .switch-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0;
+  }
+  .switch-row .switch-label { font-size: 14px; }
+
+  /* ────────────────────────────────────────────────────────────────
+     Composed: paper card
+  ──────────────────────────────────────────────────────────────── */
+  .paper-card {
+    background: var(--c-surface);
+    border: 1px solid var(--c-stroke);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 640px;
+  }
+  .paper-meta { display: flex; align-items: center; gap: 10px; font-size: 12px; color: color-mix(in srgb, var(--c-text) 70%, transparent); }
+  .paper-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: 0.6; }
+  .paper-card h3 { line-height: 1.3; }
+  .paper-card .abstract { font-size: 14px; line-height: 1.6; color: color-mix(in srgb, var(--c-text) 85%, transparent); }
+  .paper-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .paper-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 4px;
+    padding-top: 16px;
+    border-top: 1px solid var(--c-stroke);
+  }
+  .author-row { display: flex; align-items: center; gap: 10px; }
+  .author-row .stack { display: flex; }
+  /* Stacked author avatars override the default 4px radius to render circular —
+     a composition-level decision per Strata's avatar guidance, not a token change. */
+  .author-row .stack .av { border-radius: 32px; box-shadow: 0 0 0 2px var(--c-bg); margin-left: -6px; }
+  .author-row .stack .av:first-child { margin-left: 0; }
+  .author-names { font-size: 13px; }
+  .author-names .more { opacity: 0.6; }
+
+  /* ────────────────────────────────────────────────────────────────
+     Composed: toolbar
+  ──────────────────────────────────────────────────────────────── */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--c-surface);
+    border: 1px solid var(--c-stroke);
+    border-radius: 12px;
+    flex-wrap: wrap;
+  }
+  .toolbar .search {
+    flex: 1 1 240px;
+    min-width: 200px;
+    max-width: none;
+  }
+  .toolbar .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+  .toolbar .actions { display: flex; gap: 8px; margin-left: auto; }
+
+  /* ────────────────────────────────────────────────────────────────
+     Composed: alerts
+  ──────────────────────────────────────────────────────────────── */
+  .alerts { display: grid; gap: 10px; }
+  .alert {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--c-stroke);
+    background: var(--c-surface);
+    font-size: 14px;
+  }
+  .alert .icon {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--c-cream);
+    font-size: 12px; font-weight: 700;
+  }
+  .alert.info    { border-left: 4px solid var(--c-info-blue); }
+  .alert.info    .icon { background: var(--c-info-blue); }
+  .alert.success { border-left: 4px solid var(--c-success-green); }
+  .alert.success .icon { background: var(--c-success-green); }
+  .alert.warning { border-left: 4px solid var(--c-warning-orange); }
+  .alert.warning .icon { background: var(--c-warning-orange); color: var(--c-extra-dark-teal); }
+  .alert.error   { border-left: 4px solid var(--c-error-red); }
+  .alert.error   .icon { background: var(--c-error-red); }
+  .alert .title { font-weight: 600; }
+  .alert .msg   { color: color-mix(in srgb, var(--c-text) 78%, transparent); }
+  .alert .body  { display: flex; flex-direction: column; gap: 2px; }
+  .alert .dismiss {
+    appearance: none; border: 0; background: transparent;
+    color: inherit; cursor: pointer; opacity: 0.6; font-size: 16px;
+    padding: 4px 8px;
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     Footer
+  ──────────────────────────────────────────────────────────────── */
+  footer {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 32px var(--pad-x) 64px;
+    border-top: 1px solid var(--c-stroke);
+    color: color-mix(in srgb, var(--c-text) 60%, transparent);
+    font-size: 13px;
+  }
+
+  @media (max-width: 760px) {
+    .spec-head { grid-template-columns: 1fr; gap: 8px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .topbar-inner { grid-template-columns: 1fr; }
+    .vtable { grid-template-columns: 100px 1fr 1fr 1fr; }
+    .alias-list { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body, body * { transition: none !important; }
+    .vtable { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar" role="banner">
+  <div class="topbar-inner">
+    <div class="topbar-meta">
+      <div class="topbar-eyebrow">Ai2 · Design Systems · Spec Sheet</div>
+      <div class="topbar-title" data-bind="name">Strata</div>
+      <div class="topbar-desc" data-bind="description">Ai2 base design system — shared foundation for all Ai2 product interfaces</div>
+    </div>
+    <div class="segmented" role="tablist" aria-label="Active design system">
+      <button data-system="strata"     aria-pressed="true">Strata</button>
+      <button data-system="asta"       aria-pressed="false">Asta</button>
+      <button data-system="olmo-earth" aria-pressed="false">OlmoEarth</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <h1 data-bind="hero-title">Strata</h1>
+    <p data-bind="hero-blurb">
+      Strata is the Ai2 foundation design system. It provides the shared visual language —
+      color, typography, spacing, shape, and core components — used across all Ai2 product
+      interfaces. Asta and OlmoEarth extend Strata.
+    </p>
+  </section>
+
+  <!-- ─────────── Foundations ─────────── -->
+  <section class="spec" id="foundations">
+    <div class="spec-head">
+      <div class="label">01 — Foundations</div>
+      <div>
+        <h2>Foundations</h2>
+        <p>Primitive palette, semantic aliases, type scale, spacing, and shape — the layer everything composes from.</p>
+      </div>
+    </div>
+
+    <div class="subhead">Primitive palette</div>
+    <div class="swatch-grid" id="primitives-grid"></div>
+
+    <div class="subhead">Semantic aliases</div>
+    <div class="alias-list" id="aliases-list"></div>
+
+    <div class="subhead">Typography</div>
+    <div id="type-scale"></div>
+
+    <div class="subhead">Spacing</div>
+    <div id="spacing-scale"></div>
+
+    <div class="subhead">Radii</div>
+    <div class="radii-grid" id="radii-grid"></div>
+  </section>
+
+  <!-- ─────────── Buttons ─────────── -->
+  <section class="spec" id="buttons">
+    <div class="spec-head">
+      <div class="label">02 — Buttons</div>
+      <div>
+        <h2>Buttons</h2>
+        <p>Four intents (default, primary, secondary, reversed) × filled & outlined variants × three sizes. Hover any button to see its hover state.</p>
+      </div>
+    </div>
+
+    <div class="subhead">Filled</div>
+    <div class="vtable" data-collapse-lg="true">
+      <div class="cell head"></div>
+      <div class="cell head">sm · 32px</div>
+      <div class="cell head">md · 36px</div>
+      <div class="cell head col-lg">lg · 48px</div>
+
+      <div class="cell row-label">default</div>
+      <div class="cell"><button class="btn btn-default btn-sm">Get started</button></div>
+      <div class="cell"><button class="btn btn-default btn-md">Get started</button></div>
+      <div class="cell col-lg"><button class="btn btn-default btn-lg">Get started</button></div>
+
+      <div class="cell row-label">primary</div>
+      <div class="cell"><button class="btn btn-primary btn-sm">Run search</button></div>
+      <div class="cell"><button class="btn btn-primary btn-md">Run search</button></div>
+      <div class="cell col-lg"><button class="btn btn-primary btn-lg">Run search</button></div>
+
+      <div class="cell row-label">secondary</div>
+      <div class="cell"><button class="btn btn-secondary btn-sm">Save draft</button></div>
+      <div class="cell"><button class="btn btn-secondary btn-md">Save draft</button></div>
+      <div class="cell col-lg"><button class="btn btn-secondary btn-lg">Save draft</button></div>
+
+      <div class="cell row-label reversed-cell">reversed</div>
+      <div class="cell reversed-cell"><button class="btn btn-reversed btn-sm">Sign in</button></div>
+      <div class="cell reversed-cell"><button class="btn btn-reversed btn-md">Sign in</button></div>
+      <div class="cell reversed-cell col-lg"><button class="btn btn-reversed btn-lg">Sign in</button></div>
+    </div>
+
+    <div class="subhead">Outlined</div>
+    <div class="vtable" data-collapse-lg="true">
+      <div class="cell head"></div>
+      <div class="cell head">sm · 32px</div>
+      <div class="cell head">md · 36px</div>
+      <div class="cell head col-lg">lg · 48px</div>
+
+      <div class="cell row-label">default</div>
+      <div class="cell"><button class="btn btn-default-out btn-sm">Cancel</button></div>
+      <div class="cell"><button class="btn btn-default-out btn-md">Cancel</button></div>
+      <div class="cell col-lg"><button class="btn btn-default-out btn-lg">Cancel</button></div>
+
+      <div class="cell row-label">primary</div>
+      <div class="cell"><button class="btn btn-primary-out btn-sm">Highlight</button></div>
+      <div class="cell"><button class="btn btn-primary-out btn-md">Highlight</button></div>
+      <div class="cell col-lg"><button class="btn btn-primary-out btn-lg">Highlight</button></div>
+
+      <div class="cell row-label">secondary</div>
+      <div class="cell"><button class="btn btn-secondary-out btn-sm">Approve</button></div>
+      <div class="cell"><button class="btn btn-secondary-out btn-md">Approve</button></div>
+      <div class="cell col-lg"><button class="btn btn-secondary-out btn-lg">Approve</button></div>
+
+      <div class="cell row-label reversed-cell">reversed</div>
+      <div class="cell reversed-cell"><button class="btn btn-reversed-out btn-sm">Sign in</button></div>
+      <div class="cell reversed-cell"><button class="btn btn-reversed-out btn-md">Sign in</button></div>
+      <div class="cell reversed-cell col-lg"><button class="btn btn-reversed-out btn-lg">Sign in</button></div>
+    </div>
+
+    <div class="subhead">Disabled</div>
+    <div class="vtable" data-collapse-lg="true">
+      <div class="cell head"></div>
+      <div class="cell head">sm · 32px</div>
+      <div class="cell head">md · 36px</div>
+      <div class="cell head col-lg">lg · 48px</div>
+
+      <div class="cell row-label">disabled</div>
+      <div class="cell"><button class="btn btn-disabled btn-sm" disabled>Submit</button></div>
+      <div class="cell"><button class="btn btn-disabled btn-md" disabled>Submit</button></div>
+      <div class="cell col-lg"><button class="btn btn-disabled btn-lg" disabled>Submit</button></div>
+    </div>
+
+    <div class="lg-note">
+      <strong>Asta hides <code>button-size-lg</code>.</strong> Asta is information-dense and uses <code>sm</code>/<code>md</code> only —
+      large interactive elements break the compact rhythm. Composed UI in this sheet that does
+      use a large CTA (the form below) gracefully shrinks to <code>md</code> instead of disappearing.
+    </div>
+  </section>
+
+  <!-- ─────────── Inputs ─────────── -->
+  <section class="spec" id="inputs">
+    <div class="spec-head">
+      <div class="label">03 — Inputs</div>
+      <div>
+        <h2>Inputs</h2>
+        <p>Default, focus, error, and disabled states across three sizes.</p>
+      </div>
+    </div>
+
+    <div class="vtable">
+      <div class="cell head"></div>
+      <div class="cell head">sm · 32px</div>
+      <div class="cell head">md · 36px</div>
+      <div class="cell head">lg · 48px</div>
+
+      <div class="cell row-label">default</div>
+      <div class="cell"><input class="field field-sm" placeholder="placeholder" /></div>
+      <div class="cell"><input class="field field-md" placeholder="placeholder" /></div>
+      <div class="cell"><input class="field field-lg" placeholder="placeholder" /></div>
+
+      <div class="cell row-label">focus</div>
+      <div class="cell"><input class="field field-sm field-focus" placeholder="placeholder" /></div>
+      <div class="cell"><input class="field field-md field-focus" placeholder="placeholder" /></div>
+      <div class="cell"><input class="field field-lg field-focus" placeholder="placeholder" /></div>
+
+      <div class="cell row-label">error</div>
+      <div class="cell"><input class="field field-sm field-error" placeholder="placeholder" /></div>
+      <div class="cell"><input class="field field-md field-error" placeholder="placeholder" /></div>
+      <div class="cell"><input class="field field-lg field-error" placeholder="placeholder" /></div>
+
+      <div class="cell row-label">disabled</div>
+      <div class="cell"><input class="field field-sm field-disabled" placeholder="placeholder" disabled /></div>
+      <div class="cell"><input class="field field-md field-disabled" placeholder="placeholder" disabled /></div>
+      <div class="cell"><input class="field field-lg field-disabled" placeholder="placeholder" disabled /></div>
+    </div>
+  </section>
+
+  <!-- ─────────── Form controls ─────────── -->
+  <section class="spec" id="form-controls">
+    <div class="spec-head">
+      <div class="label">04 — Form controls</div>
+      <div>
+        <h2>Form controls</h2>
+        <p>Checkbox, radio, switch, and slider. All four share a single color vocabulary: white surface with a teal-80 stroke when off; <code>interactive-default</code> when on.</p>
+      </div>
+    </div>
+
+    <div>
+      <div class="ctrl-row">
+        <div class="label">checkbox</div>
+        <div class="ctrl-cell"><span class="cb"></span><span class="caption">Unchecked</span></div>
+        <div class="ctrl-cell"><span class="cb checked"></span><span class="caption">Checked</span></div>
+      </div>
+      <div class="ctrl-row">
+        <div class="label">radio</div>
+        <div class="ctrl-cell"><span class="rd"></span><span class="caption">Unselected</span></div>
+        <div class="ctrl-cell"><span class="rd checked"></span><span class="caption">Selected</span></div>
+      </div>
+      <div class="ctrl-row">
+        <div class="label">switch</div>
+        <div class="ctrl-cell"><span class="sw"></span><span class="caption">Off</span></div>
+        <div class="ctrl-cell"><span class="sw on"></span><span class="caption">On</span></div>
+      </div>
+      <div class="ctrl-row">
+        <div class="label">slider</div>
+        <div class="ctrl-cell"><span class="sl"></span></div>
+        <div class="ctrl-cell"><span class="caption">Track 8px · filled portion uses <code>interactive-default</code></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── Chips ─────────── -->
+  <section class="spec" id="chips">
+    <div class="spec-head">
+      <div class="label">05 — Chips</div>
+      <div>
+        <h2>Chips</h2>
+        <p>Three color intents plus the two subtle (translucent) variants, across three sizes. Filled-only — outlined chips would compete with outlined buttons for the same visual role.</p>
+      </div>
+    </div>
+
+    <div class="subhead">Filled</div>
+    <div class="vtable">
+      <div class="cell head"></div>
+      <div class="cell head">sm · 32px</div>
+      <div class="cell head">md · 36px</div>
+      <div class="cell head">lg · 48px</div>
+
+      <div class="cell row-label">default</div>
+      <div class="cell"><span class="chip chip-default chip-sm">chips</span></div>
+      <div class="cell"><span class="chip chip-default chip-md">chips</span></div>
+      <div class="cell"><span class="chip chip-default chip-lg">chips</span></div>
+
+      <div class="cell row-label">primary</div>
+      <div class="cell"><span class="chip chip-primary chip-sm">chips</span></div>
+      <div class="cell"><span class="chip chip-primary chip-md">chips</span></div>
+      <div class="cell"><span class="chip chip-primary chip-lg">chips</span></div>
+
+      <div class="cell row-label">secondary</div>
+      <div class="cell"><span class="chip chip-secondary chip-sm">chips</span></div>
+      <div class="cell"><span class="chip chip-secondary chip-md">chips</span></div>
+      <div class="cell"><span class="chip chip-secondary chip-lg">chips</span></div>
+
+      <div class="cell row-label">subtle</div>
+      <div class="cell"><span class="chip chip-subtle chip-sm">chips</span></div>
+      <div class="cell"><span class="chip chip-subtle chip-md">chips</span></div>
+      <div class="cell"><span class="chip chip-subtle chip-lg">chips</span></div>
+
+      <div class="cell row-label">extra-subtle</div>
+      <div class="cell"><span class="chip chip-extra-subtle chip-sm">chips</span></div>
+      <div class="cell"><span class="chip chip-extra-subtle chip-md">chips</span></div>
+      <div class="cell"><span class="chip chip-extra-subtle chip-lg">chips</span></div>
+    </div>
+  </section>
+
+  <!-- ─────────── Avatars ─────────── -->
+  <section class="spec" id="avatars">
+    <div class="spec-head">
+      <div class="label">06 — Avatars</div>
+      <div>
+        <h2>Avatars</h2>
+        <p>Three intents × three sizes. Square, 4&nbsp;px radius. Initials use semibold weight for legibility at small sizes.</p>
+      </div>
+    </div>
+
+    <div class="vtable" style="grid-template-columns:130px 1fr 1fr 1fr;">
+      <div class="cell head"></div>
+      <div class="cell head">xs · 24px</div>
+      <div class="cell head">sm · 32px</div>
+      <div class="cell head">md · 36px</div>
+
+      <div class="cell row-label">default</div>
+      <div class="cell"><span class="av av-default av-xs">U</span></div>
+      <div class="cell"><span class="av av-default av-sm">U</span></div>
+      <div class="cell"><span class="av av-default av-md">U</span></div>
+
+      <div class="cell row-label">primary</div>
+      <div class="cell"><span class="av av-primary av-xs">U</span></div>
+      <div class="cell"><span class="av av-primary av-sm">U</span></div>
+      <div class="cell"><span class="av av-primary av-md">U</span></div>
+
+      <div class="cell row-label">secondary</div>
+      <div class="cell"><span class="av av-secondary av-xs">U</span></div>
+      <div class="cell"><span class="av av-secondary av-sm">U</span></div>
+      <div class="cell"><span class="av av-secondary av-md">U</span></div>
+
+      <div class="cell row-label">subtle</div>
+      <div class="cell"><span class="av av-subtle av-xs">U</span></div>
+      <div class="cell"><span class="av av-subtle av-sm">U</span></div>
+      <div class="cell"><span class="av av-subtle av-md">U</span></div>
+
+      <div class="cell row-label">extra-subtle</div>
+      <div class="cell"><span class="av av-extra-subtle av-xs">U</span></div>
+      <div class="cell"><span class="av av-extra-subtle av-sm">U</span></div>
+      <div class="cell"><span class="av av-extra-subtle av-md">U</span></div>
+    </div>
+  </section>
+
+  <!-- ─────────── Composed: Form ─────────── -->
+  <section class="spec" id="composed-form">
+    <div class="spec-head">
+      <div class="label">07 — Composed · Form</div>
+      <div>
+        <h2>Research query form</h2>
+        <p>A real form composed from inputs, select, radio, and switch. The <em>Submit query</em> CTA is large in Strata/OlmoEarth and gracefully shrinks to medium when Asta is active — Asta forbids large interactive elements, so the CTA degrades rather than disappearing.</p>
+      </div>
+    </div>
+
+    <form class="form-card" onsubmit="event.preventDefault();">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="f-name">Name</label>
+          <input id="f-name" class="field field-md" placeholder="Ada Lovelace" />
+        </div>
+        <div class="form-field">
+          <label for="f-email">Email</label>
+          <input id="f-email" class="field field-md" type="email" placeholder="ada@allenai.org" />
+        </div>
+        <div class="form-field full">
+          <label for="f-topic">Research topic</label>
+          <select id="f-topic" class="field field-md">
+            <option>Computer vision</option>
+            <option>Natural language processing</option>
+            <option>Reinforcement learning</option>
+            <option>Climate &amp; earth observation</option>
+          </select>
+          <span class="help">Select the closest area; you can refine after submitting.</span>
+        </div>
+        <div class="form-field full">
+          <label for="f-query">Query</label>
+          <textarea id="f-query" class="field field-md" placeholder="Describe your question in 1–3 sentences…"></textarea>
+        </div>
+
+        <div class="form-field">
+          <label>Audience</label>
+          <div class="radio-group" data-radio-group="audience">
+            <label><span class="rd checked" data-radio="expert"></span>Expert</label>
+            <label><span class="rd" data-radio="generalist"></span>Generalist</label>
+            <label><span class="rd" data-radio="student"></span>Student</label>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Notifications</label>
+          <div class="switch-row">
+            <span class="sw on" id="notif-switch" role="switch" aria-checked="true"></span>
+            <span class="switch-label">Email me when results are ready</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-default-out">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit query</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ─────────── Composed: Paper card ─────────── -->
+  <section class="spec" id="composed-card">
+    <div class="spec-head">
+      <div class="label">08 — Composed · Card</div>
+      <div>
+        <h2>Paper card</h2>
+        <p>Body copy, chip tags, stacked author avatars, and a primary action — composed from the foundations and components above.</p>
+      </div>
+    </div>
+
+    <article class="paper-card">
+      <div class="paper-meta">
+        <span>NeurIPS 2017</span>
+        <span class="dot"></span>
+        <span>arXiv:1706.03762</span>
+        <span class="dot"></span>
+        <span>Jun 2017</span>
+      </div>
+      <h3>Attention Is All You Need</h3>
+      <p class="abstract">
+        We propose a new simple network architecture, the Transformer, based solely on attention
+        mechanisms, dispensing with recurrence and convolutions entirely. Experiments on machine
+        translation tasks show these models to be superior in quality while being more parallelizable
+        and requiring significantly less time to train.
+      </p>
+      <div class="paper-tags">
+        <span class="chip chip-primary chip-sm">featured</span>
+        <span class="chip chip-extra-subtle chip-sm">transformers</span>
+        <span class="chip chip-extra-subtle chip-sm">sequence modeling</span>
+        <span class="chip chip-secondary chip-sm">cited 100k+</span>
+      </div>
+      <div class="paper-row">
+        <div class="author-row">
+          <div class="stack">
+            <span class="av av-default av-sm">A</span>
+            <span class="av av-primary av-sm">B</span>
+            <span class="av av-secondary av-sm">C</span>
+            <span class="av av-default av-sm">+5</span>
+          </div>
+          <div class="author-names">
+            Vaswani, Shazeer, Parmar <span class="more">+5 others</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-default-out btn-sm">Cite</button>
+          <button class="btn btn-primary btn-sm">Read paper</button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ─────────── Composed: Toolbar ─────────── -->
+  <section class="spec" id="composed-toolbar">
+    <div class="spec-head">
+      <div class="label">09 — Composed · Toolbar</div>
+      <div>
+        <h2>Toolbar</h2>
+        <p>Search, filter chips, and actions in one tight row. Demonstrates that <code>sm</code> is the right size for compact contexts — the same toolbar reads correctly in both Strata and Asta.</p>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <input class="field field-sm search" placeholder="Search 380,412 papers…" />
+      <div class="filters">
+        <span class="chip chip-extra-subtle chip-sm">2024</span>
+        <span class="chip chip-extra-subtle chip-sm">vision</span>
+        <span class="chip chip-subtle chip-sm">+ filter</span>
+      </div>
+      <div class="actions">
+        <button class="btn btn-default-out btn-sm">Export</button>
+        <button class="btn btn-primary btn-sm">New query</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── Composed: Alerts ─────────── -->
+  <section class="spec" id="composed-alerts">
+    <div class="spec-head">
+      <div class="label">10 — Composed · Alerts</div>
+      <div>
+        <h2>Alerts</h2>
+        <p>Status colors (info, success, warning, error) used only for system feedback — never for decoration.</p>
+      </div>
+    </div>
+
+    <div class="alerts">
+      <div class="alert info">
+        <span class="icon">i</span>
+        <div class="body">
+          <span class="title">Indexing in progress</span>
+          <span class="msg">Roughly 12,000 of 380,412 papers remain. You can keep using search.</span>
+        </div>
+        <button class="dismiss" aria-label="Dismiss">×</button>
+      </div>
+      <div class="alert success">
+        <span class="icon">✓</span>
+        <div class="body">
+          <span class="title">Query saved</span>
+          <span class="msg">"Foundation models for earth observation" is now in your saved queries.</span>
+        </div>
+        <button class="dismiss" aria-label="Dismiss">×</button>
+      </div>
+      <div class="alert warning">
+        <span class="icon">!</span>
+        <div class="body">
+          <span class="title">High traffic</span>
+          <span class="msg">Results may be slower than usual for the next few minutes.</span>
+        </div>
+        <button class="dismiss" aria-label="Dismiss">×</button>
+      </div>
+      <div class="alert error">
+        <span class="icon">!</span>
+        <div class="body">
+          <span class="title">Submission failed</span>
+          <span class="msg">We couldn't reach the server. Check your connection and try again.</span>
+        </div>
+        <button class="dismiss" aria-label="Dismiss">×</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Spec sheet · single static HTML · drives off
+  <code>strata/DESIGN.md</code>, <code>asta/DESIGN.md</code>, <code>olmo-earth/DESIGN.md</code>.
+  OlmoEarth currently inherits Strata; populate <code>olmo-earth/DESIGN.src.md</code> to differentiate.
+</footer>
+
+<script>
+/* ─────────────────────────────────────────────────────────────────
+   System data — extracted from the resolved DESIGN.md frontmatter.
+   OlmoEarth is intentionally identical to Strata (stub) and renders
+   a banner explaining the state.
+───────────────────────────────────────────────────────────────── */
+const PRIMITIVES = [
+  // extra-dark-teal + its full opacity scale
+  ["extra-dark-teal",    "#032629"],
+  ["extra-dark-teal-90", "#032629e6"],
+  ["extra-dark-teal-80", "#032629cc"],
+  ["extra-dark-teal-70", "#032629b3"],
+  ["extra-dark-teal-60", "#03262999"],
+  ["extra-dark-teal-50", "#03262980"],
+  ["extra-dark-teal-40", "#03262966"],
+  ["extra-dark-teal-30", "#0326294d"],
+  ["extra-dark-teal-20", "#03262933"],
+  ["extra-dark-teal-10", "#0326291a"],
+
+  ["dark-teal",          "#0a3235"],
+
+  // cream + its full opacity scale
+  ["cream",              "#faf2e9"],
+  ["cream-90",           "#faf2e9e6"],
+  ["cream-80",           "#faf2e9cc"],
+  ["cream-70",           "#faf2e9b3"],
+  ["cream-60",           "#faf2e999"],
+  ["cream-50",           "#faf2e980"],
+  ["cream-40",           "#faf2e966"],
+  ["cream-30",           "#faf2e94d"],
+  ["cream-20",           "#faf2e933"],
+  ["cream-10",           "#faf2e91a"],
+
+  // Tint families (solid blends with cream, distinct from the alpha primitives)
+  ["teal",               "#105257"],
+  ["teal-80",            "#3f7274"],
+  ["teal-60",            "#6e9291"],
+  ["teal-40",            "#9cb2af"],
+  ["teal-20",            "#cbd2cc"],
+  ["pink",               "#f0529c"],
+  ["pink-80",            "#f272ab"],
+  ["pink-60",            "#f492bb"],
+  ["pink-40",            "#f6b2ca"],
+  ["pink-20",            "#f8d2da"],
+  ["green",              "#0fcb8c"],
+  ["green-80",           "#3ed39f"],
+  ["green-60",           "#6ddbb1"],
+  ["green-40",           "#9ce2c4"],
+  ["green-20",           "#cbead6"],
+  ["gray",               "#343434"],
+  ["gray-80",            "#5d5d5d"],
+  ["gray-60",            "#858585"],
+  ["gray-40",            "#aeaeae"],
+  ["gray-20",            "#d6d6d6"],
+  ["white",              "#ffffff"],
+
+  // Status
+  ["info-blue",          "#2a88ef"],
+  ["error-red",          "#fd4645"],
+  ["error-red-dark",     "#d02f2e"],
+  ["success-green",      "#549c35"],
+  ["warning-orange",     "#ffa31c"],
+];
+
+const TYPOGRAPHY = [
+  ["display",     "PP Telegraf, Manrope", "3rem",    700, 1.1],
+  ["heading-xl",  "PP Telegraf, Manrope", "2.5rem",  700, 1.2],
+  ["heading-lg",  "PP Telegraf, Manrope", "2rem",    700, 1.2],
+  ["heading-md",  "PP Telegraf, Manrope", "1.5rem",  600, 1.3],
+  ["heading-sm",  "PP Telegraf, Manrope", "1.25rem", 600, 1.4],
+  ["body-lg",     "Manrope",              "18px",    400, 1.6],
+  ["body-md",     "Manrope",              "16px",    400, 1.6],
+  ["body-sm",     "Manrope",              "14px",    400, 1.5],
+  ["body-xs",     "Manrope",              "12px",    400, 1.5],
+  ["mono",        "Roboto Mono",          "14px",    400, 1.6],
+];
+
+const SPACING = [
+  ["2xs", 8], ["xs", 12], ["sm", 14], ["md", 16], ["lg", 18], ["xl", 20],
+  ["2xl", 24], ["3xl", 32], ["4xl", 36], ["5xl", 40], ["6xl", 48],
+];
+
+const RADII = [
+  ["3xs", 4], ["2xs", 8], ["xs", 12], ["sm", 14], ["md", 16],
+  ["lg", 18], ["xl", 20], ["2xl", 24], ["3xl", 32],
+];
+
+/* Per-system semantic aliases. Each row = [alias, primitive name].
+   These drive the "alias-list" rendering in Foundations. */
+const ALIASES = {
+  strata: [
+    ["background",            "cream"],
+    ["background-reversed",   "extra-dark-teal"],
+    ["text",                  "dark-teal"],
+    ["text-reversed",         "cream"],
+    ["text-disabled",         "gray"],
+    ["text-error",            "error-red"],
+    ["interactive-default",   "teal"],
+    ["interactive-default-hover", "teal-80"],
+    ["interactive-primary",   "pink"],
+    ["interactive-primary-hover", "pink-60"],
+    ["interactive-secondary", "green"],
+    ["interactive-secondary-hover", "green-60"],
+    ["link",                  "pink"],
+    ["link-reversed",         "green"],
+    ["subtle",                "extra-dark-teal-50"],
+    ["extra-subtle",          "extra-dark-teal-10"],
+    ["on-subtle",             "cream"],
+    ["on-extra-subtle",       "dark-teal"],
+  ],
+  asta: [
+    ["background",            "extra-dark-teal"],
+    ["background-reversed",   "cream"],
+    ["text",                  "cream"],
+    ["text-reversed",         "dark-teal"],
+    ["text-disabled",         "gray"],
+    ["text-error",            "error-red"],
+    ["interactive-default",   "teal"],
+    ["interactive-default-hover", "teal-80"],
+    ["interactive-primary",   "green"],
+    ["interactive-primary-hover", "green-60"],
+    ["interactive-secondary", "green"],
+    ["interactive-secondary-hover", "green-60"],
+    ["link",                  "green"],
+    ["link-reversed",         "pink"],
+    ["subtle",                "cream-50"],
+    ["extra-subtle",          "cream-10"],
+    ["on-subtle",             "dark-teal"],
+    ["on-extra-subtle",       "cream"],
+  ],
+};
+ALIASES["olmo-earth"] = ALIASES.strata; // stub
+
+/* Per-system meta */
+const META = {
+  strata: {
+    name: "Strata",
+    description: "Ai2 base design system — shared foundation for all Ai2 product interfaces",
+    heroBlurb: "Strata is the Ai2 foundation design system. It provides the shared visual language — color, typography, spacing, shape, and core components — used across all Ai2 product interfaces. Asta and OlmoEarth extend Strata.",
+  },
+  asta: {
+    name: "Asta",
+    description: "Asta product design system — AI research assistant, dark mode, extends Strata",
+    heroBlurb: "Asta is Ai2's AI-powered research assistant. The interface is dark by default, optimized for information-dense research workflows. Pink is not used; green carries the primary accent against the deep teal surface.",
+  },
+  "olmo-earth": {
+    name: "OlmoEarth",
+    description: "OlmoEarth product design system — extends Strata with product-specific tokens",
+    heroBlurb: "OlmoEarth's overlay is currently a stub. Until its DESIGN.src.md declares overrides, it inherits Strata directly — the toggle below works mechanically, but Strata and OlmoEarth render identically.",
+  },
+};
+
+/* ─────────────────────────────────────────────────────────────────
+   Renderers
+───────────────────────────────────────────────────────────────── */
+function hexFor(name) {
+  const found = PRIMITIVES.find(([n]) => n === name);
+  return found ? found[1] : "#000";
+}
+
+function renderPrimitives() {
+  const grid = document.getElementById("primitives-grid");
+  grid.innerHTML = PRIMITIVES.map(([name, hex]) => `
+    <div class="swatch">
+      <div class="swatch-color" style="background:${hex}"></div>
+      <div class="swatch-meta">
+        <div class="swatch-name">${name}</div>
+        <div class="swatch-hex">${hex}</div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderAliases(systemKey) {
+  const list = document.getElementById("aliases-list");
+  list.innerHTML = ALIASES[systemKey].map(([alias, prim]) => `
+    <div class="alias-row">
+      <span class="alias-name">${alias}</span>
+      <span class="alias-arrow">→</span>
+      <span class="alias-value">
+        <span class="alias-dot" style="background:${hexFor(prim)}"></span>
+        <span class="alias-target">${prim}</span>
+      </span>
+    </div>
+  `).join("");
+}
+
+function renderTypography() {
+  const wrap = document.getElementById("type-scale");
+  wrap.innerHTML = TYPOGRAPHY.map(([name, family, size, weight, lh]) => `
+    <div class="type-row">
+      <div class="type-label">${name}</div>
+      <div class="type-spec">
+        <span style="font-family:${family},Arial,sans-serif;font-size:${size};font-weight:${weight};line-height:${lh};">
+          ${name === "mono" ? "0123 const x = research()" : "The quick brown fox"}
+        </span>
+        <span class="type-meta">${family} · ${size} · ${weight} · lh ${lh}</span>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderSpacing() {
+  const wrap = document.getElementById("spacing-scale");
+  wrap.innerHTML = SPACING.map(([name, val]) => `
+    <div class="scale-row">
+      <span class="scale-name">${name}</span>
+      <span class="scale-bar" style="width:${val}px"></span>
+      <span class="scale-val">${val}px</span>
+    </div>
+  `).join("");
+}
+
+function renderRadii() {
+  const wrap = document.getElementById("radii-grid");
+  wrap.innerHTML = RADII.map(([name, val]) => `
+    <div class="radius-cell" style="border-radius:${val}px;">
+      <span class="name">${name}</span>
+      <span class="val">${val}px</span>
+    </div>
+  `).join("");
+}
+
+function bindMeta(systemKey) {
+  const meta = META[systemKey];
+  document.querySelectorAll('[data-bind="name"]').forEach((el) => (el.textContent = meta.name));
+  document.querySelectorAll('[data-bind="description"]').forEach((el) => (el.textContent = meta.description));
+  document.querySelectorAll('[data-bind="hero-title"]').forEach((el) => (el.textContent = meta.name));
+  document.querySelectorAll('[data-bind="hero-blurb"]').forEach((el) => (el.textContent = meta.heroBlurb));
+}
+
+function applySystem(systemKey) {
+  document.documentElement.dataset.system = systemKey;
+  document.querySelectorAll(".segmented button").forEach((btn) => {
+    btn.setAttribute("aria-pressed", btn.dataset.system === systemKey ? "true" : "false");
+  });
+  bindMeta(systemKey);
+  renderAliases(systemKey);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Init
+───────────────────────────────────────────────────────────────── */
+renderPrimitives();
+renderTypography();
+renderSpacing();
+renderRadii();
+applySystem("strata");
+
+document.querySelectorAll(".segmented button").forEach((btn) => {
+  btn.addEventListener("click", () => applySystem(btn.dataset.system));
+});
+
+/* Arrow-key swap so users can A/B between systems quickly without leaving
+   the scroll position. Skips when the user is typing into a field. */
+const SYSTEM_ORDER = ["strata", "asta", "olmo-earth"];
+document.addEventListener("keydown", (e) => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.target.matches("input, textarea, select, [contenteditable]")) return;
+  if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+  e.preventDefault();
+  const current = document.documentElement.dataset.system;
+  const idx = SYSTEM_ORDER.indexOf(current);
+  const next = e.key === "ArrowRight"
+    ? SYSTEM_ORDER[(idx + 1) % SYSTEM_ORDER.length]
+    : SYSTEM_ORDER[(idx - 1 + SYSTEM_ORDER.length) % SYSTEM_ORDER.length];
+  applySystem(next);
+});
+
+/* Notification switch */
+document.getElementById("notif-switch")?.addEventListener("click", (e) => {
+  e.currentTarget.classList.toggle("on");
+  e.currentTarget.setAttribute("aria-checked", e.currentTarget.classList.contains("on"));
+});
+
+/* Radio groups — one selection per [data-radio-group]. We attach to the
+   group container so clicks anywhere on the row (label or dot) select. */
+document.querySelectorAll("[data-radio-group]").forEach((group) => {
+  group.addEventListener("click", (e) => {
+    const dot = e.target.closest("[data-radio]");
+    if (!dot) return;
+    group.querySelectorAll("[data-radio]").forEach((r) => r.classList.remove("checked"));
+    dot.classList.add("checked");
+  });
+});
+</script>
+</body>
+</html>

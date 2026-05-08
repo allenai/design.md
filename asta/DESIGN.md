@@ -37,6 +37,31 @@ colors:
   success-green: "#549c35"
   warning-orange: "#ffa31c"
 
+  # ── Opacity primitives ────────────────────────────────────────────
+  # True alpha-channel variants of extra-dark-teal and cream. Distinct
+  # from the tint primitives above (teal-20, pink-40, etc.), which are
+  # solid blends with cream. These use the alpha channel so the resulting
+  # color adapts to whatever surface the element is placed on — page,
+  # card, panel, or another translucent layer.
+  extra-dark-teal-10: "#0326291a"
+  extra-dark-teal-20: "#03262933"
+  extra-dark-teal-30: "#0326294d"
+  extra-dark-teal-40: "#03262966"
+  extra-dark-teal-50: "#03262980"
+  extra-dark-teal-60: "#03262999"
+  extra-dark-teal-70: "#032629b3"
+  extra-dark-teal-80: "#032629cc"
+  extra-dark-teal-90: "#032629e6"
+  cream-10: "#faf2e91a"
+  cream-20: "#faf2e933"
+  cream-30: "#faf2e94d"
+  cream-40: "#faf2e966"
+  cream-50: "#faf2e980"
+  cream-60: "#faf2e999"
+  cream-70: "#faf2e9b3"
+  cream-80: "#faf2e9cc"
+  cream-90: "#faf2e9e6"
+
   # ── Semantic aliases (light mode) ─────────────────────────────────
   # Maps intent to primitive. Product systems may remap these.
   background: "{colors.extra-dark-teal}"
@@ -53,6 +78,18 @@ colors:
   interactive-secondary-hover: "{colors.green-60}"
   link: "{colors.green}"
   link-reversed: "{colors.pink}"
+
+  # ── Subtle surfaces ───────────────────────────────────────────────
+  # Translucent overlays that take their tone from the page surface.
+  # Strata is light, so the overlays are extra-dark-teal alpha. Product
+  # systems in dark mode (e.g. Asta) override these to cream alpha.
+  subtle: "{colors.cream-50}"
+  extra-subtle: "{colors.cream-10}"
+  on-subtle: "{colors.text-reversed}"
+  # `extra-subtle` sits so close to the page surface that the inverse
+  # foreground used by `subtle` loses contrast. Pair it with the
+  # standard page text instead — it flips per system automatically.
+  on-extra-subtle: "{colors.text}"
 
 typography:
   display:
@@ -143,14 +180,14 @@ components:
     backgroundColor: "{colors.interactive-default-hover}"
     textColor: "{colors.cream}"
   button-reversed:
-    backgroundColor: "{colors.cream}"
-    textColor: "{colors.extra-dark-teal}"
+    backgroundColor: "{colors.extra-dark-teal}"
+    textColor: "{colors.cream}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   button-reversed-hover:
-    backgroundColor: "{colors.white}"
-    textColor: "{colors.extra-dark-teal}"
+    backgroundColor: "{colors.dark-teal}"
+    textColor: "{colors.cream}"
   button-primary:
     backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.extra-dark-teal}"
@@ -173,26 +210,26 @@ components:
   # Outlined variants
   button-default-outlined:
     backgroundColor: transparent
-    textColor: "{colors.interactive-default}"
-    borderColor: "{colors.interactive-default}"
+    textColor: "{colors.teal-40}"
+    borderColor: "{colors.teal-40}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   button-default-outlined-hover:
-    backgroundColor: "{colors.teal-20}"
-    textColor: "{colors.interactive-default}"
-    borderColor: "{colors.interactive-default}"
+    backgroundColor: "{colors.teal-80}"
+    textColor: "{colors.cream}"
+    borderColor: "{colors.teal-40}"
   button-reversed-outlined:
     backgroundColor: transparent
-    textColor: "{colors.cream}"
-    borderColor: "{colors.cream}"
+    textColor: "{colors.extra-dark-teal}"
+    borderColor: "{colors.extra-dark-teal}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   button-reversed-outlined-hover:
-    backgroundColor: "{colors.white}"
-    textColor: "{colors.extra-dark-teal}"
-    borderColor: "{colors.white}"
+    backgroundColor: "{colors.extra-dark-teal}"
+    textColor: "{colors.cream}"
+    borderColor: "{colors.extra-dark-teal}"
   button-primary-outlined:
     backgroundColor: transparent
     textColor: "{colors.interactive-primary}"
@@ -310,11 +347,6 @@ components:
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
-  chip-default-outlined:
-    backgroundColor: transparent
-    textColor: "{colors.interactive-default}"
-    borderColor: "{colors.interactive-default}"
-    rounded: "{rounded.3xs}"
   chip-primary:
     backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.extra-dark-teal}"
@@ -323,6 +355,18 @@ components:
     backgroundColor: "{colors.interactive-secondary}"
     textColor: "{colors.extra-dark-teal}"
     rounded: "{rounded.3xs}"
+  chip-subtle:
+    backgroundColor: "{colors.subtle}"
+    textColor: "{colors.on-subtle}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  chip-extra-subtle:
+    backgroundColor: "{colors.extra-subtle}"
+    textColor: "{colors.on-extra-subtle}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
 
   # Sizes
   chip-size-sm:
@@ -350,6 +394,14 @@ components:
   avatar-secondary:
     backgroundColor: "{colors.interactive-secondary}"
     textColor: "{colors.extra-dark-teal}"
+    rounded: "{rounded.3xs}"
+  avatar-subtle:
+    backgroundColor: "{colors.subtle}"
+    textColor: "{colors.on-subtle}"
+    rounded: "{rounded.3xs}"
+  avatar-extra-subtle:
+    backgroundColor: "{colors.extra-subtle}"
+    textColor: "{colors.on-extra-subtle}"
     rounded: "{rounded.3xs}"
 
   # Sizes
@@ -429,6 +481,8 @@ Border radii follow the same numeric scale as spacing (`3xs` through `3xl`). The
 Asta uses small (`sm`, 32px) and medium (`md`, 36px) buttons only. Large buttons (`lg`, 48px) are not used — they interrupt the compact, information-dense layout. Default to `sm` for all actions within panels, toolbars, and inline controls.
 
 The `button-default` (teal) is the default interactive button in Asta. The `button-primary` (now green via `interactive-primary`) is reserved for the single most prominent call to action per view.
+
+**Outlined and reversed variants are re-toned for dark mode.** The `button-default-outlined` uses `teal-40` (rather than the default `teal`) for text and border so it reads against the dark page surface. The `button-reversed` family flips: in Strata "reversed" means a light element on the dark inverse surface, but in Asta the inverse surface is *cream*, so reversed buttons render dark-on-cream (`extra-dark-teal` text/borders) instead.
 
 ### Typography
 

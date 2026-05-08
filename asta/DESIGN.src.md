@@ -18,6 +18,12 @@ colors:
   link: "{colors.green}"
   link-reversed: "{colors.pink}"
 
+  # In dark mode the inverse surface is cream, so subtle/extra-subtle flip
+  # to translucent cream overlays. `on-subtle` is inherited as a ref to
+  # text-reversed (resolves to dark-teal in Asta) — no override needed.
+  subtle: "{colors.cream-50}"
+  extra-subtle: "{colors.cream-10}"
+
 components:
   # ── Input overrides ────────────────────────────────────────────────
   # Inputs use a dark surface in Asta rather than white. Text stays cream.
@@ -30,6 +36,48 @@ components:
     backgroundColor: "{colors.extra-dark-teal}"
     textColor: "{colors.gray-40}"
     rounded: "{rounded.3xs}"
+
+  # ── Button overrides ───────────────────────────────────────────────
+  # Strata's `interactive-default` is teal (#105257). On Strata's cream
+  # surface that's high-contrast; on Asta's extra-dark-teal surface it
+  # falls below 1.5:1. Outlined-default uses teal-40 in Asta so it reads
+  # against the dark page.
+  button-default-outlined:
+    backgroundColor: transparent
+    textColor: "{colors.teal-40}"
+    borderColor: "{colors.teal-40}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-default-outlined-hover:
+    backgroundColor: "{colors.teal-80}"
+    textColor: "{colors.cream}"
+    borderColor: "{colors.teal-40}"
+
+  # In dark mode, the "reversed" surface is cream — the inverse of the
+  # default extra-dark-teal page. Strata's reversed buttons use cream
+  # text/borders, which becomes cream-on-cream in Asta. Reversed buttons
+  # in Asta need dark text/borders to read on the light inverse surface.
+  button-reversed:
+    backgroundColor: "{colors.extra-dark-teal}"
+    textColor: "{colors.cream}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-reversed-hover:
+    backgroundColor: "{colors.dark-teal}"
+    textColor: "{colors.cream}"
+  button-reversed-outlined:
+    backgroundColor: transparent
+    textColor: "{colors.extra-dark-teal}"
+    borderColor: "{colors.extra-dark-teal}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-reversed-outlined-hover:
+    backgroundColor: "{colors.extra-dark-teal}"
+    textColor: "{colors.cream}"
+    borderColor: "{colors.extra-dark-teal}"
 ---
 
 ## Overview
@@ -59,6 +107,8 @@ For surfaces and containers, use the `extra-dark-teal` opacity scale to layer de
 Asta uses small (`sm`, 32px) and medium (`md`, 36px) buttons only. Large buttons (`lg`, 48px) are not used — they interrupt the compact, information-dense layout. Default to `sm` for all actions within panels, toolbars, and inline controls.
 
 The `button-default` (teal) is the default interactive button in Asta. The `button-primary` (now green via `interactive-primary`) is reserved for the single most prominent call to action per view.
+
+**Outlined and reversed variants are re-toned for dark mode.** The `button-default-outlined` uses `teal-40` (rather than the default `teal`) for text and border so it reads against the dark page surface. The `button-reversed` family flips: in Strata "reversed" means a light element on the dark inverse surface, but in Asta the inverse surface is *cream*, so reversed buttons render dark-on-cream (`extra-dark-teal` text/borders) instead.
 
 ### Typography
 
