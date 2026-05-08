@@ -11,9 +11,32 @@ DESIGN.md is an open format specification created by Google for describing visua
 
 This repository follows the [DESIGN.md format specification](https://github.com/google-labs-code/design.md) published by Google. We use their open-source CLI tools for validation and export. A local copy of the spec is kept in [`docs/spec.md`](docs/spec.md) for reference.
 
-## Structure
+---
 
-This repo follows an inheritance model that mirrors [atomic design](https://atomicdesign.bradfrost.com/) principles:
+## How to use these files with agents
+
+Each product has a fully resolved `DESIGN.md` file — no inheritance to follow, no build step required. Copy it into your project and agents will pick it up automatically, or paste the contents directly into your system prompt:
+
+```
+asta/DESIGN.md
+olmo-earth/DESIGN.md
+```
+
+Alternatively, export the tokens to other formats for use in your build pipeline:
+
+```bash
+npx @google/design.md export --format <fmt> asta/DESIGN.md
+```
+
+| Format | Output | Use case |
+|:-------|:-------|:---------|
+| `json-tailwind` | JSON | Tailwind v3 `theme.extend` config |
+| `css-tailwind` | CSS | Tailwind v4 `@theme { ... }` block |
+| `dtcg` | JSON | W3C Design Tokens — interoperable with Figma, Style Dictionary |
+
+---
+
+## Structure
 
 ```
 strata/             ← Base design system — source of truth
@@ -35,19 +58,12 @@ scripts/
 
 Strata is the Ai2 foundation layer. It defines the primitive and semantic tokens shared across all products: the full color palette, type scale, spacing system, border radii, and universally-shared components.
 
-In atomic design terms: **atoms**, **molecules**, and **universal organisms** live here.
-
 ### Product Systems (Asta, OlmoEarth)
 
 Each product system defines only what differs from Strata — brand accent overrides, product-specific components, and product-specific rationale. A build step merges the base and overlay into a single `DESIGN.md` that agents and developers consume.
 
-In atomic design terms: **product-specific molecules**, **organisms**, and **templates** live here.
 
-### Using these files with agents
-
-Point your coding agent at `[product]/DESIGN.md`. This is a fully resolved file — no inheritance, no lookup required. Everything an agent needs is in one place.
-
-### Editing a product design system
+## Editing a product design system
 
 Edit `[product]/DESIGN.src.md` (the overlay), then run the compose script to regenerate `DESIGN.md`:
 
