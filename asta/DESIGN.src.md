@@ -1,6 +1,7 @@
 ---
 name: Asta
 description: Asta product design system — AI research assistant, dark mode, extends Strata
+version: 0.0.1
 
 colors:
   # ── Semantic overrides ─────────────────────────────────────────────
@@ -12,8 +13,8 @@ colors:
   text-reversed: "{colors.dark-teal}"
 
   # Green is the primary accent in Asta. Pink is not used.
-  primary: "{colors.green}"
-  primary-hover: "{colors.green-60}"
+  interactive-primary: "{colors.green}"
+  interactive-primary-hover: "{colors.green-60}"
   link: "{colors.green}"
   link-reversed: "{colors.pink}"
 
@@ -33,9 +34,9 @@ components:
 
 ## Overview
 
-Asta is Ai2's AI-powered research assistant. The interface is dark by default — optimized for extended reading sessions and information-dense research workflows. The palette inverts Strata's light mode: `extra-dark-teal` becomes the page surface and `cream` becomes the primary text color.
+Asta is Ai2's AI-powered research assistant. The interface is dark by default, and optimized information-dense research workflows. The palette inverts Strata's light mode: `extra-dark-teal` becomes the page surface and `cream` becomes the primary text color.
 
-Green replaces pink as the primary brand accent. It reads clearly against the dark background and carries a connotation of forward momentum appropriate for an AI assistant surfacing insights. Pink is not used in Asta.
+Green replaces pink as the primary brand accent. It reads clearly against the dark background. Pink is not used in Asta.
 
 The design language is measured and precise — generous line heights for long-form reading, compact interactive elements that don't interrupt the reading flow, and restrained use of color to keep attention on the content.
 
@@ -45,8 +46,8 @@ All semantic aliases from Strata apply, with the following overrides:
 
 - **Background:** `extra-dark-teal` (#032629) — the primary page surface.
 - **Text:** `cream` (#faf2e9) — all body copy, headings, and labels.
-- **Primary:** `green` (#0fcb8c) — used for links, active states, and key interactive highlights. Reads clearly against the dark background.
-- **Interactive:** `teal` (#105257) — unchanged from Strata, used for form controls and secondary interactive elements.
+- **Interactive-primary:** `green` (#0fcb8c) — used for links, active states, and key interactive highlights. Reads clearly against the dark background.
+- **Interactive-default:** `teal` (#105257) — unchanged from Strata, used for form controls and secondary interactive elements.
 - **Pink is not used** in Asta. No buttons, links, or accents should use the pink palette.
 
 For surfaces and containers, use the `extra-dark-teal` opacity scale to layer depth without introducing new colors: `extra-dark-teal` at 4% for subtle panel differentiation, 20% for borders and dividers.
@@ -57,7 +58,7 @@ For surfaces and containers, use the `extra-dark-teal` opacity scale to layer de
 
 Asta uses small (`sm`, 32px) and medium (`md`, 36px) buttons only. Large buttons (`lg`, 48px) are not used — they interrupt the compact, information-dense layout. Default to `sm` for all actions within panels, toolbars, and inline controls.
 
-The `button-default` (teal) is the primary interactive button in Asta. The `button-primary` (now green via the primary alias) is reserved for the single most prominent call to action per view.
+The `button-default` (teal) is the default interactive button in Asta. The `button-primary` (now green via `interactive-primary`) is reserved for the single most prominent call to action per view.
 
 ### Typography
 

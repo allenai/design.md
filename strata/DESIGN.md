@@ -1,7 +1,7 @@
 ---
 name: Strata
 description: Ai2 base design system — shared foundation for all Ai2 product interfaces
-version: alpha
+version: 0.0.1
 
 colors:
   # ── Primitive palette ─────────────────────────────────────────────
@@ -45,14 +45,14 @@ colors:
   text-reversed: "{colors.cream}"
   text-disabled: "{colors.gray}"
   text-error: "{colors.error-red}"
-  primary: "{colors.pink}"
-  primary-hover: "{colors.pink-60}"
-  secondary: "{colors.green}"
-  secondary-hover: "{colors.green-60}"
-  interactive: "{colors.teal}"
-  interactive-hover: "{colors.teal-80}"
-  link: "{colors.primary}"
-  link-reversed: "{colors.secondary}"
+  interactive-default: "{colors.teal}"
+  interactive-default-hover: "{colors.teal-80}"
+  interactive-primary: "{colors.pink}"
+  interactive-primary-hover: "{colors.pink-60}"
+  interactive-secondary: "{colors.green}"
+  interactive-secondary-hover: "{colors.green-60}"
+  link: "{colors.interactive-primary}"
+  link-reversed: "{colors.interactive-secondary}"
 
 typography:
   display:
@@ -133,32 +133,14 @@ rounded:
 components:
   # ── Buttons ───────────────────────────────────────────────────────
   # Filled variants
-  button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.extra-dark-teal}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.3xs}"
-    padding: "{spacing.xs}"
-  button-primary-hover:
-    backgroundColor: "{colors.primary-hover}"
-    textColor: "{colors.extra-dark-teal}"
-  button-secondary:
-    backgroundColor: "{colors.secondary}"
-    textColor: "{colors.extra-dark-teal}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.3xs}"
-    padding: "{spacing.xs}"
-  button-secondary-hover:
-    backgroundColor: "{colors.secondary-hover}"
-    textColor: "{colors.extra-dark-teal}"
   button-default:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   button-default-hover:
-    backgroundColor: "{colors.interactive-hover}"
+    backgroundColor: "{colors.interactive-default-hover}"
     textColor: "{colors.cream}"
   button-reversed:
     backgroundColor: "{colors.cream}"
@@ -169,40 +151,37 @@ components:
   button-reversed-hover:
     backgroundColor: "{colors.white}"
     textColor: "{colors.extra-dark-teal}"
+  button-primary:
+    backgroundColor: "{colors.interactive-primary}"
+    textColor: "{colors.extra-dark-teal}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-primary-hover:
+    backgroundColor: "{colors.interactive-primary-hover}"
+    textColor: "{colors.extra-dark-teal}"
+  button-secondary:
+    backgroundColor: "{colors.interactive-secondary}"
+    textColor: "{colors.extra-dark-teal}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-secondary-hover:
+    backgroundColor: "{colors.interactive-secondary-hover}"
+    textColor: "{colors.extra-dark-teal}"
+
   # Outlined variants
-  button-primary-outlined:
-    backgroundColor: transparent
-    textColor: "{colors.primary}"
-    borderColor: "{colors.primary}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.3xs}"
-    padding: "{spacing.xs}"
-  button-primary-outlined-hover:
-    backgroundColor: "{colors.pink-20}"
-    textColor: "{colors.extra-dark-teal}"
-    borderColor: "{colors.primary}"
-  button-secondary-outlined:
-    backgroundColor: transparent
-    textColor: "{colors.secondary}"
-    borderColor: "{colors.secondary}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.3xs}"
-    padding: "{spacing.xs}"
-  button-secondary-outlined-hover:
-    backgroundColor: "{colors.green-20}"
-    textColor: "{colors.extra-dark-teal}"
-    borderColor: "{colors.secondary}"
   button-default-outlined:
     backgroundColor: transparent
-    textColor: "{colors.interactive}"
-    borderColor: "{colors.interactive}"
+    textColor: "{colors.interactive-default}"
+    borderColor: "{colors.interactive-default}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   button-default-outlined-hover:
     backgroundColor: "{colors.teal-20}"
-    textColor: "{colors.interactive}"
-    borderColor: "{colors.interactive}"
+    textColor: "{colors.interactive-default}"
+    borderColor: "{colors.interactive-default}"
   button-reversed-outlined:
     backgroundColor: transparent
     textColor: "{colors.cream}"
@@ -214,11 +193,35 @@ components:
     backgroundColor: "{colors.white}"
     textColor: "{colors.extra-dark-teal}"
     borderColor: "{colors.white}"
+  button-primary-outlined:
+    backgroundColor: transparent
+    textColor: "{colors.interactive-primary}"
+    borderColor: "{colors.interactive-primary}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-primary-outlined-hover:
+    backgroundColor: "{colors.pink-20}"
+    textColor: "{colors.extra-dark-teal}"
+    borderColor: "{colors.interactive-primary}"
+  button-secondary-outlined:
+    backgroundColor: transparent
+    textColor: "{colors.interactive-secondary}"
+    borderColor: "{colors.interactive-secondary}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-secondary-outlined-hover:
+    backgroundColor: "{colors.green-20}"
+    textColor: "{colors.extra-dark-teal}"
+    borderColor: "{colors.interactive-secondary}"
+
   # Disabled state
   button-disabled:
     backgroundColor: "{colors.gray-80}"
     textColor: "{colors.cream}"
     rounded: "{rounded.3xs}"
+
   # Sizes
   button-size-sm:
     height: 32px
@@ -262,6 +265,7 @@ components:
     typography: "{typography.body-md}"
 
   # ── Form controls ─────────────────────────────────────────────────
+  # Checkbox
   checkbox-default:
     backgroundColor: "{colors.white}"
     borderColor: "{colors.teal-80}"
@@ -269,50 +273,58 @@ components:
     height: 18px
     rounded: 2px
   checkbox-checked:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
+
+  # Radio
   radio-default:
     backgroundColor: "{colors.white}"
     borderColor: "{colors.teal-80}"
     width: 18px
     height: 18px
   radio-checked:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
+
+  # Switch
   switch-default:
     backgroundColor: "{colors.white}"
     borderColor: "{colors.teal-80}"
     width: 34px
     height: 18px
   switch-checked:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
+
+  # Slider
   slider-track:
     backgroundColor: "{colors.teal-20}"
     height: 8px
   slider-track-filled:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
 
   # ── Chips ─────────────────────────────────────────────────────────
   chip-default:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   chip-default-outlined:
     backgroundColor: transparent
-    textColor: "{colors.interactive}"
-    borderColor: "{colors.interactive}"
+    textColor: "{colors.interactive-default}"
+    borderColor: "{colors.interactive-default}"
     rounded: "{rounded.3xs}"
   chip-primary:
-    backgroundColor: "{colors.primary}"
+    backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.extra-dark-teal}"
     rounded: "{rounded.3xs}"
   chip-secondary:
-    backgroundColor: "{colors.secondary}"
+    backgroundColor: "{colors.interactive-secondary}"
     textColor: "{colors.extra-dark-teal}"
     rounded: "{rounded.3xs}"
+
+  # Sizes
   chip-size-sm:
     height: 32px
     padding: "{spacing.2xs}"
@@ -332,13 +344,15 @@ components:
     textColor: "{colors.cream}"
     rounded: "{rounded.3xs}"
   avatar-primary:
-    backgroundColor: "{colors.primary}"
+    backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.extra-dark-teal}"
     rounded: "{rounded.3xs}"
   avatar-secondary:
-    backgroundColor: "{colors.secondary}"
+    backgroundColor: "{colors.interactive-secondary}"
     textColor: "{colors.extra-dark-teal}"
     rounded: "{rounded.3xs}"
+
+  # Sizes
   avatar-size-xs:
     width: 24px
     height: 24px
@@ -357,9 +371,9 @@ components:
 
 Strata is the Ai2 foundation design system. It provides the shared visual language — color, typography, spacing, shape, and core components — used across all Ai2 product interfaces.
 
-The design language balances scientific rigor with warmth and approachability. The palette is anchored in deep teal and warm cream, with pink as the primary brand accent. The result is an interface aesthetic that feels credible, focused, and human — appropriate for research tools used by experts and general audiences alike.
+The palette is anchored in deep teal and warm cream, with pink as the primary brand accent. The result is an interface aesthetic that feels credible, focused, and human — appropriate for research tools used by experts and general audiences alike.
 
-All product systems (Asta, OlmoEarth, etc.) extend Strata. Tokens defined in a product system override their Strata counterparts; everything else falls through to this base.
+Asta and OlmoEarth extend Strata. Tokens defined in a product system override their Strata counterparts; everything else falls through to this base.
 
 ## Colors
 
@@ -371,14 +385,14 @@ The palette is organized in two layers: primitives and semantic aliases.
 
 - **Background / background-reversed:** The default page surface is `cream` — warm, off-white, easy on the eye. The reversed (dark mode) surface is `extra-dark-teal`, a near-black that anchors the deep end of the palette.
 - **Text / text-reversed:** Default body text is `dark-teal` for high contrast on cream. On dark backgrounds, text flips to `cream`.
-- **Primary (`pink`):** The main brand accent and CTA color. Used for primary buttons, links, and key interactive highlights. Use with restraint — its intensity should signal importance.
-- **Secondary (`green`):** Supporting interactive color. Used for secondary actions, success states in interactive contexts, and as a visual counterpoint to pink.
-- **Interactive (`teal`):** Default interactive state for non-CTA elements — checkboxes, sliders, toggles, focused inputs. Distinct from primary pink to avoid visual competition.
+- **Interactive-default (`teal`):** Default interactive state for non-CTA elements — checkboxes, sliders, toggles, focused inputs. Distinct from primary pink to avoid visual competition.
+- **Interactive-primary (`pink`):** The main brand accent and CTA color. Used for primary buttons, links, and key interactive highlights. Use with restraint — its intensity should signal importance.
+- **Interactive-secondary (`green`):** Supporting interactive color. Used for secondary actions, success states in interactive contexts, and as a visual counterpoint to pink.
 - **Semantic status:** `info-blue`, `error-red`, `success-green`, and `warning-orange` are reserved for system feedback. Never use them for decorative purposes.
 
 ## Typography
 
-Strata uses three typeface roles: **PP Telegraf** (with Manrope as fallback) for headings, **Manrope** for body copy, and **Roboto Mono** for code and technical output. PP Telegraf is a licensed display typeface; Manrope is the open-source fallback and is used directly for body text at all sizes.
+Strata uses three typeface roles: **PP Telegraf** (with Manrope as fallback) for headings, **Manrope** for body copy, and **Roboto Mono** for code and technical output. PP Telegraf is a licensed display typeface; Manrope is the open-source fallback and is used directly for body text at all sizes. Both Manrope and Roboto Mono are available via [Google Fonts](https://fonts.google.com).
 
 The type scale runs from `body-xs` (12px) through `display` (48px) with consistent line height ratios. Heading weights default to bold (700) or semibold (600). Body weights default to regular (400).
 
@@ -419,31 +433,31 @@ Buttons, inputs, and chips share a common size scale: `sm` (32px), `md` (36px), 
 
 ### Buttons
 
-Four button intents exist at the Strata level: `primary` (pink, high-emphasis), `secondary` (green, supporting action), `default` (teal, neutral interactive), and `reversed` (cream, for use on dark backgrounds). Each intent has a filled and outlined variant. A shared `disabled` state applies across all button types.
+Four button intents exist at the Strata level: `interactive-default` (teal, neutral interactive), `interactive-primary` (pink, high-emphasis), `interactive-secondary` (green, supporting action), and `reversed` (cream, for use on dark backgrounds). Each intent has a filled and outlined variant. A shared `disabled` state applies across all button types.
 
 Filled hover states lighten to a solid tint (the base color blended at 60% on cream). Outlined hover states fill with the lightest tint (20%) and shift text to `extra-dark-teal` for contrast. All transitions should use a 150ms ease-in-out curve.
 
 ### Form Inputs
 
-Inputs use a white fill with a low-opacity `extra-dark-teal` stroke in their default state. On focus the stroke transitions to `interactive` (teal). On error the stroke becomes `error-red-dark` and text adopts the same color. Disabled inputs use a `gray-20` fill with `dark-teal` text.
+Inputs use a white fill with a low-opacity `extra-dark-teal` stroke in their default state. On focus the stroke transitions to \`interactive-default\` (teal). On error the stroke becomes `error-red-dark` and text adopts the same color. Disabled inputs use a `gray-20` fill with `dark-teal` text.
 
 ### Form Controls
 
-Checkbox, radio, and switch all share the same color logic: unchecked state uses a white fill with a `teal-80` stroke; checked state fills with `interactive` (teal) and uses `cream` for the mark or thumb. The switch thumb is 14×14px, inset 2px from the track edge.
+Checkbox, radio, and switch all share the same color logic: unchecked state uses a white fill with a `teal-80` stroke; checked state fills with \`interactive-default\` (teal) and uses `cream` for the mark or thumb. The switch thumb is 14×14px, inset 2px from the track edge.
 
-The slider track is 8px tall. The filled (selected) portion uses `interactive` (teal); the unfilled portion uses `teal-20`.
+The slider track is 8px tall. The filled (selected) portion uses \`interactive-default\` (teal); the unfilled portion uses `teal-20`.
 
 ### Chips
 
-Chips use the same 4px radius and size scale as buttons. Three color intents are available: `default` (teal), `primary` (pink), and `secondary` (green). Each intent has a filled and outlined variant. The outlined variant uses the intent color as both text and border with a transparent background.
+Chips use the same 4px radius and size scale as buttons. Three color intents are available: `interactive-default` (teal), `interactive-primary` (pink), and `interactive-secondary` (green). Each intent has a filled and outlined variant. The outlined variant uses the intent color as both text and border with a transparent background.
 
 ### Avatars
 
-Avatars display initials, icons, or images in a fixed square container with 4px radius. Three color intents: `default` (extra-dark-teal), `primary` (pink), `secondary` (green). Sizes run from `xs` (24px) to `md` (36px). Font weight for initials should be semibold (600) for legibility at small sizes.
+Avatars display initials, icons, or images in a fixed square container with 4px radius. Three color intents: `interactive-default` (extra-dark-teal), `interactive-primary` (pink), `interactive-secondary` (green). Sizes run from `xs` (24px) to `md` (36px). Font weight for initials should be semibold (600) for legibility at small sizes.
 
 ## Do's and Don'ts
 
-- **Do** use semantic color aliases (`{colors.primary}`, `{colors.text}`) rather than primitives directly.
+- **Do** use semantic color aliases (`{colors.interactive-primary}`, `{colors.text}`) rather than primitives directly.
 - **Do** keep primary pink reserved for the single most important action per view.
 - **Don't** use status colors (`error-red`, `success-green`, etc.) for decorative or categorical purposes.
 - **Don't** mix button intents within a single action group — pick one hierarchy and apply it consistently.

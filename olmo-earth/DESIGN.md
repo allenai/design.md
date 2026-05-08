@@ -1,7 +1,7 @@
 ---
 name: OlmoEarth
 description: OlmoEarth product design system — extends Strata with product-specific tokens
-version: alpha
+version: 0.0.1
 
 colors:
   # ── Primitive palette ─────────────────────────────────────────────
@@ -45,14 +45,14 @@ colors:
   text-reversed: "{colors.cream}"
   text-disabled: "{colors.gray}"
   text-error: "{colors.error-red}"
-  primary: "{colors.pink}"
-  primary-hover: "{colors.pink-60}"
-  secondary: "{colors.green}"
-  secondary-hover: "{colors.green-60}"
-  interactive: "{colors.teal}"
-  interactive-hover: "{colors.teal-80}"
-  link: "{colors.primary}"
-  link-reversed: "{colors.secondary}"
+  interactive-default: "{colors.teal}"
+  interactive-default-hover: "{colors.teal-80}"
+  interactive-primary: "{colors.pink}"
+  interactive-primary-hover: "{colors.pink-60}"
+  interactive-secondary: "{colors.green}"
+  interactive-secondary-hover: "{colors.green-60}"
+  link: "{colors.interactive-primary}"
+  link-reversed: "{colors.interactive-secondary}"
 
 typography:
   display:
@@ -133,32 +133,14 @@ rounded:
 components:
   # ── Buttons ───────────────────────────────────────────────────────
   # Filled variants
-  button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.extra-dark-teal}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.3xs}"
-    padding: "{spacing.xs}"
-  button-primary-hover:
-    backgroundColor: "{colors.primary-hover}"
-    textColor: "{colors.extra-dark-teal}"
-  button-secondary:
-    backgroundColor: "{colors.secondary}"
-    textColor: "{colors.extra-dark-teal}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.3xs}"
-    padding: "{spacing.xs}"
-  button-secondary-hover:
-    backgroundColor: "{colors.secondary-hover}"
-    textColor: "{colors.extra-dark-teal}"
   button-default:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   button-default-hover:
-    backgroundColor: "{colors.interactive-hover}"
+    backgroundColor: "{colors.interactive-default-hover}"
     textColor: "{colors.cream}"
   button-reversed:
     backgroundColor: "{colors.cream}"
@@ -169,40 +151,37 @@ components:
   button-reversed-hover:
     backgroundColor: "{colors.white}"
     textColor: "{colors.extra-dark-teal}"
+  button-primary:
+    backgroundColor: "{colors.interactive-primary}"
+    textColor: "{colors.extra-dark-teal}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-primary-hover:
+    backgroundColor: "{colors.interactive-primary-hover}"
+    textColor: "{colors.extra-dark-teal}"
+  button-secondary:
+    backgroundColor: "{colors.interactive-secondary}"
+    textColor: "{colors.extra-dark-teal}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-secondary-hover:
+    backgroundColor: "{colors.interactive-secondary-hover}"
+    textColor: "{colors.extra-dark-teal}"
+
   # Outlined variants
-  button-primary-outlined:
-    backgroundColor: transparent
-    textColor: "{colors.primary}"
-    borderColor: "{colors.primary}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.3xs}"
-    padding: "{spacing.xs}"
-  button-primary-outlined-hover:
-    backgroundColor: "{colors.pink-20}"
-    textColor: "{colors.extra-dark-teal}"
-    borderColor: "{colors.primary}"
-  button-secondary-outlined:
-    backgroundColor: transparent
-    textColor: "{colors.secondary}"
-    borderColor: "{colors.secondary}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.3xs}"
-    padding: "{spacing.xs}"
-  button-secondary-outlined-hover:
-    backgroundColor: "{colors.green-20}"
-    textColor: "{colors.extra-dark-teal}"
-    borderColor: "{colors.secondary}"
   button-default-outlined:
     backgroundColor: transparent
-    textColor: "{colors.interactive}"
-    borderColor: "{colors.interactive}"
+    textColor: "{colors.interactive-default}"
+    borderColor: "{colors.interactive-default}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   button-default-outlined-hover:
     backgroundColor: "{colors.teal-20}"
-    textColor: "{colors.interactive}"
-    borderColor: "{colors.interactive}"
+    textColor: "{colors.interactive-default}"
+    borderColor: "{colors.interactive-default}"
   button-reversed-outlined:
     backgroundColor: transparent
     textColor: "{colors.cream}"
@@ -214,11 +193,35 @@ components:
     backgroundColor: "{colors.white}"
     textColor: "{colors.extra-dark-teal}"
     borderColor: "{colors.white}"
+  button-primary-outlined:
+    backgroundColor: transparent
+    textColor: "{colors.interactive-primary}"
+    borderColor: "{colors.interactive-primary}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-primary-outlined-hover:
+    backgroundColor: "{colors.pink-20}"
+    textColor: "{colors.extra-dark-teal}"
+    borderColor: "{colors.interactive-primary}"
+  button-secondary-outlined:
+    backgroundColor: transparent
+    textColor: "{colors.interactive-secondary}"
+    borderColor: "{colors.interactive-secondary}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-secondary-outlined-hover:
+    backgroundColor: "{colors.green-20}"
+    textColor: "{colors.extra-dark-teal}"
+    borderColor: "{colors.interactive-secondary}"
+
   # Disabled state
   button-disabled:
     backgroundColor: "{colors.gray-80}"
     textColor: "{colors.cream}"
     rounded: "{rounded.3xs}"
+
   # Sizes
   button-size-sm:
     height: 32px
@@ -262,6 +265,7 @@ components:
     typography: "{typography.body-md}"
 
   # ── Form controls ─────────────────────────────────────────────────
+  # Checkbox
   checkbox-default:
     backgroundColor: "{colors.white}"
     borderColor: "{colors.teal-80}"
@@ -269,50 +273,58 @@ components:
     height: 18px
     rounded: 2px
   checkbox-checked:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
+
+  # Radio
   radio-default:
     backgroundColor: "{colors.white}"
     borderColor: "{colors.teal-80}"
     width: 18px
     height: 18px
   radio-checked:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
+
+  # Switch
   switch-default:
     backgroundColor: "{colors.white}"
     borderColor: "{colors.teal-80}"
     width: 34px
     height: 18px
   switch-checked:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
+
+  # Slider
   slider-track:
     backgroundColor: "{colors.teal-20}"
     height: 8px
   slider-track-filled:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
 
   # ── Chips ─────────────────────────────────────────────────────────
   chip-default:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   chip-default-outlined:
     backgroundColor: transparent
-    textColor: "{colors.interactive}"
-    borderColor: "{colors.interactive}"
+    textColor: "{colors.interactive-default}"
+    borderColor: "{colors.interactive-default}"
     rounded: "{rounded.3xs}"
   chip-primary:
-    backgroundColor: "{colors.primary}"
+    backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.extra-dark-teal}"
     rounded: "{rounded.3xs}"
   chip-secondary:
-    backgroundColor: "{colors.secondary}"
+    backgroundColor: "{colors.interactive-secondary}"
     textColor: "{colors.extra-dark-teal}"
     rounded: "{rounded.3xs}"
+
+  # Sizes
   chip-size-sm:
     height: 32px
     padding: "{spacing.2xs}"
@@ -332,13 +344,15 @@ components:
     textColor: "{colors.cream}"
     rounded: "{rounded.3xs}"
   avatar-primary:
-    backgroundColor: "{colors.primary}"
+    backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.extra-dark-teal}"
     rounded: "{rounded.3xs}"
   avatar-secondary:
-    backgroundColor: "{colors.secondary}"
+    backgroundColor: "{colors.interactive-secondary}"
     textColor: "{colors.extra-dark-teal}"
     rounded: "{rounded.3xs}"
+
+  # Sizes
   avatar-size-xs:
     width: 24px
     height: 24px
@@ -355,24 +369,51 @@ components:
 
 ## Overview
 
-_Coming soon — to be populated with OlmoEarth-specific tokens layered on top of Strata._
+_To be populated with OlmoEarth-specific design rationale._
 
 ## Colors
 
+_Define any color overrides or additions here. Leave this section out entirely if OlmoEarth uses Strata's colors unchanged._
+
 ## Typography
+
+Strata uses three typeface roles: **PP Telegraf** (with Manrope as fallback) for headings, **Manrope** for body copy, and **Roboto Mono** for code and technical output. PP Telegraf is a licensed display typeface; Manrope is the open-source fallback and is used directly for body text at all sizes. Both Manrope and Roboto Mono are available via [Google Fonts](https://fonts.google.com).
+
+The type scale runs from `body-xs` (12px) through `display` (48px) with consistent line height ratios. Heading weights default to bold (700) or semibold (600). Body weights default to regular (400).
+
+- Use `display` and `heading-xl` only for hero moments — page titles, empty states, major section headers.
+- `body-md` is the default reading size for prose and UI copy.
+- `body-sm` is used for button labels, captions, and metadata.
+- `mono` (`Roboto Mono`) is reserved for code snippets, model output, and any content where exact character spacing matters.
 
 ## Layout
 
+Strata uses an 8px base unit. The spacing scale (`2xs` through `6xl`) is a linear progression from 8px to 48px. All layout decisions should snap to this scale.
+
+- Use `2xs` (8px) and `xs` (12px) for tight intra-component spacing (icon-to-label gaps, list item padding) and component internal padding.
+- Use `md` (16px) through `xl` (20px) for inter-component gaps and section gutters.
+- Use `2xl` (24px) and above for section-level separation.
+
 ## Elevation & Depth
+
+Strata does not use heavy shadows. Depth is expressed through tonal layering — surfaces stack by shifting between `background` opacity levels. The `extra-dark-teal` opacity scale (4%, 10%, 20%) creates subtle container definitions without hard borders.
+
+- `opacity-4` (4%): Subtle differentiation, barely perceptible — used for overlay headers and footers.
+- `opacity-10` (10%): Light container backgrounds, hover states on text buttons.
+- `opacity-20` (20%): Stroke/border level — input field borders, dividers.
 
 ## Shapes
 
+Border radii follow the same numeric scale as spacing (`3xs` through `3xl`). The scale is intentionally wide to support the full range from sharp (`3xs: 4px`) to pill-shaped (`3xl: 32px`).
+
+- **Buttons, inputs, chips, and avatars:** All use `rounded.3xs` (4px) — sharp and structured throughout the system.
+- **Pill shapes:** Use `rounded.3xl` (32px) or a full-radius value for badge or tag variants that require a pill silhouette.
+- **Avoid mixing radii** within a single component group — pick one scale level and apply it consistently.
+
 ## Components
+
+_Define any component overrides or additions here._
 
 ## Do's and Don'ts
 
-- **Do** use semantic color aliases (`{colors.primary}`, `{colors.text}`) rather than primitives directly.
-- **Do** keep primary pink reserved for the single most important action per view.
-- **Don't** use status colors (`error-red`, `success-green`, etc.) for decorative or categorical purposes.
-- **Don't** mix button intents within a single action group — pick one hierarchy and apply it consistently.
-- **Don't** use `mono` for UI copy — reserve it for code and model output.
+_Define any product-specific guardrails here._

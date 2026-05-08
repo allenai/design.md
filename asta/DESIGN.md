@@ -1,7 +1,7 @@
 ---
 name: Asta
 description: Asta product design system — AI research assistant, dark mode, extends Strata
-version: alpha
+version: 0.0.1
 
 colors:
   # ── Primitive palette ─────────────────────────────────────────────
@@ -45,12 +45,12 @@ colors:
   text-reversed: "{colors.dark-teal}"
   text-disabled: "{colors.gray}"
   text-error: "{colors.error-red}"
-  primary: "{colors.green}"
-  primary-hover: "{colors.green-60}"
-  secondary: "{colors.green}"
-  secondary-hover: "{colors.green-60}"
-  interactive: "{colors.teal}"
-  interactive-hover: "{colors.teal-80}"
+  interactive-default: "{colors.teal}"
+  interactive-default-hover: "{colors.teal-80}"
+  interactive-primary: "{colors.green}"
+  interactive-primary-hover: "{colors.green-60}"
+  interactive-secondary: "{colors.green}"
+  interactive-secondary-hover: "{colors.green-60}"
   link: "{colors.green}"
   link-reversed: "{colors.pink}"
 
@@ -133,32 +133,14 @@ rounded:
 components:
   # ── Buttons ───────────────────────────────────────────────────────
   # Filled variants
-  button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.extra-dark-teal}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.3xs}"
-    padding: "{spacing.xs}"
-  button-primary-hover:
-    backgroundColor: "{colors.primary-hover}"
-    textColor: "{colors.extra-dark-teal}"
-  button-secondary:
-    backgroundColor: "{colors.secondary}"
-    textColor: "{colors.extra-dark-teal}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.3xs}"
-    padding: "{spacing.xs}"
-  button-secondary-hover:
-    backgroundColor: "{colors.secondary-hover}"
-    textColor: "{colors.extra-dark-teal}"
   button-default:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   button-default-hover:
-    backgroundColor: "{colors.interactive-hover}"
+    backgroundColor: "{colors.interactive-default-hover}"
     textColor: "{colors.cream}"
   button-reversed:
     backgroundColor: "{colors.cream}"
@@ -169,40 +151,37 @@ components:
   button-reversed-hover:
     backgroundColor: "{colors.white}"
     textColor: "{colors.extra-dark-teal}"
+  button-primary:
+    backgroundColor: "{colors.interactive-primary}"
+    textColor: "{colors.extra-dark-teal}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-primary-hover:
+    backgroundColor: "{colors.interactive-primary-hover}"
+    textColor: "{colors.extra-dark-teal}"
+  button-secondary:
+    backgroundColor: "{colors.interactive-secondary}"
+    textColor: "{colors.extra-dark-teal}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-secondary-hover:
+    backgroundColor: "{colors.interactive-secondary-hover}"
+    textColor: "{colors.extra-dark-teal}"
+
   # Outlined variants
-  button-primary-outlined:
-    backgroundColor: transparent
-    textColor: "{colors.primary}"
-    borderColor: "{colors.primary}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.3xs}"
-    padding: "{spacing.xs}"
-  button-primary-outlined-hover:
-    backgroundColor: "{colors.pink-20}"
-    textColor: "{colors.extra-dark-teal}"
-    borderColor: "{colors.primary}"
-  button-secondary-outlined:
-    backgroundColor: transparent
-    textColor: "{colors.secondary}"
-    borderColor: "{colors.secondary}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.3xs}"
-    padding: "{spacing.xs}"
-  button-secondary-outlined-hover:
-    backgroundColor: "{colors.green-20}"
-    textColor: "{colors.extra-dark-teal}"
-    borderColor: "{colors.secondary}"
   button-default-outlined:
     backgroundColor: transparent
-    textColor: "{colors.interactive}"
-    borderColor: "{colors.interactive}"
+    textColor: "{colors.interactive-default}"
+    borderColor: "{colors.interactive-default}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   button-default-outlined-hover:
     backgroundColor: "{colors.teal-20}"
-    textColor: "{colors.interactive}"
-    borderColor: "{colors.interactive}"
+    textColor: "{colors.interactive-default}"
+    borderColor: "{colors.interactive-default}"
   button-reversed-outlined:
     backgroundColor: transparent
     textColor: "{colors.cream}"
@@ -214,11 +193,35 @@ components:
     backgroundColor: "{colors.white}"
     textColor: "{colors.extra-dark-teal}"
     borderColor: "{colors.white}"
+  button-primary-outlined:
+    backgroundColor: transparent
+    textColor: "{colors.interactive-primary}"
+    borderColor: "{colors.interactive-primary}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-primary-outlined-hover:
+    backgroundColor: "{colors.pink-20}"
+    textColor: "{colors.extra-dark-teal}"
+    borderColor: "{colors.interactive-primary}"
+  button-secondary-outlined:
+    backgroundColor: transparent
+    textColor: "{colors.interactive-secondary}"
+    borderColor: "{colors.interactive-secondary}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.3xs}"
+    padding: "{spacing.xs}"
+  button-secondary-outlined-hover:
+    backgroundColor: "{colors.green-20}"
+    textColor: "{colors.extra-dark-teal}"
+    borderColor: "{colors.interactive-secondary}"
+
   # Disabled state
   button-disabled:
     backgroundColor: "{colors.gray-80}"
     textColor: "{colors.cream}"
     rounded: "{rounded.3xs}"
+
   # Sizes
   button-size-sm:
     height: 32px
@@ -262,6 +265,7 @@ components:
     typography: "{typography.body-md}"
 
   # ── Form controls ─────────────────────────────────────────────────
+  # Checkbox
   checkbox-default:
     backgroundColor: "{colors.white}"
     borderColor: "{colors.teal-80}"
@@ -269,50 +273,58 @@ components:
     height: 18px
     rounded: 2px
   checkbox-checked:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
+
+  # Radio
   radio-default:
     backgroundColor: "{colors.white}"
     borderColor: "{colors.teal-80}"
     width: 18px
     height: 18px
   radio-checked:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
+
+  # Switch
   switch-default:
     backgroundColor: "{colors.white}"
     borderColor: "{colors.teal-80}"
     width: 34px
     height: 18px
   switch-checked:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
+
+  # Slider
   slider-track:
     backgroundColor: "{colors.teal-20}"
     height: 8px
   slider-track-filled:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
 
   # ── Chips ─────────────────────────────────────────────────────────
   chip-default:
-    backgroundColor: "{colors.interactive}"
+    backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   chip-default-outlined:
     backgroundColor: transparent
-    textColor: "{colors.interactive}"
-    borderColor: "{colors.interactive}"
+    textColor: "{colors.interactive-default}"
+    borderColor: "{colors.interactive-default}"
     rounded: "{rounded.3xs}"
   chip-primary:
-    backgroundColor: "{colors.primary}"
+    backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.extra-dark-teal}"
     rounded: "{rounded.3xs}"
   chip-secondary:
-    backgroundColor: "{colors.secondary}"
+    backgroundColor: "{colors.interactive-secondary}"
     textColor: "{colors.extra-dark-teal}"
     rounded: "{rounded.3xs}"
+
+  # Sizes
   chip-size-sm:
     height: 32px
     padding: "{spacing.2xs}"
@@ -332,13 +344,15 @@ components:
     textColor: "{colors.cream}"
     rounded: "{rounded.3xs}"
   avatar-primary:
-    backgroundColor: "{colors.primary}"
+    backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.extra-dark-teal}"
     rounded: "{rounded.3xs}"
   avatar-secondary:
-    backgroundColor: "{colors.secondary}"
+    backgroundColor: "{colors.interactive-secondary}"
     textColor: "{colors.extra-dark-teal}"
     rounded: "{rounded.3xs}"
+
+  # Sizes
   avatar-size-xs:
     width: 24px
     height: 24px
@@ -355,9 +369,9 @@ components:
 
 ## Overview
 
-Asta is Ai2's AI-powered research assistant. The interface is dark by default — optimized for extended reading sessions and information-dense research workflows. The palette inverts Strata's light mode: `extra-dark-teal` becomes the page surface and `cream` becomes the primary text color.
+Asta is Ai2's AI-powered research assistant. The interface is dark by default, and optimized information-dense research workflows. The palette inverts Strata's light mode: `extra-dark-teal` becomes the page surface and `cream` becomes the primary text color.
 
-Green replaces pink as the primary brand accent. It reads clearly against the dark background and carries a connotation of forward momentum appropriate for an AI assistant surfacing insights. Pink is not used in Asta.
+Green replaces pink as the primary brand accent. It reads clearly against the dark background. Pink is not used in Asta.
 
 The design language is measured and precise — generous line heights for long-form reading, compact interactive elements that don't interrupt the reading flow, and restrained use of color to keep attention on the content.
 
@@ -367,15 +381,15 @@ All semantic aliases from Strata apply, with the following overrides:
 
 - **Background:** `extra-dark-teal` (#032629) — the primary page surface.
 - **Text:** `cream` (#faf2e9) — all body copy, headings, and labels.
-- **Primary:** `green` (#0fcb8c) — used for links, active states, and key interactive highlights. Reads clearly against the dark background.
-- **Interactive:** `teal` (#105257) — unchanged from Strata, used for form controls and secondary interactive elements.
+- **Interactive-primary:** `green` (#0fcb8c) — used for links, active states, and key interactive highlights. Reads clearly against the dark background.
+- **Interactive-default:** `teal` (#105257) — unchanged from Strata, used for form controls and secondary interactive elements.
 - **Pink is not used** in Asta. No buttons, links, or accents should use the pink palette.
 
 For surfaces and containers, use the `extra-dark-teal` opacity scale to layer depth without introducing new colors: `extra-dark-teal` at 4% for subtle panel differentiation, 20% for borders and dividers.
 
 ## Typography
 
-Strata uses three typeface roles: **PP Telegraf** (with Manrope as fallback) for headings, **Manrope** for body copy, and **Roboto Mono** for code and technical output. PP Telegraf is a licensed display typeface; Manrope is the open-source fallback and is used directly for body text at all sizes.
+Strata uses three typeface roles: **PP Telegraf** (with Manrope as fallback) for headings, **Manrope** for body copy, and **Roboto Mono** for code and technical output. PP Telegraf is a licensed display typeface; Manrope is the open-source fallback and is used directly for body text at all sizes. Both Manrope and Roboto Mono are available via [Google Fonts](https://fonts.google.com).
 
 The type scale runs from `body-xs` (12px) through `display` (48px) with consistent line height ratios. Heading weights default to bold (700) or semibold (600). Body weights default to regular (400).
 
@@ -414,7 +428,7 @@ Border radii follow the same numeric scale as spacing (`3xs` through `3xl`). The
 
 Asta uses small (`sm`, 32px) and medium (`md`, 36px) buttons only. Large buttons (`lg`, 48px) are not used — they interrupt the compact, information-dense layout. Default to `sm` for all actions within panels, toolbars, and inline controls.
 
-The `button-default` (teal) is the primary interactive button in Asta. The `button-primary` (now green via the primary alias) is reserved for the single most prominent call to action per view.
+The `button-default` (teal) is the default interactive button in Asta. The `button-primary` (now green via `interactive-primary`) is reserved for the single most prominent call to action per view.
 
 ### Typography
 
