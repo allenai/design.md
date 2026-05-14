@@ -1,6 +1,6 @@
 ---
 name: OlmoEarth
-description: OlmoEarth product design system — extends Strata with product-specific tokens
+description: Ai2 design system — OlmoEarth product interface
 version: 0.0.1
 
 colors:
@@ -62,8 +62,8 @@ colors:
   cream-80: "#faf2e9cc"
   cream-90: "#faf2e9e6"
 
-  # ── Semantic aliases (light mode) ─────────────────────────────────
-  # Maps intent to primitive. Product systems may remap these.
+  # ── Semantic aliases ──────────────────────────────────────────────
+  # Maps intent to primitive.
   background: "{colors.cream}"
   background-reversed: "{colors.extra-dark-teal}"
   text: "{colors.dark-teal}"
@@ -80,15 +80,15 @@ colors:
   link-reversed: "{colors.interactive-secondary}"
 
   # ── Subtle surfaces ───────────────────────────────────────────────
-  # Translucent overlays that take their tone from the page surface.
-  # Strata is light, so the overlays are extra-dark-teal alpha. Product
-  # systems in dark mode (e.g. Asta) override these to cream alpha.
+  # Translucent overlays that take their tone from the inverse of the
+  # page surface. On a light page: extra-dark-teal alpha. On a dark
+  # page: cream alpha.
   subtle: "{colors.extra-dark-teal-50}"
   extra-subtle: "{colors.extra-dark-teal-10}"
   on-subtle: "{colors.text-reversed}"
   # `extra-subtle` sits so close to the page surface that the inverse
   # foreground used by `subtle` loses contrast. Pair it with the
-  # standard page text instead — it flips per system automatically.
+  # standard page text instead.
   on-extra-subtle: "{colors.text}"
 
 typography:
@@ -421,15 +421,15 @@ components:
 
 ## Overview
 
-_To be populated with OlmoEarth-specific design rationale._
+_To be populated with product-specific design rationale._
 
 ## Colors
 
-_Define any color overrides or additions here. Leave this section out entirely if OlmoEarth uses Strata's colors unchanged._
+_Define any color overrides or additions here._
 
 ## Typography
 
-Strata uses three typeface roles: **PP Telegraf** (with Manrope as fallback) for headings, **Manrope** for body copy, and **Roboto Mono** for code and technical output. PP Telegraf is a licensed display typeface; Manrope is the open-source fallback and is used directly for body text at all sizes. Both Manrope and Roboto Mono are available via [Google Fonts](https://fonts.google.com).
+Three typeface roles are used: **PP Telegraf** (with Manrope as fallback) for headings, **Manrope** for body copy, and **Roboto Mono** for code and technical output. PP Telegraf is a licensed display typeface; Manrope is the open-source fallback and is used directly for body text at all sizes. Both Manrope and Roboto Mono are available via [Google Fonts](https://fonts.google.com).
 
 The type scale runs from `body-xs` (12px) through `display` (48px) with consistent line height ratios. Heading weights default to bold (700) or semibold (600). Body weights default to regular (400).
 
@@ -440,7 +440,7 @@ The type scale runs from `body-xs` (12px) through `display` (48px) with consiste
 
 ## Layout
 
-Strata uses an 8px base unit. The spacing scale (`2xs` through `6xl`) is a linear progression from 8px to 48px. All layout decisions should snap to this scale.
+An 8px base unit underlies layout. The spacing scale (`2xs` through `6xl`) is a linear progression from 8px to 48px. All layout decisions should snap to this scale.
 
 - Use `2xs` (8px) and `xs` (12px) for tight intra-component spacing (icon-to-label gaps, list item padding) and component internal padding.
 - Use `md` (16px) through `xl` (20px) for inter-component gaps and section gutters.
@@ -448,7 +448,7 @@ Strata uses an 8px base unit. The spacing scale (`2xs` through `6xl`) is a linea
 
 ## Elevation & Depth
 
-Strata does not use heavy shadows. Depth is expressed through tonal layering — surfaces stack by shifting between `background` opacity levels. The `extra-dark-teal` opacity scale (4%, 10%, 20%) creates subtle container definitions without hard borders.
+Heavy shadows are not used. Depth is expressed through tonal layering — surfaces stack by shifting between `background` opacity levels. The `extra-dark-teal` opacity scale (4%, 10%, 20%) creates subtle container definitions without hard borders.
 
 - `opacity-4` (4%): Subtle differentiation, barely perceptible — used for overlay headers and footers.
 - `opacity-10` (10%): Light container backgrounds, hover states on text buttons.

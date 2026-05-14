@@ -1,6 +1,6 @@
 ---
 name: Asta
-description: Asta product design system — AI research assistant, dark mode, extends Strata
+description: Ai2 design system — AI research assistant interface, dark mode
 version: 0.0.1
 
 colors:
@@ -62,8 +62,8 @@ colors:
   cream-80: "#faf2e9cc"
   cream-90: "#faf2e9e6"
 
-  # ── Semantic aliases (light mode) ─────────────────────────────────
-  # Maps intent to primitive. Product systems may remap these.
+  # ── Semantic aliases ──────────────────────────────────────────────
+  # Maps intent to primitive.
   background: "{colors.extra-dark-teal}"
   background-reversed: "{colors.cream}"
   text: "{colors.cream}"
@@ -80,15 +80,15 @@ colors:
   link-reversed: "{colors.pink}"
 
   # ── Subtle surfaces ───────────────────────────────────────────────
-  # Translucent overlays that take their tone from the page surface.
-  # Strata is light, so the overlays are extra-dark-teal alpha. Product
-  # systems in dark mode (e.g. Asta) override these to cream alpha.
+  # Translucent overlays that take their tone from the inverse of the
+  # page surface. On a light page: extra-dark-teal alpha. On a dark
+  # page: cream alpha.
   subtle: "{colors.cream-50}"
   extra-subtle: "{colors.cream-10}"
   on-subtle: "{colors.text-reversed}"
   # `extra-subtle` sits so close to the page surface that the inverse
   # foreground used by `subtle` loses contrast. Pair it with the
-  # standard page text instead — it flips per system automatically.
+  # standard page text instead.
   on-extra-subtle: "{colors.text}"
 
 typography:
@@ -421,27 +421,26 @@ components:
 
 ## Overview
 
-Asta is Ai2's AI-powered research assistant. The interface is dark by default, and optimized information-dense research workflows. The palette inverts Strata's light mode: `extra-dark-teal` becomes the page surface and `cream` becomes the primary text color.
+This is the Ai2 design system for an AI-powered research assistant. The interface is dark by default and optimized for information-dense research workflows. The page surface is `extra-dark-teal` and the primary text color is `cream`.
 
-Green replaces pink as the primary brand accent. It reads clearly against the dark background. Pink is not used in Asta.
+Green is the primary brand accent — used for links, active states, and key interactive highlights.
 
-The design language is measured and precise — generous line heights for long-form reading, compact interactive elements that don't interrupt the reading flow, and restrained use of color to keep attention on the content.
+The design language is measured and precise: generous line heights for long-form reading, compact interactive elements that don't interrupt the reading flow, and restrained use of color to keep attention on the content.
 
 ## Colors
 
-All semantic aliases from Strata apply, with the following overrides:
+Semantic color aliases:
 
 - **Background:** `extra-dark-teal` (#032629) — the primary page surface.
 - **Text:** `cream` (#faf2e9) — all body copy, headings, and labels.
-- **Interactive-primary:** `green` (#0fcb8c) — used for links, active states, and key interactive highlights. Reads clearly against the dark background.
-- **Interactive-default:** `teal` (#105257) — unchanged from Strata, used for form controls and secondary interactive elements.
-- **Pink is not used** in Asta. No buttons, links, or accents should use the pink palette.
+- **Interactive-primary:** `green` (#0fcb8c) — links, active states, and key interactive highlights.
+- **Interactive-default:** `teal` (#105257) — form controls and secondary interactive elements.
 
-For surfaces and containers, use the `extra-dark-teal` opacity scale to layer depth without introducing new colors: `extra-dark-teal` at 4% for subtle panel differentiation, 20% for borders and dividers.
+For surfaces and containers, use the `extra-dark-teal` opacity scale to layer depth without introducing new colors: 4% for subtle panel differentiation, 20% for borders and dividers.
 
 ## Typography
 
-Strata uses three typeface roles: **PP Telegraf** (with Manrope as fallback) for headings, **Manrope** for body copy, and **Roboto Mono** for code and technical output. PP Telegraf is a licensed display typeface; Manrope is the open-source fallback and is used directly for body text at all sizes. Both Manrope and Roboto Mono are available via [Google Fonts](https://fonts.google.com).
+Three typeface roles are used: **PP Telegraf** (with Manrope as fallback) for headings, **Manrope** for body copy, and **Roboto Mono** for code and technical output. PP Telegraf is a licensed display typeface; Manrope is the open-source fallback and is used directly for body text at all sizes. Both Manrope and Roboto Mono are available via [Google Fonts](https://fonts.google.com).
 
 The type scale runs from `body-xs` (12px) through `display` (48px) with consistent line height ratios. Heading weights default to bold (700) or semibold (600). Body weights default to regular (400).
 
@@ -452,7 +451,7 @@ The type scale runs from `body-xs` (12px) through `display` (48px) with consiste
 
 ## Layout
 
-Strata uses an 8px base unit. The spacing scale (`2xs` through `6xl`) is a linear progression from 8px to 48px. All layout decisions should snap to this scale.
+An 8px base unit underlies layout. The spacing scale (`2xs` through `6xl`) is a linear progression from 8px to 48px. All layout decisions should snap to this scale.
 
 - Use `2xs` (8px) and `xs` (12px) for tight intra-component spacing (icon-to-label gaps, list item padding) and component internal padding.
 - Use `md` (16px) through `xl` (20px) for inter-component gaps and section gutters.
@@ -460,7 +459,7 @@ Strata uses an 8px base unit. The spacing scale (`2xs` through `6xl`) is a linea
 
 ## Elevation & Depth
 
-Strata does not use heavy shadows. Depth is expressed through tonal layering — surfaces stack by shifting between `background` opacity levels. The `extra-dark-teal` opacity scale (4%, 10%, 20%) creates subtle container definitions without hard borders.
+Heavy shadows are not used. Depth is expressed through tonal layering — surfaces stack by shifting between `background` opacity levels. The `extra-dark-teal` opacity scale (4%, 10%, 20%) creates subtle container definitions without hard borders.
 
 - `opacity-4` (4%): Subtle differentiation, barely perceptible — used for overlay headers and footers.
 - `opacity-10` (10%): Light container backgrounds, hover states on text buttons.
@@ -478,20 +477,19 @@ Border radii follow the same numeric scale as spacing (`3xs` through `3xl`). The
 
 ### Buttons
 
-Asta uses small (`sm`, 32px) and medium (`md`, 36px) buttons only. Large buttons (`lg`, 48px) are not used — they interrupt the compact, information-dense layout. Default to `sm` for all actions within panels, toolbars, and inline controls.
+Use small (`sm`, 32px) and medium (`md`, 36px) buttons only. Large buttons (`lg`, 48px) are not used — they interrupt the compact, information-dense layout. Default to `sm` for all actions within panels, toolbars, and inline controls.
 
-The `button-default` (teal) is the default interactive button in Asta. The `button-primary` (now green via `interactive-primary`) is reserved for the single most prominent call to action per view.
+The `button-default` (teal) is the default interactive button. The `button-primary` (green) is reserved for the single most prominent call to action per view.
 
-**Outlined and reversed variants are re-toned for dark mode.** The `button-default-outlined` uses `teal-40` (rather than the default `teal`) for text and border so it reads against the dark page surface. The `button-reversed` family flips: in Strata "reversed" means a light element on the dark inverse surface, but in Asta the inverse surface is *cream*, so reversed buttons render dark-on-cream (`extra-dark-teal` text/borders) instead.
+The `button-default-outlined` uses `teal-40` for text and border so it reads against the dark page surface. The `button-reversed` family renders dark-on-cream — `extra-dark-teal` text and borders on a cream inverse surface.
 
 ### Typography
 
-Follows Strata's scale exactly. `body-md` (16px) is the default reading size for research output and document content. Use generous line heights — Asta surfaces long-form academic text and whitespace aids comprehension.
+`body-md` (16px) is the default reading size for research output and document content. Use generous line heights — the interface surfaces long-form academic text, and whitespace aids comprehension.
 
 ## Do's and Don'ts
 
-- **Do** use dark mode surface colors consistently — never mix light and dark surfaces within a single view.
+- **Do** use dark surfaces consistently — never mix light and dark surfaces within a single view.
 - **Do** use `green` for all interactive highlights and primary actions.
-- **Don't** use `pink` anywhere in Asta — it's a Strata primitive not surfaced in this product.
 - **Don't** use `button-size-lg` — it breaks the compact layout rhythm.
 - **Don't** use high-saturation colors for decorative purposes — keep the palette restrained to let content breathe.

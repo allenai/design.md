@@ -62,8 +62,8 @@ colors:
   cream-80: "#faf2e9cc"
   cream-90: "#faf2e9e6"
 
-  # ── Semantic aliases (light mode) ─────────────────────────────────
-  # Maps intent to primitive. Product systems may remap these.
+  # ── Semantic aliases ──────────────────────────────────────────────
+  # Maps intent to primitive.
   background: "{colors.cream}"
   background-reversed: "{colors.extra-dark-teal}"
   text: "{colors.dark-teal}"
@@ -80,15 +80,15 @@ colors:
   link-reversed: "{colors.interactive-secondary}"
 
   # ── Subtle surfaces ───────────────────────────────────────────────
-  # Translucent overlays that take their tone from the page surface.
-  # Strata is light, so the overlays are extra-dark-teal alpha. Product
-  # systems in dark mode (e.g. Asta) override these to cream alpha.
+  # Translucent overlays that take their tone from the inverse of the
+  # page surface. On a light page: extra-dark-teal alpha. On a dark
+  # page: cream alpha.
   subtle: "{colors.extra-dark-teal-50}"
   extra-subtle: "{colors.extra-dark-teal-10}"
   on-subtle: "{colors.text-reversed}"
   # `extra-subtle` sits so close to the page surface that the inverse
   # foreground used by `subtle` loses contrast. Pair it with the
-  # standard page text instead — it flips per system automatically.
+  # standard page text instead.
   on-extra-subtle: "{colors.text}"
 
 typography:
@@ -421,11 +421,9 @@ components:
 
 ## Overview
 
-Strata is the Ai2 foundation design system. It provides the shared visual language — color, typography, spacing, shape, and core components — used across all Ai2 product interfaces.
+This is the Ai2 foundation design system — the shared visual language (color, typography, spacing, shape, and core components) for Ai2 product interfaces.
 
-The palette is anchored in deep teal and warm cream, with pink as the primary brand accent. The result is an interface aesthetic that feels credible, focused, and human — appropriate for research tools used by experts and general audiences alike.
-
-Asta and OlmoEarth extend Strata. Tokens defined in a product system override their Strata counterparts; everything else falls through to this base.
+The palette is anchored in deep teal and warm cream, with pink as the primary brand accent. The result is an interface aesthetic that feels credible, focused, and human — appropriate for tools used by experts and general audiences alike.
 
 ## Colors
 
@@ -444,7 +442,7 @@ The palette is organized in two layers: primitives and semantic aliases.
 
 ## Typography
 
-Strata uses three typeface roles: **PP Telegraf** (with Manrope as fallback) for headings, **Manrope** for body copy, and **Roboto Mono** for code and technical output. PP Telegraf is a licensed display typeface; Manrope is the open-source fallback and is used directly for body text at all sizes. Both Manrope and Roboto Mono are available via [Google Fonts](https://fonts.google.com).
+Three typeface roles are used: **PP Telegraf** (with Manrope as fallback) for headings, **Manrope** for body copy, and **Roboto Mono** for code and technical output. PP Telegraf is a licensed display typeface; Manrope is the open-source fallback and is used directly for body text at all sizes. Both Manrope and Roboto Mono are available via [Google Fonts](https://fonts.google.com).
 
 The type scale runs from `body-xs` (12px) through `display` (48px) with consistent line height ratios. Heading weights default to bold (700) or semibold (600). Body weights default to regular (400).
 
@@ -455,7 +453,7 @@ The type scale runs from `body-xs` (12px) through `display` (48px) with consiste
 
 ## Layout
 
-Strata uses an 8px base unit. The spacing scale (`2xs` through `6xl`) is a linear progression from 8px to 48px. All layout decisions should snap to this scale.
+An 8px base unit underlies layout. The spacing scale (`2xs` through `6xl`) is a linear progression from 8px to 48px. All layout decisions should snap to this scale.
 
 - Use `2xs` (8px) and `xs` (12px) for tight intra-component spacing (icon-to-label gaps, list item padding) and component internal padding.
 - Use `md` (16px) through `xl` (20px) for inter-component gaps and section gutters.
@@ -463,7 +461,7 @@ Strata uses an 8px base unit. The spacing scale (`2xs` through `6xl`) is a linea
 
 ## Elevation & Depth
 
-Strata does not use heavy shadows. Depth is expressed through tonal layering — surfaces stack by shifting between `background` opacity levels. The `extra-dark-teal` opacity scale (4%, 10%, 20%) creates subtle container definitions without hard borders.
+Heavy shadows are not used. Depth is expressed through tonal layering — surfaces stack by shifting between `background` opacity levels. The `extra-dark-teal` opacity scale (4%, 10%, 20%) creates subtle container definitions without hard borders.
 
 - `opacity-4` (4%): Subtle differentiation, barely perceptible — used for overlay headers and footers.
 - `opacity-10` (10%): Light container backgrounds, hover states on text buttons.
@@ -485,7 +483,7 @@ Buttons, inputs, and chips share a common size scale: `sm` (32px), `md` (36px), 
 
 ### Buttons
 
-Four button intents exist at the Strata level: `interactive-default` (teal, neutral interactive), `interactive-primary` (pink, high-emphasis), `interactive-secondary` (green, supporting action), and `reversed` (cream, for use on dark backgrounds). Each intent has a filled and outlined variant. A shared `disabled` state applies across all button types.
+Four button intents are available: `interactive-default` (teal, neutral interactive), `interactive-primary` (pink, high-emphasis), `interactive-secondary` (green, supporting action), and `reversed` (cream, for use on dark backgrounds). Each intent has a filled and outlined variant. A shared `disabled` state applies across all button types.
 
 Filled hover states lighten to a solid tint (the base color blended at 60% on cream). Outlined hover states fill with the lightest tint (20%) and shift text to `extra-dark-teal` for contrast. All transitions should use a 150ms ease-in-out curve.
 
@@ -503,7 +501,7 @@ The slider track is 8px tall. The filled (selected) portion uses \`interactive-d
 
 Chips use the same 4px radius and size scale as buttons. Three color intents are available: `interactive-default` (teal), `interactive-primary` (pink), and `interactive-secondary` (green). Chips are filled-only — outlined chips would compete with outlined buttons for the same visual role.
 
-Two additional **subtle** variants — `subtle` and `extra-subtle` — render as translucent overlays that take their tone from the page surface (`extra-dark-teal` at 50% / 10% on light surfaces; product systems in dark mode flip the overlay to `cream`). They pair with two foreground tokens: `on-subtle` (inverse of the page text, contrasts with the mid-tone `subtle` background) and `on-extra-subtle` (the standard page text, since `extra-subtle` is too close to the page surface for an inverse to read). Use `subtle` for tags that should sit a layer back from primary content; use `extra-subtle` for the lightest-touch background — barely-there tags, ghost states, or hover surfaces.
+Two additional **subtle** variants — `subtle` and `extra-subtle` — render as translucent overlays that take their tone from the page surface (`extra-dark-teal` at 50% / 10% on a light page; on a dark page the overlay flips to `cream`). They pair with two foreground tokens: `on-subtle` (inverse of the page text, contrasts with the mid-tone `subtle` background) and `on-extra-subtle` (the standard page text, since `extra-subtle` is too close to the page surface for an inverse to read). Use `subtle` for tags that should sit a layer back from primary content; use `extra-subtle` for the lightest-touch background — barely-there tags, ghost states, or hover surfaces.
 
 ### Avatars
 
