@@ -990,9 +990,8 @@
   <section class="hero">
     <h1 data-bind="hero-title">Strata</h1>
     <p data-bind="hero-blurb">
-      Strata is the Ai2 foundation design system. It provides the shared visual language —
-      color, typography, spacing, shape, and core components — used across all Ai2 product
-      interfaces. Asta and OlmoEarth extend Strata.
+      The Ai2 foundation design system. It provides the shared visual language —
+      color, typography, spacing, shape, and core components — for Ai2 product interfaces.
     </p>
   </section>
 
@@ -1451,7 +1450,7 @@
 <footer>
   Spec sheet · single static HTML · drives off
   <code>strata/DESIGN.md</code>, <code>asta/DESIGN.md</code>, <code>olmo-earth/DESIGN.md</code>.
-  OlmoEarth currently inherits Strata; populate <code>olmo-earth/DESIGN.src.md</code> to differentiate.
+  OlmoEarth's product overlay is currently a stub; populate <code>olmo-earth/DESIGN.src.md</code> to differentiate.
 </footer>
 
 <script>
@@ -1592,17 +1591,17 @@ const META = {
   strata: {
     name: "Strata",
     description: "Ai2 base design system — shared foundation for all Ai2 product interfaces",
-    heroBlurb: "Strata is the Ai2 foundation design system. It provides the shared visual language — color, typography, spacing, shape, and core components — used across all Ai2 product interfaces. Asta and OlmoEarth extend Strata.",
+    heroBlurb: "The Ai2 foundation design system. It provides the shared visual language — color, typography, spacing, shape, and core components — for Ai2 product interfaces.",
   },
   asta: {
     name: "Asta",
-    description: "Asta product design system — AI research assistant, dark mode, extends Strata",
-    heroBlurb: "Asta is Ai2's AI-powered research assistant. The interface is dark by default, optimized for information-dense research workflows. Pink is not used; green carries the primary accent against the deep teal surface.",
+    description: "Ai2 design system — AI research assistant interface, dark mode",
+    heroBlurb: "Asta is Ai2's AI-powered research assistant. The interface is dark by default, optimized for information-dense research workflows. Green is the primary brand accent.",
   },
   "olmo-earth": {
     name: "OlmoEarth",
-    description: "OlmoEarth product design system — extends Strata with product-specific tokens",
-    heroBlurb: "OlmoEarth's overlay is currently a stub. Until its DESIGN.src.md declares overrides, it inherits Strata directly — the toggle below works mechanically, but Strata and OlmoEarth render identically.",
+    description: "Ai2 design system — OlmoEarth product interface",
+    heroBlurb: "OlmoEarth's product overlay is currently a stub. The toggle works but OlmoEarth renders identically to the foundation until its DESIGN.src.md declares overrides.",
   },
 };
 
