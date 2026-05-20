@@ -295,11 +295,6 @@
     min-height: 36px; /* reserve ~2 lines so topbar height is constant */
     max-width: 64ch;
   }
-  .topbar-logo {
-    height: 28px;
-    width: auto;
-    margin-bottom: 6px;
-  }
   .hero-wordmark {
     height: 56px;
     width: auto;
@@ -984,7 +979,6 @@
 <header class="topbar" role="banner">
   <div class="topbar-inner">
     <div class="topbar-meta">
-      <img class="topbar-logo" data-bind="logo" alt="" style="display:none">
       <div class="topbar-eyebrow">Ai2 · Design Systems · Spec Sheet</div>
       <div class="topbar-title" data-bind="name">Strata</div>
       <div class="topbar-desc" data-bind="description">Ai2 base design system — shared foundation for all Ai2 product interfaces</div>
@@ -1702,10 +1696,6 @@ function bindMeta(systemKey) {
     el.style.display = meta.wordmark ? "none" : "";
   });
   document.querySelectorAll('[data-bind="hero-blurb"]').forEach((el) => (el.textContent = meta.heroBlurb));
-  document.querySelectorAll('[data-bind="logo"]').forEach((el) => {
-    if (meta.logo) { el.src = meta.logo; el.style.display = "block"; }
-    else el.style.display = "none";
-  });
   document.querySelectorAll('[data-bind="wordmark"]').forEach((el) => {
     if (meta.wordmark) { el.src = meta.wordmark; el.style.display = "block"; }
     else el.style.display = "none";
