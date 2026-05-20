@@ -15,11 +15,19 @@ This repository follows the [DESIGN.md format specification](https://github.com/
 
 ## How to use these files with agents
 
-Each product has a fully resolved `DESIGN.md` file — no inheritance to follow, no build step required. Copy it into your project and agents will pick it up automatically, or paste the contents directly into your system prompt:
+Each product has a fully resolved `DESIGN.md` file — no inheritance to follow, no build step required. Each file is self-contained and reads as a standalone document; it doesn't reference other systems or internal build details. Copy it into your project and agents will pick it up automatically, or paste the contents directly into your system prompt:
 
 ```
 asta/DESIGN.md
 olmo-earth/DESIGN.md
+```
+
+If your project also needs logos or wordmarks, grab the product's `assets/` folder alongside the `DESIGN.md`. Asset paths are declared in the file's `assets:` frontmatter key so agents know what's available:
+
+```yaml
+assets:
+  logo: assets/logo.svg
+  wordmark: assets/wordmark.svg
 ```
 
 Alternatively, export the tokens to other formats for use in your build pipeline:
@@ -41,10 +49,12 @@ npx @google/design.md export --format <fmt> asta/DESIGN.md
 ```
 strata/             ← Base design system — source of truth
   DESIGN.md
+  assets/           ← logos and wordmarks
 
 asta/               ← Asta product system
   DESIGN.src.md     ← product overrides and additions (edit this)
   DESIGN.md         ← generated output (use this with agents)
+  assets/           ← product-specific logos and wordmarks
 
 olmo-earth/         ← OlmoEarth product system
   DESIGN.src.md     ← product overrides and additions (edit this)
