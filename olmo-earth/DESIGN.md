@@ -3,6 +3,10 @@ name: OlmoEarth
 description: Ai2 design system — OlmoEarth product interface
 version: 0.0.1
 
+assets:
+  logo: assets/logo.svg
+  wordmark: assets/wordmark.svg
+
 colors:
   # ── Primitive palette ─────────────────────────────────────────────
   # Full-opacity base colors. Opacity variants are derived from these

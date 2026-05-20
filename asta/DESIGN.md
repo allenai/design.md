@@ -3,6 +3,11 @@ name: Asta
 description: Ai2 design system — AI research assistant interface, dark mode
 version: 0.0.1
 
+assets:
+  # ── Assets that align with the design system ──────────────────────
+  logo: assets/logo.svg
+  wordmark: assets/wordmark.svg
+
 colors:
   # ── Primitive palette ─────────────────────────────────────────────
   # Full-opacity base colors. Opacity variants are derived from these

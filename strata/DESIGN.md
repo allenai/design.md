@@ -3,6 +3,11 @@ name: Strata
 description: Ai2 base design system — shared foundation for all Ai2 product interfaces
 version: 0.0.1
 
+assets:
+  # ── Assets that align with the design system ──────────────────────
+  logo: assets/logo.svg
+  wordmark: assets/wordmark.svg
+
 colors:
   # ── Primitive palette ─────────────────────────────────────────────
   # Full-opacity base colors. Opacity variants are derived from these
