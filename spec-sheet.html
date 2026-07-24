@@ -1429,7 +1429,7 @@
       <div class="alias-list" id="er-status-list"></div>
 
       <div class="subhead">Status backgrounds</div>
-      <div class="swatch-grid" id="er-status-bg-grid"></div>
+      <div class="alias-list" id="er-status-bg-list"></div>
 
       <div class="subhead">Patrol status</div>
       <div class="alias-list" id="er-patrol-list"></div>
@@ -1438,13 +1438,13 @@
       <div class="alias-list" id="er-event-priority-list"></div>
 
       <div class="subhead">Data viz — Categorical (1–10)</div>
-      <div class="swatch-grid" id="er-dataviz-categorical"></div>
+      <div class="alias-list" id="er-dataviz-categorical"></div>
 
       <div class="subhead">Data viz — Tracks (1–10)</div>
-      <div class="swatch-grid" id="er-dataviz-tracks"></div>
+      <div class="alias-list" id="er-dataviz-tracks"></div>
 
       <div class="subhead">Data viz — Sequential (1–8)</div>
-      <div class="swatch-grid" id="er-dataviz-sequential"></div>
+      <div class="alias-list" id="er-dataviz-sequential"></div>
     </div>
 
     <div class="subhead">Semantic aliases</div>
@@ -2464,18 +2464,6 @@ function erAliasRows(pairs) {
   `).join("");
 }
 
-function erSwatchGrid(elId, pairs) {
-  document.getElementById(elId).innerHTML = pairs.map(([label, prim]) => `
-    <div class="swatch">
-      <div class="swatch-color" style="background:${hexFor(prim)}"></div>
-      <div class="swatch-meta">
-        <div class="swatch-name">${label}</div>
-        <div class="swatch-hex">${hexFor(prim)}</div>
-      </div>
-    </div>
-  `).join("");
-}
-
 function erModeRows(prefix) {
   const mode = document.documentElement.dataset.erMode || "light";
   return ALIASES.earthranger[mode]
@@ -2500,7 +2488,7 @@ function renderErStatus() {
   document.getElementById("er-status-list").innerHTML = erAliasRows(erModeRows("status/").map(([a, p]) => [a, p]));
 }
 function renderErStatusBg() {
-  erSwatchGrid("er-status-bg-grid", erModeRows("status-bg/"));
+  document.getElementById("er-status-bg-list").innerHTML = erAliasRows(erModeRows("status-bg/"));
 }
 function renderErPatrol() {
   document.getElementById("er-patrol-list").innerHTML = erAliasRows(erModeRows("patrol/"));
@@ -2510,7 +2498,9 @@ function renderErEventPriority() {
 }
 function renderErDataViz() {
   ["categorical", "tracks", "sequential"].forEach((key) => {
-    erSwatchGrid(`er-dataviz-${key}`, ER_DATAVIZ[key].map((prim, i) => [`${key} ${i + 1}`, prim]));
+    document.getElementById(`er-dataviz-${key}`).innerHTML = erAliasRows(
+      ER_DATAVIZ[key].map((prim, i) => [`${key} ${i + 1}`, prim])
+    );
   });
 }
 function renderErPlatformFonts() {
