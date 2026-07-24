@@ -2106,12 +2106,6 @@ const SPACING = [
   ["2xl", 24], ["3xl", 32], ["4xl", 36], ["5xl", 40], ["6xl", 48],
 ];
 
-/* EarthRanger's reduced spacing scale: 8px, then only multiples of 16
-   up to 48px. */
-const ER_SPACING = [
-  ["xs", 8], ["sm", 16], ["md", 32], ["lg", 48],
-];
-
 const RADII = [
   ["3xs", 4], ["2xs", 8], ["xs", 12], ["sm", 14], ["md", 16],
   ["lg", 18], ["xl", 20], ["2xl", 24], ["3xl", 32],
@@ -2220,6 +2214,7 @@ ALIASES["earthranger"] = {
   light: [
     ["background/primary",       "white"],
     ["background/secondary",     "off-white"],
+    ["background/tertiary",      "teal-t10"],
     ["background/elevated",      "white"],
     ["text/primary",             "teal-dark"],
     ["text/primary-reversed",    "white"],
@@ -2260,6 +2255,7 @@ ALIASES["earthranger"] = {
   dark: [
     ["background/primary",       "teal-extra-dark"],
     ["background/secondary",     "teal-dark"],
+    ["background/tertiary",      "teal-dark"],
     ["background/elevated",      "teal-dark"],
     ["text/primary",             "white"],
     ["text/primary-reversed",    "teal-dark"],
@@ -2429,8 +2425,7 @@ function renderTypography() {
 
 function renderSpacing(systemKey) {
   const wrap = document.getElementById("spacing-scale");
-  const scale = systemKey === "earthranger" ? ER_SPACING : SPACING;
-  wrap.innerHTML = scale.map(([name, val]) => `
+  wrap.innerHTML = SPACING.map(([name, val]) => `
     <div class="scale-row">
       <span class="scale-name">${name}</span>
       <span class="scale-bar" style="width:${val}px"></span>

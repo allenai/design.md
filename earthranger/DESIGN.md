@@ -29,6 +29,7 @@ colors:
   # → Elevated → Secondary (lightest) — rather than mixing in grey.
   "UI/Background/Primary Background": { light: "#ffffff", dark: "#032629" }
   "UI/Background/Secondary Background": { light: "#faf2e9", dark: "#0a3235" }
+  "UI/Background/Tertiary Background": { light: "#e7eeee", dark: "#0a3235" }
   "UI/Background/Elevated Component": { light: "#ffffff", dark: "#0a3235" }
 
   # Text
@@ -405,7 +406,7 @@ Scope is deliberately narrow: Manrope replaces Roboto for **body text only** (`e
 
 **Don't load web fonts without these performance safeguards.** EarthRanger is used in low-bandwidth field conditions where a delayed font can mean delayed information in high-stakes moments (active patrols, incident response).
 
-- **Native OS fallback** if the web font hasn't loaded — Windows: Arial, Android: Roboto, iOS: SF Pro
+- **Native OS fallback** if the web font hasn't loaded — Windows: Arial, Android: Roboto, iOS: SF Pro, macOS: SF Pro
 - **Subset fonts** to strip unneeded characters, using `glyphhanger` or `fonttools`
 - **Regular and Bold weights only** — don't ship the full weight range
 - **`font-display: optional`** so a slow-loading web font never blocks rendering or shifts layout
