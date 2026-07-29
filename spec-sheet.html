@@ -307,7 +307,21 @@
     font-weight: 700;
     font-size: 22px;
     letter-spacing: -0.01em;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
   }
+  /* Version is manually bumped per-system and read from that system's
+     DESIGN.md — not expected to stay in sync across Strata/Asta/OlmoEarth/
+     EarthRanger. Hidden entirely when a system has no version set. */
+  .topbar-version {
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: color-mix(in srgb, var(--c-text) 55%, transparent);
+  }
+  .topbar-version:empty { display: none; }
   .topbar-desc {
     font-size: 13px;
     color: color-mix(in srgb, var(--c-text) 75%, transparent);
@@ -1376,7 +1390,9 @@
   <div class="topbar-inner">
     <div class="topbar-meta">
       <div class="topbar-eyebrow">Ai2 · Design Systems · Spec Sheet</div>
-      <div class="topbar-title" data-bind="name">Strata</div>
+      <div class="topbar-title">
+        <span data-bind="name">Strata</span><span class="topbar-version" data-bind="version"></span>
+      </div>
       <div class="topbar-desc" data-bind="description">Ai2 base design system — shared foundation for all Ai2 product interfaces</div>
     </div>
     <div class="segmented" role="tablist" aria-label="Active design system">
@@ -2358,6 +2374,10 @@ const META = {
   },
   "earthranger": {
     name: "EarthRanger",
+    /* Manually bumped from earthranger/DESIGN.md's `version:` frontmatter
+       field — keep these two in sync by hand. Not expected to match
+       Strata/Asta/OlmoEarth's own versions. */
+    version: "0.0.1",
     description: "EarthRanger design system — for product interfaces and externally-facing communications such as websites and slide decks.",
     heroBlurb: "EarthRanger is a platform for conservationists to collect data from the field, see wildlife and teams in real time, and develop strategies that accelerate conservation impact. The design language prioritizes usability and data security, with core values being trustworthiness, innovation, and approachability. Our primary colors are teal and green. We don't use the Ai2 pink. Try the Light/Dark mode selector above.",
     formTitle: "Sample form",
@@ -2541,6 +2561,7 @@ function renderErSections() {
 function bindMeta(systemKey) {
   const meta = META[systemKey];
   document.querySelectorAll('[data-bind="name"]').forEach((el) => (el.textContent = meta.name));
+  document.querySelectorAll('[data-bind="version"]').forEach((el) => (el.textContent = meta.version ? `v${meta.version}` : ""));
   document.querySelectorAll('[data-bind="description"]').forEach((el) => (el.textContent = meta.description));
   document.querySelectorAll('[data-bind="hero-title"]').forEach((el) => {
     el.textContent = meta.name;
