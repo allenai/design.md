@@ -398,6 +398,12 @@ Scope is deliberately narrow: Manrope replaces Roboto for **body text only** (`e
 - **Variants:** Some icons have filled/outline or state variants (e.g. Cloud Online/Offline, Eye Open/Closed, Active/Inactive, Download states) — use the variant that matches the design exactly
 - **Note:** The ER icon library references Material Design as its base — for any icon not listed as a custom symbol, search the Material Design library
 
+### Library 3: ER Google Slides Template
+
+- **Source:** [EarthRanger Slide Template](https://docs.google.com/presentation/d/1rm7CEqJaps473VlnG1n8CIznZONLk7yXBwCNGfKg0CE/edit?usp=sharing) — MAKE A COPY
+- **Usage:** Starting point for external-facing slide decks (see Typography's External Communications section — Manrope, not Roboto, for body text in this context)
+- **Note:** Always duplicate the template rather than editing the source file directly
+
 ## Do's and Don'ts
 
 **Don't place `UI/Text/Primary Text` (or the raw dark-teal/`extra-dark-teal` primitives) on a solid `UI/CTA Primary` or `Brand/Accent Green` fill (Green/12 in light mode).** It measures ~3:1 contrast — under the 4.5:1 WCAG AA minimum for normal text, only clearing the 3:1 floor for large text/UI outlines. Use `UI/Text/Primary Text Reversed` instead, which resolves to white in light mode. In dark mode this isn't an issue — Green/7 is bright enough that dark text reads fine there.
