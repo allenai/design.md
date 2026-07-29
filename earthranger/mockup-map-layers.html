@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>EarthRanger — Map Layers</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- Roboto is EarthRanger's Web-Fonts platform body font (never Manrope — that's
+     for external comms only, see DESIGN.md's Do's and Don'ts). Regular + Bold
+     weights only, and font-display: optional, per the Fallback Stack rule —
+     EarthRanger is used in low-bandwidth field conditions. -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Roboto+Mono:wght@400&display=optional" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  /* ── EarthRanger design tokens ──────────────────────────────────── */
+  :root {
+    /* Primitives — see earthranger/DESIGN.md */
+    --c-extra-dark-teal: #032629;
+    --c-dark-teal:       #0a3235;   /* Teal/Ai2 Dark Teal */
+    --c-cream:           #faf2e9;   /* Greyscale/Off-white */
+    --c-teal:            #105257;   /* Teal/T100 */
+    --c-teal-10:         #e7eeee;
+    --c-teal-20:         #cfdcdd;
+    --c-teal-40:         #9fbabc;
+    --c-teal-60:         #70979a;
+    --c-teal-80:         #407579;
+    --c-green-12:        #0f865d;   /* Green/12 — CTA Primary, Success (light) */
+    --c-white:           #ffffff;
+    --c-gray-5:          #63666a;
+    --c-gray-6:          #767676;   /* Icons, Disabled */
+    --c-gray-7:          #888b8d;   /* Icons/Disabled, dark mode */
+    --c-gray-3:          #333333;   /* Field Outline, dark */
+    --c-gray-8:          #b1b3b3;   /* Field Outline */
+    --c-gray-9:          #dddddd;   /* Divider Lines */
+    --c-gray-10:         #f3f3f3;
+    --c-blue-1:          #0056c7;   /* Running status only — not a general action color */
+    --c-red-3:           #d0031b;   /* Error-Destructive */
+    --c-red-5:           #f06374;   /* Error-Destructive, dark */
+    --c-green-7:         #0fcb8c;   /* CTA Primary, dark */
+    --c-green-4:         #53aa71;   /* Success, dark */
+
+    /* Semantic (Light mode) */
+    --c-bg:              var(--c-white);        /* Primary Background */
+    --c-bg-secondary:    var(--c-cream);        /* Secondary Background */
+    --c-elevated:        var(--c-white);        /* Elevated Component — floating map controls */
+    --c-text:            var(--c-dark-teal);    /* Primary Text */
+    --c-text-secondary:  var(--c-teal);         /* Secondary Text */
+    --c-text-tabs:       var(--c-teal);         /* Tabs — same as Secondary Text in light, diverges in dark */
+    --c-int-primary:     var(--c-green-12);     /* CTA Primary — was teal; teal is now the accent, not the CTA color */
+    --c-int-default:     var(--c-teal);         /* brand teal accent */
+    --c-accent-green:    var(--c-green-12);     /* Brand/Accent Green — same values as CTA Primary, distinct semantic role */
+    --c-text-reversed:   var(--c-white);        /* Primary Text Reversed — for text on a solid accent-green fill */
+    --c-success:         var(--c-green-12);     /* Status/Success */
+    --c-red:             var(--c-red-3);        /* Status/Error-Destructive */
+    --c-stroke:          var(--c-gray-9);       /* Divider Lines (was a generic black alpha) */
+    --c-field-outline:   var(--c-gray-8);       /* Field Outline */
+    --c-surface:         rgba(10, 50, 53, 0.04); /* subtle hover fill, dark-teal tinted (was pure black alpha) */
+    --c-surface-strong:  rgba(10, 50, 53, 0.08);
+
+    /* Layout */
+    --nav-h:        52px;
+    --sidebar-w:    56px;
+    --panel-w:      460px;
+  }
+
+  /* ── Dark mode — see earthranger/DESIGN.md. Inverts rather than just
+       darkening: backgrounds swap from white/off-white to deep teal, text
+       flips accordingly, and status colors shift to lighter/more-saturated
+       steps for contrast on the dark surface. Toggled via [data-mode]. ── */
+  body[data-mode="dark"] {
+    --c-bg:              var(--c-extra-dark-teal); /* Primary Background, dark */
+    --c-bg-secondary:     var(--c-teal);            /* Secondary Background, dark */
+    --c-elevated:         var(--c-dark-teal);       /* Elevated Component, dark */
+    --c-text:             var(--c-white);           /* Primary Text, dark */
+    --c-text-secondary:   var(--c-cream);            /* Secondary Text, dark */
+    --c-text-tabs:        var(--c-white);            /* Tabs, dark — diverges from Secondary Text's off-white */
+    --c-int-primary:      var(--c-green-7);          /* CTA Primary, dark */
+    --c-int-default:      var(--c-teal-20);          /* teal-t100 wouldn't show on a dark bg */
+    --c-accent-green:     var(--c-green-7);          /* Brand/Accent Green, dark */
+    --c-text-reversed:    var(--c-dark-teal);        /* Primary Text Reversed, dark — Green/7 is bright enough for dark text */
+    --c-success:          var(--c-green-4);          /* Status/Success, dark */
+    --c-red:              var(--c-red-5);            /* Status/Error-Destructive, dark */
+    --c-stroke:           var(--c-gray-5);           /* Divider Lines, dark */
+    --c-field-outline:    var(--c-gray-3);           /* Field Outline, dark */
+    --c-surface:          rgba(255, 255, 255, 0.06); /* subtle hover fill, flipped to white-tinted */
+    --c-surface-strong:   rgba(255, 255, 255, 0.1);
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; }
+  body {
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    font-size: 14px;
+    background: var(--c-bg);
+    color: var(--c-text);
+    -webkit-font-smoothing: antialiased;
+  }
+  body, body * {
+    transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body, body * { transition: none !important; }
+  }
+
+  /* ── App shell ───────────────────────────────────────────────────── */
+  .app { display: flex; flex-direction: column; height: 100vh; }
+  .body { display: flex; flex: 1; overflow: hidden; }
+
+  /* ── Topbar ──────────────────────────────────────────────────────── */
+  .topbar {
+    height: var(--nav-h);
+    background: var(--c-bg);
+    border-bottom: 1px solid var(--c-stroke);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+    flex-shrink: 0;
+    z-index: 100;
+  }
+  .topbar-menu {
+    color: var(--c-text);
+    opacity: 0.6;
+    cursor: pointer;
+    font-size: 22px;
+  }
+  .topbar-logo { height: 26px; width: auto; }
+  .topbar-center { flex: 1; display: flex; justify-content: center; }
+  .city-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--c-text);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+  .city-selector:hover { background: var(--c-surface); }
+  .city-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--c-accent-green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; color: var(--c-text-reversed);
+  }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .status-pill {
+    display: flex; align-items: center; gap: 6px;
+    color: var(--c-text); font-size: 13px; cursor: pointer;
+    padding: 5px 10px; border-radius: 4px;
+    border: 1px solid var(--c-stroke);
+  }
+  .status-pill:hover { background: var(--c-surface); }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-success); }
+  .notif-wrap { position: relative; cursor: pointer; color: var(--c-text); opacity: 0.6; }
+  .notif-wrap:hover { opacity: 1; }
+  .notif-wrap .material-icons { font-size: 22px; display: block; }
+  .notif-badge {
+    position: absolute; top: -4px; right: -5px;
+    min-width: 16px; height: 16px;
+    background: var(--c-red); border-radius: 999px;
+    font-size: 10px; font-weight: 700; color: white;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid var(--c-bg);
+    padding: 0 3px;
+  }
+  .user-pill {
+    display: flex; align-items: center; gap: 8px;
+    color: var(--c-text); font-size: 13px; cursor: pointer;
+    padding: 4px 8px; border-radius: 4px;
+  }
+  .user-pill:hover { background: var(--c-surface); }
+  .user-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--c-accent-green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--c-text-reversed);
+  }
+
+  /* ── Sidebar ─────────────────────────────────────────────────────── */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--c-bg-secondary);
+    border-right: 1px solid var(--c-stroke);
+    display: flex; flex-direction: column;
+    align-items: center; padding: 8px 0; gap: 2px;
+    flex-shrink: 0; z-index: 10;
+  }
+  .nav-item {
+    width: 46px; height: 46px; border-radius: 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 3px;
+    cursor: pointer;
+    color: var(--c-text-secondary);
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    position: relative;
+    transition: background 140ms, color 140ms;
+  }
+  .nav-item:hover { background: var(--c-surface); color: var(--c-text); }
+  .nav-item.active { color: var(--c-int-primary); background: var(--c-elevated); }
+  .nav-item.active::before {
+    content: "";
+    position: absolute; left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 3px; height: 26px;
+    background: var(--c-int-primary);
+    border-radius: 0 2px 2px 0;
+  }
+  .nav-item .material-icons { font-size: 20px; }
+  .nav-spacer { flex: 1; }
+
+  /* ── Panel + Map wrapper ─────────────────────────────────────────── */
+  .map-area { flex: 1; position: relative; display: flex; }
+
+  /* ── Map Layers panel ────────────────────────────────────────────── */
+  .panel {
+    width: var(--panel-w);
+    flex-shrink: 0;
+    background: var(--c-bg);
+    border-right: 1px solid var(--c-stroke);
+    display: flex; flex-direction: column;
+    z-index: 20;
+  }
+
+  /* ── Map canvas ──────────────────────────────────────────────────── */
+  .map-canvas { flex: 1; position: relative; }
+
+  .panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px 0;
+    flex-shrink: 0;
+  }
+  .panel-title { font-family: "PP Telegraf", Arial, sans-serif; font-size: 18px; font-weight: 700; }
+  .panel-close {
+    width: 32px; height: 32px; border-radius: 4px;
+    border: 0; background: transparent; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--c-text); opacity: 0.5;
+  }
+  .panel-close:hover { background: var(--c-surface); opacity: 1; }
+  .panel-close .material-icons { font-size: 20px; }
+
+  /* Tabs */
+  .tabs {
+    display: flex; border-bottom: 1px solid var(--c-stroke);
+    padding: 0 20px; margin-top: 10px; flex-shrink: 0;
+  }
+  .tab {
+    padding: 9px 14px; font-size: 14px; font-weight: 500;
+    color: var(--c-text-tabs); cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px; white-space: nowrap;
+  }
+  .tab:hover { color: var(--c-text); }
+  .tab.active {
+    color: var(--c-int-primary);
+    border-bottom-color: var(--c-int-primary);
+    font-weight: 600;
+  }
+
+  /* Toolbar */
+  .panel-toolbar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px; flex-shrink: 0;
+    border-bottom: 1px solid var(--c-stroke);
+  }
+  .search-wrap { flex: 1; position: relative; }
+  .search-wrap .material-icons {
+    position: absolute; left: 8px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px; color: var(--c-text-secondary); pointer-events: none;
+  }
+  .search-wrap input {
+    width: 100%; height: 32px;
+    border: 1px solid var(--c-stroke); border-radius: 4px;
+    background: var(--c-bg); padding: 0 10px 0 30px;
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, Arial, sans-serif; font-size: 13px;
+    color: var(--c-text); outline: none;
+  }
+  .search-wrap input:focus {
+    border-color: var(--c-int-primary);
+    box-shadow: 0 0 0 2px rgba(15,134,93,0.14);
+  }
+  .search-wrap input::placeholder { color: var(--c-text-secondary); }
+  .toolbar-btn {
+    height: 32px; padding: 0 10px;
+    border: 1px solid var(--c-stroke); border-radius: 4px;
+    background: var(--c-bg); cursor: pointer;
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, Arial, sans-serif; font-size: 12px; font-weight: 600;
+    color: var(--c-text); white-space: nowrap;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .toolbar-btn:hover { background: var(--c-surface); }
+  .toolbar-btn.active {
+    background: var(--c-elevated);
+    border-color: var(--c-int-primary);
+    color: var(--c-int-primary);
+  }
+  .toolbar-btn .material-icons { font-size: 14px; }
+  .icon-btn {
+    width: 32px; height: 32px;
+    border: 1px solid var(--c-stroke); border-radius: 4px;
+    background: var(--c-bg); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--c-text);
+  }
+  .icon-btn:hover { background: var(--c-surface); }
+  .icon-btn .material-icons { font-size: 16px; }
+
+  /* Layer list */
+  .layer-list { flex: 1; overflow-y: auto; }
+  .layer-item {
+    display: grid;
+    grid-template-columns: 36px 1fr auto auto auto auto;
+    align-items: center;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--c-stroke);
+    gap: 8px; cursor: pointer;
+    transition: background 120ms;
+  }
+  .layer-item:hover { background: var(--c-surface); }
+
+  .check-icon { display: flex; align-items: center; justify-content: center; }
+  .check-icon .material-icons { font-size: 20px; color: var(--c-int-primary); }
+  .check-icon.off .material-icons { color: var(--c-field-outline); }
+
+  .layer-name { font-size: 14px; font-weight: 600; }
+  .layer-name.muted { color: var(--c-text-secondary); font-weight: 500; }
+
+  .layer-time {
+    font-size: 11px; color: var(--c-text-secondary);
+    text-align: right; line-height: 1.5; white-space: nowrap;
+  }
+  .layer-thumb {
+    width: 30px; height: 30px; border-radius: 3px;
+    background: var(--c-elevated);
+    border: 1px solid var(--c-stroke);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; overflow: hidden;
+  }
+  .layer-thumb .material-icons { font-size: 15px; color: var(--c-text-secondary); }
+  .chevron { color: var(--c-text-secondary); display: flex; align-items: center; }
+  .chevron .material-icons { font-size: 18px; }
+
+  /* Panel footer */
+  .panel-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--c-stroke);
+    flex-shrink: 0;
+  }
+  .clear-row {
+    display: flex; align-items: center; gap: 8px;
+    color: var(--c-text-secondary); font-size: 13px; font-weight: 500;
+    cursor: pointer;
+  }
+  .clear-row:hover { color: var(--c-text); }
+  .clear-row .material-icons { font-size: 18px; }
+
+  /* ── Right map controls ──────────────────────────────────────────── */
+  .map-controls {
+    position: absolute; right: 12px; top: 12px;
+    display: flex; flex-direction: column;
+    align-items: flex-end; gap: 8px; z-index: 10;
+  }
+  .coord-box {
+    background: var(--c-elevated); border: 1px solid var(--c-stroke);
+    border-radius: 4px; padding: 5px 9px;
+    font-family: 'Roboto Mono', monospace; font-size: 11px;
+    color: var(--c-text-secondary); white-space: nowrap;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .map-btn-group {
+    display: flex; flex-direction: column;
+    border: 1px solid var(--c-stroke); border-radius: 4px;
+    overflow: hidden; background: var(--c-elevated);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+  }
+  .map-btn {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border: 0; border-top: 1px solid var(--c-stroke);
+    background: var(--c-elevated); cursor: pointer; color: var(--c-text);
+  }
+  .map-btn:first-child { border-top: 0; }
+  .map-btn:hover { background: var(--c-surface); }
+  .map-btn .material-icons { font-size: 18px; }
+  .fab {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--c-int-primary); color: white;
+    border: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(15,134,93,0.35);
+  }
+  .fab:hover { background: #006842; }
+  .fab .material-icons { font-size: 20px; }
+
+  /* Scrollbar */
+  .layer-list::-webkit-scrollbar { width: 4px; }
+  .layer-list::-webkit-scrollbar-track { background: transparent; }
+  .layer-list::-webkit-scrollbar-thumb { background: var(--c-field-outline); border-radius: 2px; }
+
+  /* Leaflet overrides */
+  .leaflet-control-attribution { font-size: 10px; }
+
+  /* Dark-mode map tiles — the OSM tile provider only serves light tiles,
+     so we recolor them with a filter rather than leaving the map bright
+     white while the rest of the app goes dark. */
+  body[data-mode="dark"] .leaflet-tile-pane {
+    filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.9) saturate(0.85);
+  }
+
+  /* ── Mode toggle ─────────────────────────────────────────────────── */
+  .mode-toggle {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px; border-radius: 999px;
+    border: 1px solid var(--c-stroke);
+    background: var(--c-surface);
+  }
+  .mode-toggle button {
+    appearance: none; border: 0; cursor: pointer;
+    font: inherit; font-size: 12px; font-weight: 600;
+    padding: 5px 12px; border-radius: 999px;
+    background: transparent; color: var(--c-text);
+  }
+  .mode-toggle button[aria-pressed="true"] {
+    background: var(--c-int-primary); color: var(--c-bg);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Topbar ── -->
+  <header class="topbar">
+    <span class="topbar-menu material-icons">menu</span>
+    <img class="topbar-logo" id="topbar-logo" src="assets/EarthRanger-logo-H.svg" alt="EarthRanger" />
+
+    <div class="topbar-center">
+      <div class="city-selector">
+        <div class="city-avatar">S</div>
+        Seattle
+        <span class="material-icons" style="font-size:18px;opacity:0.7">arrow_drop_down</span>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="mode-toggle" role="group" aria-label="Color mode">
+        <button data-mode="light" aria-pressed="true">Light</button>
+        <button data-mode="dark" aria-pressed="false">Dark</button>
+      </div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        Healthy
+        <span class="material-icons" style="font-size:14px;opacity:0.6">arrow_drop_up</span>
+      </div>
+      <div class="notif-wrap">
+        <span class="material-icons">notifications</span>
+        <span class="notif-badge">2</span>
+      </div>
+      <div class="user-pill">
+        <div class="user-avatar">C</div>
+        cassidyt
+      </div>
+    </div>
+  </header>
+
+  <div class="body">
+
+    <!-- ── Sidebar ── -->
+    <nav class="sidebar">
+      <div class="nav-item">
+        <span class="material-icons">event</span>
+        Events
+      </div>
+      <div class="nav-item">
+        <span class="material-icons">directions_walk</span>
+        Patrols
+      </div>
+      <div class="nav-item active">
+        <span class="material-icons">layers</span>
+        Map Layers
+      </div>
+      <div class="nav-spacer"></div>
+      <div class="nav-item">
+        <span class="material-icons">settings</span>
+        Settings
+      </div>
+    </nav>
+
+    <!-- ── Map ── -->
+    <div class="map-area">
+
+      <!-- Map Layers Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Map Layers</span>
+          <button class="panel-close"><span class="material-icons">close</span></button>
+        </div>
+
+        <div class="tabs">
+          <div class="tab active">Subjects</div>
+          <div class="tab">Features</div>
+          <div class="tab">Analyzers</div>
+          <div class="tab">Events</div>
+        </div>
+
+        <div class="panel-toolbar">
+          <div class="search-wrap">
+            <span class="material-icons">search</span>
+            <input type="text" placeholder="Search Layers…" />
+          </div>
+          <button class="toolbar-btn active">Grouped</button>
+          <button class="toolbar-btn">
+            <span class="material-icons">schedule</span>
+            Last update
+          </button>
+          <button class="icon-btn"><span class="material-icons">south</span></button>
+        </div>
+
+        <div class="layer-list">
+
+          <div class="layer-item">
+            <div class="check-icon"><span class="material-icons">check</span></div>
+            <div class="layer-name">Gaby Ballons</div>
+            <div class="layer-time">10 Jun 26 16:25<br>2 minutes</div>
+            <div class="layer-thumb"><span class="material-icons">grain</span></div>
+            <div class="layer-thumb"><span class="material-icons">person</span></div>
+            <div class="chevron"><span class="material-icons">chevron_left</span></div>
+          </div>
+
+          <div class="layer-item">
+            <div class="check-icon"><span class="material-icons">check</span></div>
+            <div class="layer-name">Patrollers</div>
+            <div class="layer-time">10 Jun 26 16:25<br>2 minutes</div>
+            <div class="layer-thumb"><span class="material-icons">grain</span></div>
+            <div class="layer-thumb"><span class="material-icons">person</span></div>
+            <div class="chevron"><span class="material-icons">chevron_left</span></div>
+          </div>
+
+          <div class="layer-item">
+            <div class="check-icon"><span class="material-icons">check</span></div>
+            <div class="layer-name">Rangers</div>
+            <div class="layer-time">10 Jun 26 16:25<br>2 minutes</div>
+            <div class="layer-thumb"><span class="material-icons">grain</span></div>
+            <div class="layer-thumb"><span class="material-icons">person</span></div>
+            <div class="chevron"><span class="material-icons">chevron_left</span></div>
+          </div>
+
+          <div class="layer-item">
+            <div class="check-icon"><span class="material-icons">check</span></div>
+            <div class="layer-name">Subjects</div>
+            <div class="layer-time">10 Jun 26 16:25<br>2 minutes</div>
+            <div class="layer-thumb"><span class="material-icons">grain</span></div>
+            <div class="layer-thumb"><span class="material-icons">person</span></div>
+            <div class="chevron"><span class="material-icons">chevron_left</span></div>
+          </div>
+
+          <div class="layer-item">
+            <div class="check-icon"><span class="material-icons">check</span></div>
+            <div class="layer-name">Vehicles</div>
+            <div class="layer-time">10 Jun 26 15:21<br>1h 6m</div>
+            <div class="layer-thumb"><span class="material-icons">grain</span></div>
+            <div class="layer-thumb"><span class="material-icons">directions_car</span></div>
+            <div class="chevron"><span class="material-icons">chevron_left</span></div>
+          </div>
+
+          <div class="layer-item">
+            <div class="check-icon"><span class="material-icons">check</span></div>
+            <div class="layer-name">Technicians</div>
+            <div class="layer-time">08 Jun 26 16:40<br>1d 23h</div>
+            <div class="layer-thumb"><span class="material-icons">grain</span></div>
+            <div class="layer-thumb"><span class="material-icons">engineering</span></div>
+            <div class="chevron"><span class="material-icons">chevron_left</span></div>
+          </div>
+
+          <div class="layer-item">
+            <div class="check-icon"><span class="material-icons">check</span></div>
+            <div class="layer-name">Gaby Subjects</div>
+            <div class="layer-time">08 Jun 26 16:40<br>1d 23h</div>
+            <div class="layer-thumb"><span class="material-icons">grain</span></div>
+            <div class="layer-thumb"><span class="material-icons">person</span></div>
+            <div class="chevron"><span class="material-icons">chevron_left</span></div>
+          </div>
+
+          <div class="layer-item">
+            <div class="check-icon"><span class="material-icons">check</span></div>
+            <div class="layer-name">New Gaby Group</div>
+            <div class="layer-time">08 Jun 26 16:40<br>1d 23h</div>
+            <div class="layer-thumb"><span class="material-icons">grain</span></div>
+            <div class="layer-thumb"><span class="material-icons">group</span></div>
+            <div class="chevron"><span class="material-icons">chevron_left</span></div>
+          </div>
+
+          <div class="layer-item">
+            <div class="check-icon"><span class="material-icons">check</span></div>
+            <div class="layer-name">Vehicle</div>
+            <div class="layer-time"></div>
+            <div class="layer-thumb"><span class="material-icons">grain</span></div>
+            <div class="layer-thumb"><span class="material-icons">directions_car</span></div>
+            <div class="chevron"><span class="material-icons">chevron_left</span></div>
+          </div>
+
+          <div class="layer-item">
+            <div class="check-icon"><span class="material-icons">check</span></div>
+            <div class="layer-name">Officers</div>
+            <div class="layer-time"></div>
+            <div class="layer-thumb"><span class="material-icons">grain</span></div>
+            <div class="layer-thumb"><span class="material-icons">local_police</span></div>
+            <div class="chevron"><span class="material-icons">chevron_left</span></div>
+          </div>
+
+          <div class="layer-item">
+            <div class="check-icon off"><span class="material-icons">check_box_outline_blank</span></div>
+            <div class="layer-name muted">Inactive Group</div>
+            <div class="layer-time"></div>
+            <div class="layer-thumb"><span class="material-icons">grain</span></div>
+            <div class="layer-thumb"><span class="material-icons">group</span></div>
+            <div class="chevron"><span class="material-icons">chevron_left</span></div>
+          </div>
+
+        </div>
+
+        <div class="panel-footer">
+          <div class="clear-row">
+            <span class="material-icons">check_box_outline_blank</span>
+            Clear All
+          </div>
+        </div>
+      </div>
+
+      <!-- Map canvas + controls -->
+      <div class="map-canvas" style="position:relative;flex:1;">
+      <div id="map" style="width:100%;height:100%;"></div>
+
+      <!-- Right map controls -->
+      <div class="map-controls">
+        <div class="coord-box">
+          <span class="material-icons" style="font-size:13px;color:var(--c-text-secondary)">my_location</span>
+          47.606794°, −122.346607°
+        </div>
+        <button class="fab"><span class="material-icons">add</span></button>
+        <div class="map-btn-group">
+          <button class="map-btn"><span class="material-icons">layers</span></button>
+          <button class="map-btn"><span class="material-icons">place</span></button>
+          <button class="map-btn"><span class="material-icons">edit</span></button>
+          <button class="map-btn"><span class="material-icons">print</span></button>
+          <button class="map-btn"><span class="material-icons">history</span></button>
+        </div>
+        <div class="map-btn-group">
+          <button class="map-btn"><span class="material-icons">add</span></button>
+          <button class="map-btn"><span class="material-icons">remove</span></button>
+        </div>
+      </div><!-- /.map-controls -->
+      </div><!-- /.map-canvas -->
+    </div><!-- /.map-area -->
+
+  </div>
+</div>
+
+<script>
+  // Leaflet map — Seattle
+  const map = L.map('map', {
+    center: [47.606, -122.332],
+    zoom: 13,
+    zoomControl: false,
+  });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19,
+  }).addTo(map);
+
+  // Light/Dark mode toggle
+  const topbarLogo = document.getElementById('topbar-logo');
+  document.querySelectorAll('.mode-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.body.dataset.mode = btn.dataset.mode;
+      document.querySelectorAll('.mode-toggle button').forEach(b => {
+        b.setAttribute('aria-pressed', b.dataset.mode === btn.dataset.mode ? 'true' : 'false');
+      });
+      // DESIGN.md ships a white variant of the wordmark for dark surfaces
+      topbarLogo.src = btn.dataset.mode === 'dark'
+        ? 'assets/EarthRanger-logo-White-H.svg'
+        : 'assets/EarthRanger-logo-H.svg';
+    });
+  });
+
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // Sidebar nav switching
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+
+  // Layer checkbox toggle
+  document.querySelectorAll('.layer-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const check = item.querySelector('.check-icon');
+      const icon = check.querySelector('.material-icons');
+      const name = item.querySelector('.layer-name');
+      check.classList.toggle('off');
+      icon.textContent = check.classList.contains('off') ? 'check_box_outline_blank' : 'check';
+      name.classList.toggle('muted', check.classList.contains('off'));
+    });
+  });
+</script>
+</body>
+</html>
