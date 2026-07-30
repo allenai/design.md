@@ -30,7 +30,7 @@ colors:
   "UI/Background/Primary Background": { light: "#ffffff", dark: "#032629" }
   "UI/Background/Secondary Background": { light: "#faf2e9", dark: "#0a3235" }
   "UI/Background/Tertiary Background": { light: "#e7eeee", dark: "#0a3235" }
-  "UI/Background/Elevated Component": { light: "#ffffff", dark: "#0a3235" }
+  "UI/Background/Elevated Component": { light: "#ffffff", dark: "#032629" }
 
   # Text
   "UI/Text/Primary Text": { light: "#0a3235", dark: "#ffffff" }
