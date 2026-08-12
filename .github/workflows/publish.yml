@@ -1,0 +1,75 @@
+name: Publish package
+
+# Manual, like allenai/varnish's publish workflow — publishing is a deliberate
+# act, not something an ordinary merge should trigger. Bump `version` in
+# package.json, merge that, then run this.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write # create the GitHub release
+  id-token: write # npm provenance attestation
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      # setup-node is what wires up registry auth for `npm publish`, even though
+      # the repo itself builds with bun.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
+
+      - run: bun install --frozen-lockfile
+
+      # Each product's DESIGN.md is generated from strata + its own DESIGN.src.md.
+      # Publishing a stale one would ship a spec nobody can reproduce, and it
+      # would be indistinguishable from a hand-edited file.
+      - name: Verify composed specs match their sources
+        run: |
+          bun run compose
+          if ! git diff --quiet -- '*/DESIGN.md'; then
+            echo "::error::Composed DESIGN.md files are stale. Run 'bun run compose' and commit the result."
+            git --no-pager diff --stat -- '*/DESIGN.md'
+            exit 1
+          fi
+
+      - name: Lint specs
+        run: bun run lint
+
+      - name: Read package identity
+        id: pkg
+        run: |
+          echo "name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
+          echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      # Makes a re-run harmless rather than a hard failure on an already-taken
+      # version.
+      - name: Check whether this version is already on npm
+        id: exists
+        run: |
+          if npm view "${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }}" version >/dev/null 2>&1; then
+            echo "::notice::${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }} is already published — skipping."
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish to npm
+        if: steps.exists.outputs.published == 'false'
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Tag and create a GitHub release
+        if: steps.exists.outputs.published == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.pkg.outputs.version }}
+          name: v${{ steps.pkg.outputs.version }}
+          generate_release_notes: true

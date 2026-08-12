@@ -1,13 +1,49 @@
 {
   "name": "@allenai/design-system",
   "version": "0.1.0",
-  "private": true,
+  "description": "DESIGN.md specs for Ai2's design system and the products that use it",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/allenai/design.md#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allenai/design.md.git"
+  },
+  "keywords": [
+    "design.md",
+    "design-system",
+    "design-tokens",
+    "ai2"
+  ],
   "type": "module",
+  "files": [
+    "strata",
+    "asta",
+    "olmo-earth",
+    "earthranger",
+    "docs/spec.md",
+    "!earthranger/mockup-map-layers.html"
+  ],
+  "exports": {
+    "./strata": "./strata/DESIGN.md",
+    "./asta": "./asta/DESIGN.md",
+    "./olmo-earth": "./olmo-earth/DESIGN.md",
+    "./earthranger": "./earthranger/DESIGN.md",
+    "./strata/voice": "./strata/VOICE.md",
+    "./asta/voice": "./asta/VOICE.md",
+    "./olmo-earth/voice": "./olmo-earth/VOICE.md",
+    "./assets/*": "./strata/assets/*",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "compose:asta": "bun run scripts/compose.ts --base strata/DESIGN.md --overlay asta/DESIGN.src.md --out asta/DESIGN.md",
     "compose:olmo-earth": "bun run scripts/compose.ts --base strata/DESIGN.md --overlay olmo-earth/DESIGN.src.md --out olmo-earth/DESIGN.md",
     "compose": "bun run compose:asta && bun run compose:olmo-earth",
-    "lint": "npx @google/design.md lint strata/DESIGN.md && npx @google/design.md lint asta/DESIGN.md && npx @google/design.md lint olmo-earth/DESIGN.md"
+    "lint": "npx @google/design.md lint strata/DESIGN.md && npx @google/design.md lint asta/DESIGN.md && npx @google/design.md lint olmo-earth/DESIGN.md",
+    "verify:composed": "bun run compose && git diff --exit-code -- '*/DESIGN.md'"
   },
   "dependencies": {
     "yaml": "^2.7.1"
