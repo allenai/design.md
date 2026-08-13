@@ -16,6 +16,13 @@
  *     JS consumer may want `8`, and this file has to serve both.
  *   - Includes the `components` section, which `@google/design.md export` omits
  *     from every format it supports.
+ *
+ * With `--types` it also writes a `.d.ts` of named types for the same tokens.
+ * TypeScript already infers the JSON's shape precisely; what it can't give you is
+ * a name to write in your own signatures, which is what these are for. They are
+ * derived from the emitted values rather than hand-written, because products
+ * don't share a shape — earthranger nests its colors and typography where the
+ * others are flat.
  */
 
 import { readFileSync, writeFileSync } from 'fs';
@@ -31,9 +38,10 @@ const get = (flag: string) => {
 
 const specFile = get('--spec');
 const outFile = get('--out');
+const typesFile = get('--types');
 
 if (!specFile) {
-  console.error('Usage: emit-tokens.ts --spec <file> [--out <file>]');
+  console.error('Usage: emit-tokens.ts --spec <file> [--out <file>] [--types <file>]');
   process.exit(1);
 }
 
@@ -80,6 +88,94 @@ function resolveValue(value: unknown, tree: Tree): unknown {
   );
 }
 
+// ── Type emission ──────────────────────────────────────────────────
+
+type Group = (typeof GROUPS)[number];
+
+const TYPE_NAMES: Record<Group, { collection: string; key: string }> = {
+  colors: { collection: 'Colors', key: 'ColorName' },
+  typography: { collection: 'Typography', key: 'TypographyName' },
+  spacing: { collection: 'Spacing', key: 'SpacingName' },
+  rounded: { collection: 'Rounded', key: 'RoundedName' },
+  components: { collection: 'Components', key: 'ComponentName' },
+};
+
+const isIdentifier = (key: string) => /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key);
+
+function printType(value: unknown, indent: string): string {
+  if (value === null) return 'null';
+  if (Array.isArray(value)) {
+    const members = [...new Set(value.map((item) => printType(item, indent)))];
+    return `readonly (${members.join(' | ')})[]`;
+  }
+  if (typeof value === 'object') {
+    const inner = `${indent}  `;
+    const fields = Object.entries(value as Tree).map(
+      ([key, nested]) =>
+        `${inner}${isIdentifier(key) ? key : JSON.stringify(key)}: ${printType(nested, inner)};`,
+    );
+    return `{\n${fields.join('\n')}\n${indent}}`;
+  }
+  return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean'
+    ? typeof value
+    : 'unknown';
+}
+
+const isPlainObject = (value: unknown): value is Tree =>
+  value !== null && typeof value === 'object' && !Array.isArray(value);
+
+/** Every sub-token any member defines, optional where not every member defines it.
+ *  Only meaningful for a group whose members disagree — a hover state carries just
+ *  the properties it changes, so no single property is common to all components and
+ *  the plain union of their shapes can't be read from. */
+function printPermissiveType(members: Tree[]): string {
+  const keys = [...new Set(members.flatMap((member) => Object.keys(member)))];
+  const fields = keys.map((key) => {
+    const owner = members.find((member) => key in member)!;
+    const optional = members.some((member) => !(key in member)) ? '?' : '';
+    const name = isIdentifier(key) ? key : JSON.stringify(key);
+    return `  ${name}${optional}: ${printType(owner[key], '  ')};`;
+  });
+  return `{\n${fields.join('\n')}\n}`;
+}
+
+function emitTypes(tokens: Tree, present: readonly Group[]): string {
+  const blocks = [`// Generated from ${specFile} by scripts/emit-tokens.ts. Do not edit.`];
+
+  for (const group of present) {
+    const { collection, key } = TYPE_NAMES[group];
+    const singular = key.replace(/Name$/, '');
+    blocks.push(`export interface ${collection} ${printType(tokens[group], '')}`);
+    blocks.push(`export type ${key} = keyof ${collection};`);
+
+    const members = Object.values(tokens[group]);
+    if (!members.every(isPlainObject)) continue;
+
+    const shapes = new Set(members.map((member) => Object.keys(member).sort().join(',')));
+    if (shapes.size === 1) {
+      blocks.push(`export type ${singular}Token = ${collection}[${key}];`);
+    } else {
+      blocks.push(`export type ${singular}Token<K extends ${key}> = ${collection}[K];`);
+      blocks.push(`export interface Any${singular}Token ${printPermissiveType(members)}`);
+    }
+  }
+
+  blocks.push(`export type GroupName = ${present.map((g) => JSON.stringify(g)).join(' | ')};`);
+  blocks.push(
+    [
+      'export interface Tokens {',
+      '  $name: string;',
+      '  $version: string | null;',
+      '  $description: string | null;',
+      '  $groups: readonly string[];',
+      ...present.map((group) => `  ${group}: ${TYPE_NAMES[group].collection};`),
+      '}',
+    ].join('\n'),
+  );
+
+  return `${blocks.join('\n\n')}\n`;
+}
+
 // ── Main ───────────────────────────────────────────────────────────
 
 const spec = readFileSync(specFile, 'utf8');
@@ -114,4 +210,9 @@ if (outFile) {
   console.log(`Emitted ${count} tokens → ${outFile}`);
 } else {
   process.stdout.write(output);
+}
+
+if (typesFile) {
+  writeFileSync(typesFile, emitTypes(tokens, present));
+  console.log(`Emitted types → ${typesFile}`);
 }

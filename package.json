@@ -34,9 +34,21 @@
     "./assets/*": "./strata/assets/*",
     "./package.json": "./package.json",
     "./strata/tokens.json": "./strata/tokens.json",
+    "./strata/types": {
+      "types": "./strata/tokens.d.ts"
+    },
     "./asta/tokens.json": "./asta/tokens.json",
+    "./asta/types": {
+      "types": "./asta/tokens.d.ts"
+    },
     "./olmo-earth/tokens.json": "./olmo-earth/tokens.json",
-    "./earthranger/tokens.json": "./earthranger/tokens.json"
+    "./olmo-earth/types": {
+      "types": "./olmo-earth/tokens.d.ts"
+    },
+    "./earthranger/tokens.json": "./earthranger/tokens.json",
+    "./earthranger/types": {
+      "types": "./earthranger/tokens.d.ts"
+    }
   },
   "publishConfig": {
     "access": "public",
@@ -48,12 +60,12 @@
     "compose": "bun run compose:asta && bun run compose:olmo-earth",
     "lint": "npx @google/design.md lint strata/DESIGN.md && npx @google/design.md lint asta/DESIGN.md && npx @google/design.md lint olmo-earth/DESIGN.md",
     "verify:composed": "bun run compose && git diff --exit-code -- '*/DESIGN.md'",
-    "tokens:strata": "bun run scripts/emit-tokens.ts --spec strata/DESIGN.md --out strata/tokens.json",
-    "tokens:asta": "bun run scripts/emit-tokens.ts --spec asta/DESIGN.md --out asta/tokens.json",
-    "tokens:olmo-earth": "bun run scripts/emit-tokens.ts --spec olmo-earth/DESIGN.md --out olmo-earth/tokens.json",
-    "tokens:earthranger": "bun run scripts/emit-tokens.ts --spec earthranger/DESIGN.md --out earthranger/tokens.json",
+    "tokens:strata": "bun run scripts/emit-tokens.ts --spec strata/DESIGN.md --out strata/tokens.json --types strata/tokens.d.ts",
+    "tokens:asta": "bun run scripts/emit-tokens.ts --spec asta/DESIGN.md --out asta/tokens.json --types asta/tokens.d.ts",
+    "tokens:olmo-earth": "bun run scripts/emit-tokens.ts --spec olmo-earth/DESIGN.md --out olmo-earth/tokens.json --types olmo-earth/tokens.d.ts",
+    "tokens:earthranger": "bun run scripts/emit-tokens.ts --spec earthranger/DESIGN.md --out earthranger/tokens.json --types earthranger/tokens.d.ts",
     "tokens": "bun run tokens:strata && bun run tokens:asta && bun run tokens:olmo-earth && bun run tokens:earthranger",
-    "verify:tokens": "bun run tokens && git diff --exit-code -- '*/tokens.json'",
+    "verify:tokens": "bun run tokens && git diff --exit-code -- '*/tokens.json' '*/tokens.d.ts'",
     "build": "bun run compose && bun run tokens"
   },
   "dependencies": {
