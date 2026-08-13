@@ -30,12 +30,15 @@ jobs:
       # Each product's DESIGN.md is generated from strata + its own DESIGN.src.md.
       # Publishing a stale one would ship a spec nobody can reproduce, and it
       # would be indistinguishable from a hand-edited file.
-      - name: Verify composed specs match their sources
+      # Each product's DESIGN.md is generated from strata + its own DESIGN.src.md,
+      # and each tokens.json is generated from the composed DESIGN.md. Publishing a
+      # stale one would ship values nobody can reproduce from the source.
+      - name: Verify composed specs and tokens match their sources
         run: |
-          bun run compose
-          if ! git diff --quiet -- '*/DESIGN.md'; then
-            echo "::error::Composed DESIGN.md files are stale. Run 'bun run compose' and commit the result."
-            git --no-pager diff --stat -- '*/DESIGN.md'
+          bun run build
+          if ! git diff --quiet -- '*/DESIGN.md' '*/tokens.json'; then
+            echo "::error::Generated files are stale. Run 'bun run build' and commit the result."
+            git --no-pager diff --stat -- '*/DESIGN.md' '*/tokens.json'
             exit 1
           fi
 

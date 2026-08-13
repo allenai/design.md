@@ -32,7 +32,11 @@
     "./asta/voice": "./asta/VOICE.md",
     "./olmo-earth/voice": "./olmo-earth/VOICE.md",
     "./assets/*": "./strata/assets/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./strata/tokens.json": "./strata/tokens.json",
+    "./asta/tokens.json": "./asta/tokens.json",
+    "./olmo-earth/tokens.json": "./olmo-earth/tokens.json",
+    "./earthranger/tokens.json": "./earthranger/tokens.json"
   },
   "publishConfig": {
     "access": "public",
@@ -43,7 +47,14 @@
     "compose:olmo-earth": "bun run scripts/compose.ts --base strata/DESIGN.md --overlay olmo-earth/DESIGN.src.md --out olmo-earth/DESIGN.md",
     "compose": "bun run compose:asta && bun run compose:olmo-earth",
     "lint": "npx @google/design.md lint strata/DESIGN.md && npx @google/design.md lint asta/DESIGN.md && npx @google/design.md lint olmo-earth/DESIGN.md",
-    "verify:composed": "bun run compose && git diff --exit-code -- '*/DESIGN.md'"
+    "verify:composed": "bun run compose && git diff --exit-code -- '*/DESIGN.md'",
+    "tokens:strata": "bun run scripts/emit-tokens.ts --spec strata/DESIGN.md --out strata/tokens.json",
+    "tokens:asta": "bun run scripts/emit-tokens.ts --spec asta/DESIGN.md --out asta/tokens.json",
+    "tokens:olmo-earth": "bun run scripts/emit-tokens.ts --spec olmo-earth/DESIGN.md --out olmo-earth/tokens.json",
+    "tokens:earthranger": "bun run scripts/emit-tokens.ts --spec earthranger/DESIGN.md --out earthranger/tokens.json",
+    "tokens": "bun run tokens:strata && bun run tokens:asta && bun run tokens:olmo-earth && bun run tokens:earthranger",
+    "verify:tokens": "bun run tokens && git diff --exit-code -- '*/tokens.json'",
+    "build": "bun run compose && bun run tokens"
   },
   "dependencies": {
     "yaml": "^2.7.1"
