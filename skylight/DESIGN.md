@@ -143,32 +143,34 @@ typography:
     fontWeight: 400
     lineHeight: 1.6
 
-  # ── Marketing display scale ───────────────────────────────────────
-  # Roboto Light at large sizes, tracked slightly open.
-  marketing-h1:
+  # ── Legacy web scale ──────────────────────────────────────────────
+  # What skylight.global ships today: Roboto Light, tracked open. This
+  # records the current site so work on it stays consistent. It is NOT
+  # a target — new external material uses the Manrope scale below.
+  legacy-web-h1:
     fontFamily: Roboto, Arial, sans-serif
     fontSize: 60px
     fontWeight: 300
     lineHeight: 1.1
     letterSpacing: 0.05rem
-  marketing-h2:
+  legacy-web-h2:
     fontFamily: Roboto, Arial, sans-serif
     fontSize: 46px
     fontWeight: 300
     lineHeight: 1.13
     letterSpacing: 0.05rem
-  marketing-h3:
+  legacy-web-h3:
     fontFamily: Roboto, Arial, sans-serif
     fontSize: 30px
     fontWeight: 500
     lineHeight: 1.27
     letterSpacing: 0.05rem
-  marketing-body:
+  legacy-web-body:
     fontFamily: Roboto, Arial, sans-serif
     fontSize: 22px
     fontWeight: 300
     lineHeight: 1.36
-  marketing-cta:
+  legacy-web-cta:
     fontFamily: Roboto, Arial, sans-serif
     fontSize: 18px
     fontWeight: 500
@@ -176,8 +178,9 @@ typography:
     letterSpacing: 0.05rem
 
   # ── External communications ───────────────────────────────────────
-  # Manrope. Decks, one-pagers, newsletters, printed material. Never
-  # used in the product interface.
+  # Manrope. The scale for ALL externally-facing work: decks,
+  # one-pagers, newsletters, printed material, and marketing pages.
+  # Never used in the product interface.
   external-display:
     fontFamily: Manrope, Arial, sans-serif
     fontSize: 58px
@@ -317,9 +320,9 @@ The marketing values (`web-deep-teal`, `web-sea-foam`, `web-mint`) are what skyl
 
 The product interface uses **Roboto Slab** for headings and **Roboto** for body text, at weights 400, 500, and 700 only. Both are pulled from a web font service, so always keep a native fallback in the stack — Skylight is used on poor connections, and a font that blocks rendering is a delay in reading an alert.
 
-Marketing surfaces use the display scale: Roboto Light at 60px and 46px for the two headline levels, Roboto Medium at 30px for uppercase tags, Roboto Light at 22px for body, all tracked at 0.05rem. Roboto Condensed serves headers and labels where space is tight.
+**Manrope is the typeface for all externally-facing work** — slide decks, one-pagers, email newsletters, printed material, and marketing pages. It aligns Skylight's external voice with Ai2's brand typography. It is never used in the product interface, which stays on Roboto and Roboto Slab. Regular and Bold cover nearly everything; Light (300) is reserved for large figures on impact slides, where the size supports the thin strokes.
 
-**Manrope is the typeface for externally-facing communications only** — slide decks, one-pagers, email newsletters, printed material, and marketing pages. It aligns Skylight's external voice with Ai2's brand typography. It is never used in the product interface, which stays on Roboto and Roboto Slab. Regular and Bold cover nearly everything; Light (300) is reserved for large figures on impact slides, where the size supports the thin strokes.
+The `legacy-web-*` scale records what skylight.global ships today — Roboto Light at 60px and 46px for the two headline levels, Roboto Medium at 30px for uppercase tags, Roboto Light at 22px for body, all tracked at 0.05rem, with Roboto Condensed for tight labels. Reach for it only when working on the existing site and matching pages you are not changing. It is documentation of the current state, not a target: new external material uses Manrope, and the site is expected to follow.
 
 Two practical notes for anyone setting Manrope. It has **no arrow glyphs** — a typed `→`, `←`, `↑`, or `↓` silently falls back to a system font mid-line, which is visible as a weight and shape break. Use an icon or inline SVG instead. It does cover `²`, `–`, `—`, `·`, and `$`, so those are safe to type.
 
