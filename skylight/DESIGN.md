@@ -405,6 +405,8 @@ Statistics earn a distinct treatment: a Deep Sea ground with figures in Sea Foam
 
 **Don't put white text on Endless Sky teal or Sea Foam.** White on `#3ab5c5` measures 2.44:1. Use `text-primary` on the light teals — 7.41:1 on Endless Sky, 9.92:1 on Sea Foam. White is safe on Medium Teal (4.67:1), Deep Sea (12.75:1), and Horizon (12.66:1). White on Dark Teal is 3.44:1, so large text and UI elements only.
 
+**Don't number pages or slides.** Decks get reordered, re-cut, and re-sectioned constantly, and numbering turns every one of those edits into a renumbering job. Add numbers only when they are explicitly asked for.
+
 **Don't use red for anything but alerts.** `alert-red` means "this needs attention now." Decorative use erodes the signal analysts rely on to triage.
 
 **Don't design for a dark mode.** The product ships a single light theme. A layout that assumes an inverse variant will not have one.
