@@ -37,20 +37,26 @@ jobs:
 
       - run: bun install --frozen-lockfile
 
-      # Each product's DESIGN.md is generated from strata + its own DESIGN.src.md.
-      # Publishing a stale one would ship a spec nobody can reproduce, and it
-      # would be indistinguishable from a hand-edited file.
-      # Each product's DESIGN.md is generated from strata + its own DESIGN.src.md,
-      # and each tokens.json is generated from the composed DESIGN.md. Publishing a
-      # stale one would ship values nobody can reproduce from the source.
-      - name: Verify composed specs and tokens match their sources
+      # Nobody should need bun on their machine to cut a release: a spec edited in
+      # the browser leaves the composed DESIGN.md and tokens.json behind, so the
+      # release rebuilds them and commits the result before tagging. This also
+      # makes a hand-edited generated file harmless — it gets overwritten rather
+      # than shipped, which is what the old staleness check was protecting against.
+      - name: Rebuild generated files
+        run: bun run build
+
+      - name: Commit anything that changed
         run: |
-          bun run build
-          if ! git diff --quiet -- '*/DESIGN.md' '*/tokens.json' '*/tokens.dtcg.json'; then
-            echo "::error::Generated files are stale. Run 'bun run build' and commit the result."
-            git --no-pager diff --stat -- '*/DESIGN.md' '*/tokens.json' '*/tokens.dtcg.json'
-            exit 1
+          if git diff --quiet -- '*/DESIGN.md' '*/tokens.json'; then
+            echo "::notice::Generated files were already up to date."
+            exit 0
           fi
+          git --no-pager diff --stat -- '*/DESIGN.md' '*/tokens.json'
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- '*/DESIGN.md' '*/tokens.json'
+          git commit -m "chore: rebuild generated files for v$(node -p "require('./package.json').version")"
+          git push
 
       - name: Lint specs
         run: bun run lint

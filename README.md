@@ -115,7 +115,6 @@ npx @google/design.md export --format json-tailwind strata/DESIGN.md > strata/ta
 npx @google/design.md export --format css-tailwind strata/DESIGN.md > strata/theme.css
 
 # W3C Design Tokens (DTCG) — interoperable with Figma, Style Dictionary, etc.
-# (run for you by `bun run build`; see below)
 npx @google/design.md export --format dtcg strata/DESIGN.md > strata/tokens.dtcg.json
 ```
 
@@ -127,16 +126,13 @@ Use these when the destination is another design-token tool.
 bun run build     # compose + tokens; run this before committing
 ```
 
-Three steps. `compose` regenerates the products that overlay Strata (Asta, OlmoEarth) from `strata/DESIGN.md` plus their own `DESIGN.src.md`. `tokens` writes each product's `tokens.json`. `dtcg` writes `tokens.dtcg.json` through the CLI. All of it is committed, and all of it is published.
+Two steps. `compose` regenerates the products that overlay Strata (Asta, OlmoEarth) from `strata/DESIGN.md` plus their own `DESIGN.src.md`. `tokens` writes each product's `tokens.json`, which is what a product theme reads. Both are committed and published.
 
-**Two token files ship per product, because they answer different questions:**
+You don't have to run this by hand: the Release workflow rebuilds and commits before it tags, so editing a spec in the browser is enough.
 
-- `<product>/tokens.json` — a faithful mirror of the frontmatter, for building a product theme
-- `<product>/tokens.dtcg.json` — the [W3C Design Tokens](https://www.designtokens.org) format, for Figma, Style Dictionary, and anything else that speaks it
+`tokens.json` is deliberately not the CLI's DTCG export, and the difference is what makes it usable in code:
 
-Those files are **not** the DTCG export, and the difference matters:
-
-| | `export --format dtcg` | `bun run build` |
+| | `export --format dtcg` | `tokens.json` |
 |---|---|---|
 | `components` section | omitted | included — all 50 for OlmoEarth |
 | `lineHeight` on typography | dropped | kept |
@@ -144,11 +140,8 @@ Those files are **not** the DTCG export, and the difference matters:
 | sizes | split into `{ value, unit }` | verbatim, `"16px"` |
 | group names | renamed (`color`) | as written (`colors`) |
 
-The DTCG format is a lossy translation into a shared interchange shape — fine for handing tokens to Figma or Style Dictionary, not enough to build a product theme from, since half the component layer and every line-height would be missing. `bun run build` is a faithful mirror of what's in the frontmatter, with `{colors.teal}`-style references resolved so consumers never implement the reference syntax.
+The DTCG format is a lossy translation into a shared interchange shape — good for handing tokens to Figma or Style Dictionary, not enough to build a product theme from, since half the component layer and every line-height would be missing. If you ever need it, the CLI command above writes it on demand; nothing in this repo generates it, because nothing consumes it yet.
 
-Neither file replaces the other, which is why both ship. Reach for `tokens.json` to style a product and `tokens.dtcg.json` to hand tokens to another tool.
-
-The `dtcg` scripts pin the CLI to an exact version — `npx @google/design.md@0.4.0` — rather than tracking latest. Its output is committed and the publish workflow refuses to ship a generated file that doesn't match, so an upstream formatting change would otherwise break publishing at a moment nobody chose.
 
 ## Using these specs in a product
 
@@ -178,8 +171,6 @@ GitHub — not versioning itself.
 ```js
 // The tokens, as plain JSON with every reference already resolved to a literal
 import tokens from "@allenai/design-system/olmo-earth/tokens.json";
-// …or the same tokens in W3C DTCG format, for Figma / Style Dictionary
-import dtcg from "@allenai/design-system/olmo-earth/tokens.dtcg.json";
 tokens.colors["dark-teal"];             // "#0a3235"
 tokens.components["button-default"];    // { backgroundColor, textColor, typography, … }
 
