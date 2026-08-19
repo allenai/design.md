@@ -36,9 +36,9 @@ jobs:
       - name: Verify composed specs and tokens match their sources
         run: |
           bun run build
-          if ! git diff --quiet -- '*/DESIGN.md' '*/tokens.json' '*/tokens.d.ts'; then
+          if ! git diff --quiet -- '*/DESIGN.md' '*/tokens.json' '*/tokens.d.ts' '*/tokens.dtcg.json'; then
             echo "::error::Generated files are stale. Run 'bun run build' and commit the result."
-            git --no-pager diff --stat -- '*/DESIGN.md' '*/tokens.json' '*/tokens.d.ts'
+            git --no-pager diff --stat -- '*/DESIGN.md' '*/tokens.json' '*/tokens.d.ts' '*/tokens.dtcg.json'
             exit 1
           fi
 

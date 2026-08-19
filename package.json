@@ -38,18 +38,22 @@
     "./assets/*": "./strata/assets/*",
     "./package.json": "./package.json",
     "./strata/tokens.json": "./strata/tokens.json",
+    "./strata/tokens.dtcg.json": "./strata/tokens.dtcg.json",
     "./strata/types": {
       "types": "./strata/tokens.d.ts"
     },
     "./asta/tokens.json": "./asta/tokens.json",
+    "./asta/tokens.dtcg.json": "./asta/tokens.dtcg.json",
     "./asta/types": {
       "types": "./asta/tokens.d.ts"
     },
     "./olmo-earth/tokens.json": "./olmo-earth/tokens.json",
+    "./olmo-earth/tokens.dtcg.json": "./olmo-earth/tokens.dtcg.json",
     "./olmo-earth/types": {
       "types": "./olmo-earth/tokens.d.ts"
     },
     "./earthranger/tokens.json": "./earthranger/tokens.json",
+    "./earthranger/tokens.dtcg.json": "./earthranger/tokens.dtcg.json",
     "./earthranger/types": {
       "types": "./earthranger/tokens.d.ts"
     }
@@ -70,7 +74,13 @@
     "tokens:earthranger": "bun run scripts/emit-tokens.ts --spec earthranger/DESIGN.md --out earthranger/tokens.json --types earthranger/tokens.d.ts",
     "tokens": "bun run tokens:strata && bun run tokens:asta && bun run tokens:olmo-earth && bun run tokens:earthranger",
     "verify:tokens": "bun run tokens && git diff --exit-code -- '*/tokens.json' '*/tokens.d.ts'",
-    "build": "bun run compose && bun run tokens"
+    "build": "bun run compose && bun run tokens && bun run dtcg",
+    "dtcg:strata": "npx @google/design.md@0.4.0 export --format dtcg strata/DESIGN.md > strata/tokens.dtcg.json",
+    "dtcg:asta": "npx @google/design.md@0.4.0 export --format dtcg asta/DESIGN.md > asta/tokens.dtcg.json",
+    "dtcg:olmo-earth": "npx @google/design.md@0.4.0 export --format dtcg olmo-earth/DESIGN.md > olmo-earth/tokens.dtcg.json",
+    "dtcg:earthranger": "npx @google/design.md@0.4.0 export --format dtcg earthranger/DESIGN.md > earthranger/tokens.dtcg.json",
+    "dtcg": "bun run dtcg:strata && bun run dtcg:asta && bun run dtcg:olmo-earth && bun run dtcg:earthranger",
+    "verify:dtcg": "bun run dtcg && git diff --exit-code -- '*/tokens.dtcg.json'"
   },
   "dependencies": {
     "yaml": "^2.7.1"
