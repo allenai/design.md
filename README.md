@@ -200,7 +200,7 @@ The workflow authenticates with an `NPM_AUTH_TOKEN` repository secret today. Onc
 the package exists on npm, that can be replaced with [trusted
 publishing](https://docs.npmjs.com/trusted-publishers): npm issues a short-lived
 credential scoped to this one workflow, so there's no long-lived token to rotate,
-leak, or own. The workflow already has the `id-token: write` permission and a new
+leak, or own. The release workflow already has the `id-token: write` permission and a new
 enough npm for it — enabling it is a setting on the package's npmjs.com page,
 after which the secret can be deleted.
 

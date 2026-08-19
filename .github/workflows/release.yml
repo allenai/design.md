@@ -1,8 +1,11 @@
-name: Publish package
+name: Release
 
-# Manual, like allenai/varnish's publish workflow — publishing is a deliberate
-# act, not something an ordinary merge should trigger. Bump `version` in
-# package.json, merge that, then run this.
+# Manual: cutting a version is a deliberate act, not something an ordinary merge
+# should trigger. Bump `version` in package.json, merge that, then run this.
+#
+# It tags the commit and creates a GitHub release, which is what makes a version
+# installable — `npm install "github:allenai/design.md#semver:^0.1.0"` resolves
+# against those tags. It also publishes to npm when an NPM_AUTH_TOKEN exists.
 on:
   workflow_dispatch:
 
