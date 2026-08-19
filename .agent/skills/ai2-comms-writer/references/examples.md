@@ -34,7 +34,7 @@ Lead paragraph (first body, with the strongest result + practical translation):
 
 - `On our held-out evaluation, IFBench scores correlate with downstream multi-step agent success at +0.7, compared with +0.3 for the prior generation of instruction benchmarks—delivering a far sharper signal for post-training research. That means teams can use IFBench to iterate on long-chain instruction following without first running expensive end-to-end agent evaluations.`
 
-For full newsletter format rules, see `.agent/skills/ai2-comms-style-source/references/newsletter-format.md`; for the genre shape, `.agent/skills/ai2-comms-style-source/references/worked-shapes.md`.
+For full newsletter format rules and a worked example, see `.agent/skills/ai2-comms-style-source/references/newsletter-format.md` and `.agent/skills/ai2-comms-style-source/references/newsletter-example.md`.
 
 ## Intro Pattern
 

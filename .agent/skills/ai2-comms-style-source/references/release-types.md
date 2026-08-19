@@ -118,7 +118,7 @@ Definition: monthly or themed bundling of recent releases, updates, and events. 
 
 Positioning: see `references/newsletter-format.md` for the full format. Lead story is one current release framed for the newsletter audience; roundup items are signals, not launches; event coverage carries practical specifics.
 
-Key files: `references/newsletter-format.md`, `references/worked-shapes.md`.
+Key files: `references/newsletter-format.md`, `references/newsletter-example.md`.
 
 Anchor: any monthly Ai2 newsletter.
 

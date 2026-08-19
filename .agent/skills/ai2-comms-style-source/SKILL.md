@@ -39,9 +39,9 @@ Read only what the task needs:
 - `references/approval-gates.md` for sensitive partner, deployment, customer, and external-positioning claims.
 - `references/ai-prose-to-avoid.md` when copy feels fluent but generic, metaphor-heavy, emotionally inflated, or AI-inflected.
 - `references/house-style-patterns.md` for opening forms, the canonical long-form arc, heading conventions, the Ai2 house lexicon, hedging forms, comparison framing patterns, and CTA conventions.
-- `references/newsletter-format.md` when drafting or reviewing an Ai2 newsletter (lead story plus news roundup plus event coverage).
-- `references/worked-shapes.md` for the genre shapes — long-form research blog, testimonial, newsletter — distilled to the moves that make each work.
-- `references/sunset-example.md` when a demo or application is being retired; it is the one fully worked example kept here.
+- `references/newsletter-format.md` when drafting or reviewing an Ai2 newsletter (lead story plus news roundup plus event coverage). Pair with `references/newsletter-example.md` for a concrete shape and rhythm reference.
+- `references/worked-shapes.md` for the genre shapes not carried as full examples — long-form research blog and testimonial — distilled to the moves that make each work.
+- `references/sunset-example.md` when a demo or application is being retired.
 - `references/release-types.md` to identify the release type before drafting and walk the per-type positioning notes (research platform, model release, benchmark, dataset, tool, application, update, research blog, newsletter recap).
 - `references/platform-positioning.md` when communicating Olmo or another platform line (Tülu, Molmo, OlmoEarth at maturity) — the Continue/Stop/Start framing for the next phase of Ai2 platform comms.
 - `references/anchor-patterns.md` for canonical templates and the before/after anchor library.

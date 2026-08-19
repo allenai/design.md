@@ -5,8 +5,9 @@ the genre work, at a level that transfers to a new subject. Read the entry for t
 are drafting before you start — the wrong shape is expensive to fix after the fact, because
 drafting a testimonial as a launch post and trimming it afterward produces launch-post bones.
 
-`references/sunset-example.md` is the one fully worked example kept in this repository. The rest of the
-genres are described here rather than reproduced, so this file carries no unreleased copy.
+Two genres are carried as full worked examples instead: `references/newsletter-example.md`
+and `references/sunset-example.md`. The genres below are described rather than reproduced, so
+this file carries no unreleased copy.
 
 ## Long-form research blog amplifying a co-authored paper
 
@@ -65,9 +66,10 @@ own interview answers. Format rules live in `references/release-types.md` (Genre
 
 ## Newsletter
 
-Lead story, three-to-five-item news roundup, optional event coverage. The full rules are in
-`references/newsletter-format.md`; that file is the authority and this entry does not restate it.
+Carried as a full worked example — see `references/newsletter-example.md` for the shape and
+`references/newsletter-format.md` for the rules.
 
-The lead-story headline is the one structural exception to carrying the source blog's opening
-form across surfaces: it is always announcement-first with an em-dash quantified benefit,
-regardless of how the source blog opens.
+One rule is worth repeating here because it cuts across genres: the lead-story headline is the
+single structural exception to carrying the source blog's opening form across surfaces. It is
+always announcement-first with an em-dash quantified benefit, regardless of how the source blog
+opens.

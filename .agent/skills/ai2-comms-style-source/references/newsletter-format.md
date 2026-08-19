@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Distilled format for Ai2 newsletters. Read this when drafting a newsletter; pair with `references/house-style-patterns.md` for voice and arc, `references/ai-prose-to-avoid.md` for revision, and `references/worked-shapes.md` for the genre shapes.
+Distilled format for Ai2 newsletters. Read this when drafting a newsletter; pair with `references/house-style-patterns.md` for voice and arc, `references/ai-prose-to-avoid.md` for revision, and `references/newsletter-example.md` for a concrete shape and rhythm reference.
 
 Newsletters are distinct from launch blogs and social posts. A newsletter bundles one lead story (a current release), a news roundup of three to five secondary projects, and event coverage when applicable. The voice and lexicon are the canonical Ai2 voice; what changes is the bundling, the length per item, and the rhythm.
 
@@ -145,7 +145,7 @@ The stripping test: after compression, can a wide-audience reader explain what t
 
 ## See Also
 
-- `references/worked-shapes.md` — genre shapes, including the newsletter lead-story headline exception.
+- `references/newsletter-example.md` — concrete worked example.
 - `references/house-style-patterns.md` — opening forms, canonical arc, hedging forms, comparison framing, CTA conventions.
 - `references/ai-prose-to-avoid.md` — revision diagnostic when copy drifts toward AI-smooth.
 - `references/claims-and-benchmarks.md` — comparison framing scaffold and benchmark caveats.

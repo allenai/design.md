@@ -42,10 +42,11 @@ overrides the other.
 specific gated partners, deployments, and customers is maintained by the Ai2
 comms team and is deliberately not recorded in this public repository.
 
-**Worked examples are limited to published copy.** The skills reference one fully
-worked example, `sunset-example.md`, drawn from a post that is live. Every other
-genre is described in `worked-shapes.md` as a set of transferable moves rather
-than reproduced, so this repository carries no unpublished Ai2 drafts.
+**Worked examples are limited to published copy.** Two full examples ship —
+`newsletter-example.md` and `sunset-example.md` — both drawn from copy that is
+live. The remaining genres are described in `worked-shapes.md` as transferable
+moves rather than reproduced, so this repository carries no unpublished Ai2
+drafts.
 
 ## Layout
 

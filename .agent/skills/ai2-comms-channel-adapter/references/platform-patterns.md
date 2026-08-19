@@ -375,7 +375,7 @@ A newsletter bundles a lead story, a news roundup of three to five items, and op
 - News roundup: two to three sentences per item, bold project name, the biggest concrete number, one CTA (`Try it now` or `Read more`).
 - Event coverage: practical specifics (day, date, time, speakers, partners, booth numbers), closing with `We look forward to seeing you there!`.
 
-For the full rules, use `.agent/skills/ai2-comms-style-source/references/newsletter-format.md`. Do not improvise the format from the launch-blog pattern alone — newsletters have distinct headline, paragraph, and roundup-item discipline.
+For the full rules and a worked example, use `.agent/skills/ai2-comms-style-source/references/newsletter-format.md` and `.agent/skills/ai2-comms-style-source/references/newsletter-example.md`. Do not improvise the format from the launch-blog pattern alone — newsletters have distinct headline, paragraph, and roundup-item discipline.
 
 ## Conference / Event Promotion
 

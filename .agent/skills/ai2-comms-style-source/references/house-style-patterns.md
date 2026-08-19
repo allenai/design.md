@@ -6,7 +6,7 @@ Positive-pattern reference. Read this when drafting; pair with `references/ai-pr
 
 These patterns are distilled from recent Ai2 launch and research blog posts. Match the form to the contribution. Do not pick the form that sounds most confident.
 
-For the newsletter format specifically (lead story plus news roundup plus optional event coverage), use `references/newsletter-format.md`. Newsletters use the same voice and lexicon as the canonical Ai2 prose but with a distinct headline form, paragraph rhythm, and bundling discipline.
+For the newsletter format specifically (lead story plus news roundup plus optional event coverage), use `references/newsletter-format.md` and `references/newsletter-example.md`. Newsletters use the same voice and lexicon as the canonical Ai2 prose but with a distinct headline form, paragraph rhythm, and bundling discipline.
 
 For the typology of release types (research platform, model release, benchmark, dataset, tool, application, update, research blog, newsletter recap), see `references/release-types.md` — that file is the dispatch table the pipeline skill walks during scoping. For Olmo or other platform lines, also engage `references/platform-positioning.md` for the Continue/Stop/Start framing.
 

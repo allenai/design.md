@@ -1,6 +1,6 @@
 # Sunset Example — SciArena
 
-A worked example of a Type 15 release (application/demo sunset with a learnings recap). Use it as a concrete shape reference, not a template to fill in; `references/worked-shapes.md` describes the other genres the same way. Source: the SciArena interactive model-evaluation arena, retired July 15, 2026; this block was prepended to the original launch post (`allenai.org/blog/sciarena`), which the live URL redirects to.
+A worked example of a Type 15 release (application/demo sunset with a learnings recap). Use it the way `references/newsletter-example.md` is used — a concrete shape reference, not a template to fill in; `references/worked-shapes.md` describes the remaining genres the same way. Source: the SciArena interactive model-evaluation arena, retired July 15, 2026; this block was prepended to the original launch post (`allenai.org/blog/sciarena`), which the live URL redirects to.
 
 Release type: Type 15 (application/demo sunset + learnings recap). See `references/release-types.md`.
 

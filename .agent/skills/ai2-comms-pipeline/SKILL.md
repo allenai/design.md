@@ -19,7 +19,7 @@ Read the task and decide which phases apply:
 - Review only (draft provided) → skip Phase 2, go to Phase 3.
 - Benchmark chart work → include Phase 4.
 - Cross-posting across more than one surface → include Phase 5.
-- Newsletter → run Phase 2 with the newsletter format references engaged (`.agent/skills/ai2-comms-style-source/references/newsletter-format.md`).
+- Newsletter → run Phase 2 with the newsletter format references engaged (`.agent/skills/ai2-comms-style-source/references/newsletter-format.md` and `.agent/skills/ai2-comms-style-source/references/newsletter-example.md`).
 
 Then identify the release type. Walk `.agent/skills/ai2-comms-style-source/references/release-types.md` and pick the one that fits:
 
@@ -111,7 +111,7 @@ This pipeline assumes the rest of the Ai2 comms suite is available:
 
 - `ai2-comms-launch-engagement` (with references: `.agent/skills/ai2-comms-launch-engagement/references/arc-ladders.md`, `.agent/skills/ai2-comms-launch-engagement/references/launch-readiness-checklist.md`) — pre-draft decision sheet producer; routed in Phase 0 before the writer.
 - `ai2-comms-writer` (with reference `.agent/skills/ai2-comms-writer/references/revision-passes.md` for the eight-pass revision sequence)
-- `ai2-comms-style-source` (with references: `.agent/skills/ai2-comms-style-source/references/voice-and-prose.md`, `.agent/skills/ai2-comms-style-source/references/ai-prose-to-avoid.md`, `.agent/skills/ai2-comms-style-source/references/claims-and-benchmarks.md`, `.agent/skills/ai2-comms-style-source/references/approval-gates.md`, `.agent/skills/ai2-comms-style-source/references/source-fidelity.md`, `.agent/skills/ai2-comms-style-source/references/house-style-patterns.md`, `.agent/skills/ai2-comms-style-source/references/newsletter-format.md`, `.agent/skills/ai2-comms-style-source/references/worked-shapes.md`, `.agent/skills/ai2-comms-style-source/references/anchor-patterns.md`, `.agent/skills/ai2-comms-style-source/references/release-types.md`, `.agent/skills/ai2-comms-style-source/references/platform-positioning.md`)
+- `ai2-comms-style-source` (with references: `.agent/skills/ai2-comms-style-source/references/voice-and-prose.md`, `.agent/skills/ai2-comms-style-source/references/ai-prose-to-avoid.md`, `.agent/skills/ai2-comms-style-source/references/claims-and-benchmarks.md`, `.agent/skills/ai2-comms-style-source/references/approval-gates.md`, `.agent/skills/ai2-comms-style-source/references/source-fidelity.md`, `.agent/skills/ai2-comms-style-source/references/house-style-patterns.md`, `.agent/skills/ai2-comms-style-source/references/newsletter-format.md`, `.agent/skills/ai2-comms-style-source/references/newsletter-example.md`, `.agent/skills/ai2-comms-style-source/references/worked-shapes.md`, `.agent/skills/ai2-comms-style-source/references/anchor-patterns.md`, `.agent/skills/ai2-comms-style-source/references/release-types.md`, `.agent/skills/ai2-comms-style-source/references/platform-positioning.md`)
 - `ai2-comms-structure-lector`
 - `ai2-comms-claims-lector`
 - `ai2-comms-chart-designer`
