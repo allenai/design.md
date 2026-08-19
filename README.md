@@ -120,13 +120,13 @@ npx @google/design.md export --format dtcg strata/DESIGN.md > strata/tokens.dtcg
 
 Use these when the destination is another design-token tool.
 
-### `bun run build` — what gets published
+### `bun run build` — what ships in the package
 
 ```bash
 bun run build     # compose + tokens; run this before committing
 ```
 
-Two steps. `compose` regenerates the products that overlay Strata (Asta, OlmoEarth) from `strata/DESIGN.md` plus their own `DESIGN.src.md`. `tokens` writes each product's `tokens.json`, which is what a product theme reads. Both are committed and published.
+Two steps. `compose` regenerates the products that overlay Strata (Asta, OlmoEarth) from `strata/DESIGN.md` plus their own `DESIGN.src.md`. `tokens` writes each product's `tokens.json`, which is what a product theme reads. Both are committed, and both ship in the package.
 
 You don't have to run this by hand: the Release workflow rebuilds and commits before it tags, so editing a spec in the browser is enough.
 
@@ -145,26 +145,15 @@ The DTCG format is a lossy translation into a shared interchange shape — good 
 
 ## Using these specs in a product
 
-The specs are published to npm as [`@allenai/design-system`](https://www.npmjs.com/package/@allenai/design-system), so a product depends on a *version* rather than copying files out of this repo.
+A product installs this repo as a package, so it depends on a *version* rather than copying files out of GitHub.
 
 ```bash
-# From git, which works today — the repo is public, so no registry account needed
 npm install "github:allenai/design.md#semver:^0.1.0"
-
-# From npm, once the package is published there
-npm install @allenai/design-system
 ```
 
-Both install the same package under the same name, so the imports below are
-identical either way. Installing from git resolves the `#semver:` range against
-this repo's release tags and records the exact commit in your lockfile, so builds
-stay reproducible. Pin harder if you'd rather: `#v0.1.0` for one release, or a
-commit SHA for absolute certainty.
-
-Renovate and Dependabot both understand git dependencies, so a new tag still
-becomes a pull request in your repo. What publishing to npm adds on top is the
-registry page, provenance attestation, and installs for anyone who can't reach
-GitHub — not versioning itself.
+The `#semver:` range resolves against this repo's release tags, and your lockfile
+records the exact commit, so builds are reproducible. Pin harder if you'd rather:
+`#v0.1.0` for one release, or a commit SHA for absolute certainty.
 
 ### What you can import
 
@@ -185,32 +174,11 @@ TypeScript needs no extra types here: with `resolveJsonModule`, it infers exact 
 
 Swap `olmo-earth` for `strata`, `asta` or `earthranger`. Each product also exposes `<product>/voice` where it has a `VOICE.md`.
 
-### How publishing is authorised
-
-The workflow authenticates with an `NPM_AUTH_TOKEN` repository secret today. Once
-the package exists on npm, that can be replaced with [trusted
-publishing](https://docs.npmjs.com/trusted-publishers): npm issues a short-lived
-credential scoped to this one workflow, so there's no long-lived token to rotate,
-leak, or own. The release workflow already has the `id-token: write` permission and a new
-enough npm for it — enabling it is a setting on the package's npmjs.com page,
-after which the secret can be deleted.
-
 ### Keeping up to date
 
-A published version is what makes a spec change visible to the products using it:
+A tagged version is what makes a spec change visible to the products using it. Renovate and Dependabot both understand git dependencies, so a new tag opens a pull request in each product repo — a designer changing a token becomes something a product team reviews, rather than something they have to remember to check for.
 
-```bash
-npm outdated @allenai/design-system     # is there a newer spec?
-npm update @allenai/design-system       # take it
-```
-
-Better, let a bot watch for you. Renovate or Dependabot opens a pull request when a new version lands, with the changelog attached, so a designer changing a token turns into a reviewable PR in each product repo without anyone remembering to check.
-
-Version numbers say what to expect: a new **first** number means something was renamed or removed and may break your build, a new **middle** number means tokens were added, and a new **last** number means a fix or a small correction. Pin the exact version if you'd rather adopt changes deliberately:
-
-```json
-"@allenai/design-system": "0.1.0"
-```
+Version numbers say what to expect: a new **first** number means something was renamed or removed and may break your build, a new **middle** number means tokens were added, and a new **last** number means a fix or a small correction.
 
 ## Contributing
 
@@ -221,4 +189,4 @@ bun run build     # recompose the overlay products, regenerate tokens
 npm run lint      # validate every product's spec
 ```
 
-The publish workflow runs both and refuses to publish if either fails, so a generated file that doesn't match its source can't ship.
+Or skip it: the Release workflow rebuilds and commits the generated files itself, so editing a spec through GitHub's web editor is enough. It lints too, and won't cut a release if a spec fails.
