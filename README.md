@@ -155,8 +155,23 @@ The `dtcg` scripts pin the CLI to an exact version — `npx @google/design.md@0.
 The specs are published to npm as [`@allenai/design-system`](https://www.npmjs.com/package/@allenai/design-system), so a product depends on a *version* rather than copying files out of this repo.
 
 ```bash
+# From git, which works today — the repo is public, so no registry account needed
+npm install "github:allenai/design.md#semver:^0.1.0"
+
+# From npm, once the package is published there
 npm install @allenai/design-system
 ```
+
+Both install the same package under the same name, so the imports below are
+identical either way. Installing from git resolves the `#semver:` range against
+this repo's release tags and records the exact commit in your lockfile, so builds
+stay reproducible. Pin harder if you'd rather: `#v0.1.0` for one release, or a
+commit SHA for absolute certainty.
+
+Renovate and Dependabot both understand git dependencies, so a new tag still
+becomes a pull request in your repo. What publishing to npm adds on top is the
+registry page, provenance attestation, and installs for anyone who can't reach
+GitHub — not versioning itself.
 
 ### What you can import
 

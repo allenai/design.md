@@ -71,13 +71,22 @@ jobs:
           fi
 
       - name: Publish to npm
-        if: steps.exists.outputs.published == 'false'
+        if: steps.exists.outputs.published == 'false' && secrets.NPM_AUTH_TOKEN != ''
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
+      - name: Note that npm was skipped
+        if: secrets.NPM_AUTH_TOKEN == ''
+        run: |
+          echo "::notice::No NPM_AUTH_TOKEN, so nothing was published to npm. \
+          Tagging anyway — consumers can install this version straight from git \
+          with 'github:allenai/design.md#semver:^${{ steps.pkg.outputs.version }}'."
+
+      # Tagging is deliberately not gated on npm. A git tag is what makes a
+      # version installable and resolvable by semver without a registry, so it
+      # has to happen whether or not publishing is available.
       - name: Tag and create a GitHub release
-        if: steps.exists.outputs.published == 'false'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.pkg.outputs.version }}
