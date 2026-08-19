@@ -127,7 +127,7 @@ Use these when the destination is another design-token tool.
 bun run build     # compose + tokens; run this before committing
 ```
 
-Three steps. `compose` regenerates the products that overlay Strata (Asta, OlmoEarth) from `strata/DESIGN.md` plus their own `DESIGN.src.md`. `tokens` writes each product's `tokens.json` and `tokens.d.ts`. `dtcg` writes `tokens.dtcg.json` through the CLI. All of it is committed, and all of it is published.
+Three steps. `compose` regenerates the products that overlay Strata (Asta, OlmoEarth) from `strata/DESIGN.md` plus their own `DESIGN.src.md`. `tokens` writes each product's `tokens.json`. `dtcg` writes `tokens.dtcg.json` through the CLI. All of it is committed, and all of it is published.
 
 **Two token files ship per product, because they answer different questions:**
 
@@ -143,7 +143,6 @@ Those files are **not** the DTCG export, and the difference matters:
 | colours | DTCG objects (`colorSpace`, float channels) | the hex string you wrote |
 | sizes | split into `{ value, unit }` | verbatim, `"16px"` |
 | group names | renamed (`color`) | as written (`colors`) |
-| TypeScript types | none | generated per product |
 
 The DTCG format is a lossy translation into a shared interchange shape — fine for handing tokens to Figma or Style Dictionary, not enough to build a product theme from, since half the component layer and every line-height would be missing. `bun run build` is a faithful mirror of what's in the frontmatter, with `{colors.teal}`-style references resolved so consumers never implement the reference syntax.
 
@@ -169,15 +168,14 @@ import dtcg from "@allenai/design-system/olmo-earth/tokens.dtcg.json";
 tokens.colors["dark-teal"];             // "#0a3235"
 tokens.components["button-default"];    // { backgroundColor, textColor, typography, … }
 
-// Named TypeScript types for the same tokens
-import type { ComponentToken, ColorName } from "@allenai/design-system/olmo-earth/types";
-
 // The spec itself — for docs, or to hand to an agent
 const specPath = require.resolve("@allenai/design-system/olmo-earth");
 
 // Brand assets
 import logo from "@allenai/design-system/olmo-earth/assets/logo.svg";
 ```
+
+TypeScript needs no extra types here: with `resolveJsonModule`, it infers exact keys and per-component shapes from the JSON, so `tokens.colors["dark-teel"]` is a compile error.
 
 Swap `olmo-earth` for `strata`, `asta` or `earthranger`. Each product also exposes `<product>/voice` where it has a `VOICE.md`.
 
