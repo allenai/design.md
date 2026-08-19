@@ -62,7 +62,7 @@
     "compose:asta": "bun run scripts/compose.ts --base strata/DESIGN.md --overlay asta/DESIGN.src.md --out asta/DESIGN.md",
     "compose:olmo-earth": "bun run scripts/compose.ts --base strata/DESIGN.md --overlay olmo-earth/DESIGN.src.md --out olmo-earth/DESIGN.md",
     "compose": "bun run compose:asta && bun run compose:olmo-earth",
-    "lint": "npx @google/design.md lint strata/DESIGN.md && npx @google/design.md lint asta/DESIGN.md && npx @google/design.md lint olmo-earth/DESIGN.md",
+    "lint": "npx @google/design.md lint strata/DESIGN.md && npx @google/design.md lint asta/DESIGN.md && npx @google/design.md lint olmo-earth/DESIGN.md && npx @google/design.md lint earthranger/DESIGN.md",
     "verify:composed": "bun run compose && git diff --exit-code -- '*/DESIGN.md'",
     "tokens:strata": "bun run scripts/emit-tokens.ts --spec strata/DESIGN.md --out strata/tokens.json --types strata/tokens.d.ts",
     "tokens:asta": "bun run scripts/emit-tokens.ts --spec asta/DESIGN.md --out asta/tokens.json --types asta/tokens.d.ts",

@@ -88,25 +88,24 @@ Only define what differs from Strata in the overlay — colors, tokens, or compo
 
 ## Tooling
 
-These files are validated using the [DESIGN.md CLI](https://github.com/google-labs-code/design.md), published by Google as `@google/design.md` on npm. No installation required — use `npx`:
+Two separate things generate output here, and they're for different jobs.
 
-### Validate a file
+### The DESIGN.md CLI — validation, diffing, interop
+
+The [DESIGN.md CLI](https://github.com/google-labs-code/design.md), published by Google as `@google/design.md`. No installation required — use `npx`:
 
 ```bash
+# Validate. Exit 0 if valid, 1 if errors. Output is JSON.
 npx @google/design.md lint strata/DESIGN.md
-```
 
-Exit code `0` if valid, `1` if errors are found. Output is JSON.
-
-### Compare two versions
-
-```bash
+# Review token-level changes between two versions
 npx @google/design.md diff strata/DESIGN.md strata/DESIGN-v2.md
+
+# Print the DESIGN.md format spec, e.g. to give an agent the context to read these files
+npx @google/design.md spec
 ```
 
-Useful for reviewing token-level changes in pull requests.
-
-### Export tokens
+It also exports to other ecosystems' formats:
 
 ```bash
 # Tailwind v3 theme config
@@ -115,24 +114,87 @@ npx @google/design.md export --format json-tailwind strata/DESIGN.md > strata/ta
 # Tailwind v4 CSS custom properties
 npx @google/design.md export --format css-tailwind strata/DESIGN.md > strata/theme.css
 
-# W3C Design Tokens (DTCG) format — interoperable with Figma, Style Dictionary, etc.
-npx @google/design.md export --format dtcg strata/DESIGN.md > strata/tokens.json
+# W3C Design Tokens (DTCG) — interoperable with Figma, Style Dictionary, etc.
+npx @google/design.md export --format dtcg strata/DESIGN.md > strata/tokens.dtcg.json
 ```
 
-### Inject the spec into an agent prompt
+Use these when the destination is another design-token tool.
+
+### `bun run build` — what gets published
 
 ```bash
-npx @google/design.md spec
+bun run build     # compose + tokens; run this before committing
 ```
 
-Outputs the DESIGN.md format specification — useful for giving an agent the context it needs to correctly interpret these files.
+Two steps. `compose` regenerates the products that overlay Strata (Asta, OlmoEarth) from `strata/DESIGN.md` plus their own `DESIGN.src.md`. `tokens` writes each product's `tokens.json` and `tokens.d.ts`, which are what the npm package ships.
+
+Those files are **not** the DTCG export, and the difference matters:
+
+| | `export --format dtcg` | `bun run build` |
+|---|---|---|
+| `components` section | omitted | included — all 50 for OlmoEarth |
+| `lineHeight` on typography | dropped | kept |
+| colours | DTCG objects (`colorSpace`, float channels) | the hex string you wrote |
+| sizes | split into `{ value, unit }` | verbatim, `"16px"` |
+| group names | renamed (`color`) | as written (`colors`) |
+| TypeScript types | none | generated per product |
+
+The DTCG format is a lossy translation into a shared interchange shape — fine for handing tokens to Figma or Style Dictionary, not enough to build a product theme from, since half the component layer and every line-height would be missing. `bun run build` is a faithful mirror of what's in the frontmatter, with `{colors.teal}`-style references resolved so consumers never implement the reference syntax.
+
+Write DTCG output to `tokens.dtcg.json`, not `tokens.json` — the latter is generated and published.
+
+## Using these specs in a product
+
+The specs are published to npm as [`@allenai/design-system`](https://www.npmjs.com/package/@allenai/design-system), so a product depends on a *version* rather than copying files out of this repo.
+
+```bash
+npm install @allenai/design-system
+```
+
+### What you can import
+
+```js
+// The tokens, as plain JSON with every reference already resolved to a literal
+import tokens from "@allenai/design-system/olmo-earth/tokens.json";
+tokens.colors["dark-teal"];             // "#0a3235"
+tokens.components["button-default"];    // { backgroundColor, textColor, typography, … }
+
+// Named TypeScript types for the same tokens
+import type { ComponentToken, ColorName } from "@allenai/design-system/olmo-earth/types";
+
+// The spec itself — for docs, or to hand to an agent
+const specPath = require.resolve("@allenai/design-system/olmo-earth");
+
+// Brand assets
+import logo from "@allenai/design-system/olmo-earth/assets/logo.svg";
+```
+
+Swap `olmo-earth` for `strata`, `asta` or `earthranger`. Each product also exposes `<product>/voice` where it has a `VOICE.md`.
+
+### Keeping up to date
+
+A published version is what makes a spec change visible to the products using it:
+
+```bash
+npm outdated @allenai/design-system     # is there a newer spec?
+npm update @allenai/design-system       # take it
+```
+
+Better, let a bot watch for you. Renovate or Dependabot opens a pull request when a new version lands, with the changelog attached, so a designer changing a token turns into a reviewable PR in each product repo without anyone remembering to check.
+
+Version numbers say what to expect: a new **first** number means something was renamed or removed and may break your build, a new **middle** number means tokens were added, and a new **last** number means a fix or a small correction. Pin the exact version if you'd rather adopt changes deliberately:
+
+```json
+"@allenai/design-system": "0.1.0"
+```
 
 ## Contributing
 
-When updating tokens, always run the linter before committing:
+When updating tokens, rebuild and lint before committing:
 
 ```bash
-npx @google/design.md lint strata/DESIGN.md
-npx @google/design.md lint asta/DESIGN.md
-npx @google/design.md lint olmo-earth/DESIGN.md
+bun run build     # recompose the overlay products, regenerate tokens
+npm run lint      # validate every product's spec
 ```
+
+The publish workflow runs both and refuses to publish if either fails, so a generated file that doesn't match its source can't ship.
