@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ai2 stat grid template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!--
+  "By the numbers" stat grid. See references/explanatory-diagrams.md.
+  Numbers stay dark teal across the grid (as in the reference diagram).
+  The accent is optional: to deliberately pick out a punchline result, add
+  class "is-result" to that tile and set --accent (OlmoEarth green #0fcb8c for
+  a product deliverable, #f0529c for general comms). Use it sparingly.
+-->
+<style>
+  :root{
+    --dark-teal:#0a3235; --beige:#faf2e9; --card:#f7ede0;
+    --hairline:rgba(10,50,53,.16); --muted:rgba(10,50,53,.6);
+    --accent:#0fcb8c;           /* OlmoEarth green; use #f0529c for general comms */
+    --card-radius:0;
+    --sans:'Manrope',Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--beige);color:var(--dark-teal);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1000px;margin:0 auto;padding:48px 24px;}
+  h1{margin:0 0 8px;font-size:30px;font-weight:800;letter-spacing:-.01em;}
+  .deck{margin:0 0 28px;max-width:760px;font-size:16px;line-height:1.45;color:var(--muted);}
+  /* No outer fill or border: the grid only groups the tiles, and a container that only
+     groups takes no chrome (2026-08-13). The hairline DIVIDERS below are load-bearing. */
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);}
+  .tile{padding:26px 24px;border-right:1px solid var(--hairline);border-bottom:1px solid var(--hairline);}
+  .tile:nth-child(4n){border-right:0;}
+  .tile:nth-last-child(-n+4){border-bottom:0;}
+  .eyebrow{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.025em;
+    color:var(--muted);margin:0 0 14px;}
+  .value{font-size:44px;font-weight:800;line-height:1;letter-spacing:-.02em;}
+  .value .u{font-size:18px;font-weight:600;margin-left:5px;letter-spacing:0;}
+  .desc{margin:14px 0 0;font-size:14px;line-height:1.4;color:var(--muted);}
+  .is-result .value{color:var(--accent);}   /* optional punchline highlight; off by default */
+  @media (max-width:720px){ .grid{grid-template-columns:repeat(2,1fr)}
+    .tile:nth-child(4n){border-right:1px solid var(--hairline)} .tile:nth-child(2n){border-right:0} }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Continent-scale inference run, by the numbers</h1>
+    <p class="deck">A single job over all of North America, fanned out across thousands of compute instances — reducing months of serial compute to a day and a half of wall-clock time.</p>
+    <div class="grid">
+      <div class="tile"><p class="eyebrow">Coverage</p><div class="value">22.2<span class="u">M km²</span></div><p class="desc">All of North America</p></div>
+      <div class="tile"><p class="eyebrow">Unit economics</p><div class="value">$0.000164</div><p class="desc">Cost per square kilometer</p></div>
+      <div class="tile"><p class="eyebrow">Serial equivalent</p><div class="value">4,737<span class="u">h 14m</span></div><p class="desc">Total compute time</p></div>
+      <div class="tile"><p class="eyebrow">Result</p><div class="value">30.5<span class="u">hrs</span></div><p class="desc">Actual wall-clock time</p></div>
+      <div class="tile"><p class="eyebrow">GPU fleet</p><div class="value">987</div><p class="desc">Concurrent NVIDIA A100 GPUs</p></div>
+      <div class="tile"><p class="eyebrow">CPU fleet</p><div class="value">19,592</div><p class="desc">Concurrent CPUs</p></div>
+      <div class="tile"><p class="eyebrow">Throughput</p><div class="value">168<span class="u">GB/s</span></div><p class="desc">Peak network traffic during inference</p></div>
+      <div class="tile"><p class="eyebrow">Result</p><div class="value">155<span class="u">×</span></div><p class="desc">Effective speedup over serial</p></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -9,8 +9,43 @@ vendor-specific location, and they never name a specific agent's tools. They
 follow the same philosophy as this repo's `DESIGN.md` files: self-contained,
 plain-text, and readable by any tool that cares to look.
 
-> This folder is currently a scaffold. No skills are defined yet — add them
-> following the convention below.
+## Available skills
+
+### Ai2 comms
+
+A suite for **outbound Ai2 communications** — launch blogs, newsletters, social
+posts, research amplification. They cross-reference each other; read whichever
+matches the task, and follow the sibling references it names.
+
+| Skill | Use it for |
+| --- | --- |
+| [`ai2-comms-style-source`](ai2-comms-style-source/SKILL.md) | Voice, source fidelity, claims discipline, approval gates, house style. The reference hub the others build on — start here if you read only one. |
+| [`ai2-comms-launch-engagement`](ai2-comms-launch-engagement/SKILL.md) | Pre-draft release planning: arc placement, demo scope, asset staging, partner roles, audience, follow-up beat. |
+| [`ai2-comms-writer`](ai2-comms-writer/SKILL.md) | Drafting and revising copy. |
+| [`ai2-comms-structure-lector`](ai2-comms-structure-lector/SKILL.md) | Reviewing framing, openings, section order, redundancy. |
+| [`ai2-comms-claims-lector`](ai2-comms-claims-lector/SKILL.md) | Reviewing factuality, attribution, benchmark scope, approval-sensitive claims. |
+| [`ai2-comms-chart-designer`](ai2-comms-chart-designer/SKILL.md) | Benchmark charts, leaderboard tables, explanatory diagrams. Reads tokens from the product `DESIGN.md` files. |
+| [`ai2-comms-channel-adapter`](ai2-comms-channel-adapter/SKILL.md) | Adapting cleared copy for X, LinkedIn, Reddit, Discord, Bluesky, Hugging Face, newsletters. |
+| [`ai2-comms-pipeline`](ai2-comms-pipeline/SKILL.md) | Running a whole task end to end through the phases above. |
+
+Typical flow: `launch-engagement` → `writer` → `structure-lector` and
+`claims-lector` → `chart-designer` → `channel-adapter`. Any phase can be entered
+directly.
+
+**Comms voice is not product voice.** These skills cover what Ai2 says *about* a
+product. What a product says to its own users lives in that product's
+`VOICE.md` (`strata/VOICE.md`, `asta/VOICE.md`, `olmo-earth/VOICE.md`). Neither
+overrides the other.
+
+**Approval gates are categorical here.** `ai2-comms-style-source` describes the
+*kinds* of claim that need clearance before publication. The current roster of
+specific gated partners, deployments, and customers is maintained by the Ai2
+comms team and is deliberately not recorded in this public repository.
+
+**Worked examples are limited to published copy.** The skills reference one fully
+worked example, `sunset-example.md`, drawn from a post that is live. Every other
+genre is described in `worked-shapes.md` as a set of transferable moves rather
+than reproduced, so this repository carries no unpublished Ai2 drafts.
 
 ## Layout
 
