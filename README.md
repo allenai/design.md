@@ -179,6 +179,16 @@ TypeScript needs no extra types here: with `resolveJsonModule`, it infers exact 
 
 Swap `olmo-earth` for `strata`, `asta` or `earthranger`. Each product also exposes `<product>/voice` where it has a `VOICE.md`.
 
+### How publishing is authorised
+
+The workflow authenticates with an `NPM_AUTH_TOKEN` repository secret today. Once
+the package exists on npm, that can be replaced with [trusted
+publishing](https://docs.npmjs.com/trusted-publishers): npm issues a short-lived
+credential scoped to this one workflow, so there's no long-lived token to rotate,
+leak, or own. The workflow already has the `id-token: write` permission and a new
+enough npm for it — enabling it is a setting on the package's npmjs.com page,
+after which the secret can be deleted.
+
 ### Keeping up to date
 
 A published version is what makes a spec change visible to the products using it:

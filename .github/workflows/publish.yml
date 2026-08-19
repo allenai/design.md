@@ -25,6 +25,13 @@ jobs:
           node-version: 22
           registry-url: "https://registry.npmjs.org"
 
+      # Node 22 bundles npm 10, and trusted publishing needs 11.5.1+. Installing
+      # it now means switching this workflow off the long-lived NPM_AUTH_TOKEN is
+      # a setting on npmjs.com rather than another change here: the OIDC
+      # credential it would use is short-lived and scoped to this workflow, and
+      # `id-token: write` above is already granted for provenance.
+      - run: npm install -g npm@11
+
       - run: bun install --frozen-lockfile
 
       # Each product's DESIGN.md is generated from strata + its own DESIGN.src.md.
