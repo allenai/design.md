@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
-  href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap"
   rel="stylesheet"
 />
 <style>
@@ -17,6 +17,11 @@
      Transitions on color tokens animate the system swap.
   ──────────────────────────────────────────────────────────────── */
   :root {
+    /* Type families. Overridden per system — Skylight runs Roboto Slab /
+       Roboto rather than the Ai2 default pairing. */
+    --f-heading: "PP Telegraf", Manrope, Arial, sans-serif;
+    --f-body: Manrope, Arial, sans-serif;
+
     /* Primitives */
     --c-extra-dark-teal: #032629;
     --c-dark-teal: #0a3235;
@@ -230,7 +235,7 @@
     margin: 0;
     background: var(--c-bg);
     color: var(--c-text);
-    font-family: Manrope, Arial, sans-serif;
+    font-family: var(--f-body);
     font-size: 16px;
     line-height: 1.6;
     transition:
@@ -256,7 +261,7 @@
   }
 
   h1, h2, h3, h4 {
-    font-family: "PP Telegraf", Manrope, Arial, sans-serif;
+    font-family: var(--f-heading);
     margin: 0;
     color: var(--c-text);
   }
@@ -303,7 +308,7 @@
     color: color-mix(in srgb, var(--c-text) 60%, transparent);
   }
   .topbar-title {
-    font-family: "PP Telegraf", Manrope, Arial, sans-serif;
+    font-family: var(--f-heading);
     font-weight: 700;
     font-size: 22px;
     letter-spacing: -0.01em;
@@ -1208,6 +1213,145 @@
     --btn-reversed-out-hover-fg: var(--er-teal-dark);
   }
 
+  /* ── Skylight ─────────────────────────────────────────────────────
+     Ai2's maritime intelligence platform. Light theme only — there is
+     no dark mode, so this block has no counterpart. Ocean palette;
+     Roboto Slab / Roboto rather than PP Telegraf / Manrope. */
+  html[data-system="skylight"] {
+    color-scheme: light;
+
+    --f-heading: "Roboto Slab", Georgia, serif;
+    --f-body: Roboto, Arial, sans-serif;
+
+    /* Shared component rules reference these two Strata primitives
+       directly (.av-default, .alert .icon, the reversed buttons).
+       Repoint them at Skylight's equivalents so those rules inherit the
+       right palette instead of importing Ai2's dark teal. Cream is the
+       same value in both systems; deep-sea replaces extra-dark-teal. */
+    --c-extra-dark-teal: var(--sk-deep-sea);
+    --c-cream: var(--sk-cream);
+
+    /* ── Skylight primitives ── */
+    --sk-deep-sea:    #09383e;
+    --sk-shallows:    #248e85;
+    --sk-sea-foam:    #82cdc7;
+    --sk-ocean-spray: #b9e2e4;
+    --sk-cream:       #faf2e9;
+
+    --sk-horizon:     #262580;
+    --sk-endless-sky: #3ab5c5;
+
+    --sk-black:       #10171a;
+    --sk-dark-gray:   #596670;
+    --sk-medium-gray: #959da4;
+    --sk-low-gray:    #9f9f9f;
+    --sk-border:      #dee0e0;
+    --sk-white:       #ffffff;
+    --sk-surface-subtle: #f5f6f8;
+    --sk-surface-muted:  #f3f5f7;
+    --sk-surface-sunken: #e4e7eb;
+
+    --sk-hover-action: #d3e9ee;
+    --sk-teal:         #3ab5c5;
+    --sk-button-hover: #4aadb9;
+    --sk-dark-teal:    #1d98a8;
+    --sk-medium-teal:  #227e97;
+    --sk-deep-blue:    #175869;
+
+    --sk-alert: #f81336;
+
+    /* ── Semantic tokens ──
+       Interactive fills are chosen for contrast, not just for brand
+       order: white on --sk-dark-teal is only 3.44:1, so the filled
+       roles use medium-teal (4.67:1) and deep-blue instead. */
+    --c-bg:             var(--sk-white);
+    --c-bg-reversed:    var(--sk-deep-sea);
+    --c-text:           var(--sk-black);
+    --c-text-reversed:  var(--sk-cream);
+    --c-text-disabled:  var(--sk-low-gray);
+    --c-text-error:     var(--sk-alert);
+
+    --c-int-default:        var(--sk-deep-blue);
+    --c-int-default-hover:  var(--sk-medium-teal);
+    --c-int-primary:        var(--sk-medium-teal);
+    --c-int-primary-hover:  var(--sk-deep-blue);
+    --c-int-secondary:      var(--sk-deep-sea);
+    --c-int-secondary-hover: var(--sk-medium-teal);
+    --c-link:               var(--sk-medium-teal);
+    --c-link-reversed:      var(--sk-sea-foam);
+
+    --c-int-default-fg:  var(--sk-white);
+    --c-chip-default-bg: var(--c-int-default);
+    --c-chip-default-fg: var(--sk-white);
+
+    --c-subtle:          rgba(9, 56, 62, 0.5);
+    --c-extra-subtle:    rgba(9, 56, 62, 0.08);
+    --c-on-subtle:       var(--sk-white);
+    --c-on-extra-subtle: var(--c-text);
+
+    --c-surface:        var(--sk-white);
+    --c-surface-strong: var(--sk-white);
+    --c-stroke:         var(--sk-border);
+    --c-field-outline:  var(--sk-medium-gray);
+    --c-btn-disabled-bg: var(--sk-low-gray);
+
+    --c-input-bg:            var(--sk-white);
+    --c-input-text:          var(--c-text);
+    --c-input-disabled-bg:   var(--sk-surface-sunken);
+    --c-input-disabled-text: var(--c-text-disabled);
+
+    --c-outlined-primary-hover-bg: var(--sk-hover-action);
+
+    --btn-default-out-fg:       var(--c-int-default);
+    --btn-default-out-border:   var(--c-int-default);
+    --btn-default-out-hover-bg: var(--sk-hover-action);
+    --btn-default-out-hover-fg: var(--sk-deep-sea);
+
+    --btn-secondary-out-fg:     var(--c-text);
+    --btn-secondary-out-border: var(--c-text);
+
+    --btn-reversed-bg:        var(--sk-cream);
+    --btn-reversed-fg:        var(--sk-deep-sea);
+    --btn-reversed-hover-bg:  var(--sk-white);
+    --btn-reversed-hover-fg:  var(--sk-deep-sea);
+
+    --btn-reversed-out-fg:       var(--sk-cream);
+    --btn-reversed-out-border:   var(--sk-cream);
+    --btn-reversed-out-hover-bg: var(--sk-white);
+    --btn-reversed-out-hover-fg: var(--sk-deep-sea);
+  }
+
+  /* Filled controls inherit Strata's extra-dark-teal label, which fails
+     on Skylight's fills: #032629 on medium-teal is 3.43:1 and on deep-sea
+     is ~1.1:1. Reverse them — white gives 4.67:1 on medium-teal, cream
+     11.5:1 on deep-sea. */
+  html[data-system="skylight"] .btn-primary,
+  html[data-system="skylight"] .chip-primary,
+  html[data-system="skylight"] .av-primary,
+  html[data-system="skylight"] .segmented button[aria-pressed="true"] {
+    color: var(--sk-white);
+  }
+  html[data-system="skylight"] .btn-secondary,
+  html[data-system="skylight"] .chip-secondary,
+  html[data-system="skylight"] .av-secondary {
+    color: var(--sk-cream);
+  }
+  /* Strata's green hover tint would leak into an all-teal system. */
+  html[data-system="skylight"] .btn-secondary-out:hover {
+    background: var(--sk-hover-action);
+    color: var(--sk-deep-sea);
+  }
+  html[data-system="skylight"] .btn-primary-out:hover {
+    color: var(--sk-deep-sea);
+  }
+
+  /* Skylight has no dark mode and no pink; hide the EarthRanger-only
+     mode toggle and Strata's primitive ramp, as EarthRanger does. */
+  html[data-system="skylight"] .foundations-primitives { display: none; }
+  html[data-system="skylight"] .radii-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  }
+
   /* Green/12 only gives ~3:1 contrast against Primary Text (dark-teal) —
      fails WCAG AA for normal text. Use Text Primary/Reversed (white in
      light mode) on any solid Green/12 fill instead. The outlined variant
@@ -1400,6 +1544,7 @@
       <button data-system="asta"          aria-pressed="false">Asta</button>
       <button data-system="olmo-earth"    aria-pressed="false">OlmoEarth</button>
       <button data-system="earthranger"   aria-pressed="false">EarthRanger</button>
+      <button data-system="skylight"      aria-pressed="false">Skylight</button>
     </div>
     <div class="er-mode-toggle" role="group" aria-label="EarthRanger color mode">
       <button data-er-mode="light" aria-pressed="true">Light</button>
@@ -2127,6 +2272,15 @@ const RADII = [
   ["lg", 18], ["xl", 20], ["2xl", 24], ["3xl", 32],
 ];
 
+/* Skylight's own scales — an 8px spacing base and near-square corners. */
+const SKY_SPACING = [
+  ["2xs", 2], ["xs", 4], ["sm", 8], ["md", 16], ["lg", 24],
+  ["xl", 32], ["2xl", 40], ["3xl", 48], ["4xl", 56], ["5xl", 64],
+];
+const SKY_RADII = [
+  ["xs", 2], ["sm", 4], ["md", 8], ["lg", 12], ["xl", 16],
+];
+
 /* EarthRanger uses a reduced 3-step radii scale instead of Strata's 9-step one. */
 const ER_RADII = [
   ["sm", 4], ["md", 8], ["lg", 16],
@@ -2311,6 +2465,32 @@ ALIASES["earthranger"] = {
   ],
 };
 
+/* Skylight is single-mode (no dark theme), so it takes the plain
+   array shape rather than EarthRanger's {light, dark} one. */
+ALIASES["skylight"] = [
+    ["background",                 "white"],
+    ["background-reversed",        "deep-sea"],
+    ["text",                       "black"],
+    ["text-secondary",             "dark-gray"],
+    ["text-reversed",              "cream"],
+    ["text-disabled",              "low-gray"],
+    ["text-error",                 "alert-red"],
+    ["interactive-default",        "deep-blue"],
+    ["interactive-default-hover",  "medium-teal"],
+    ["interactive-primary",        "medium-teal"],
+    ["interactive-primary-hover",  "deep-blue"],
+    ["interactive-secondary",      "deep-sea"],
+    ["link",                       "medium-teal"],
+    ["link-reversed",              "sea-foam"],
+    ["surface",                    "white"],
+    ["surface-raised",             "surface-muted"],
+    ["stroke",                     "border-gray"],
+    ["field-outline",              "medium-gray"],
+    ["deck-field",                 "cream"],
+    ["deck-primary",               "shallows"],
+    ["deck-text",                  "deep-sea"],
+];
+
 /* EarthRanger data-visualization ramps — mode-stable (same primitives
    in Light and Dark), shown as dedicated swatch strips rather than
    alias rows since they're ramps, not 1:1 semantic aliases. */
@@ -2372,6 +2552,18 @@ const META = {
     cardTitle: "Paper card",
     cardBlurb: "Body copy, chip tags, stacked author avatars, and a primary action — composed from the foundations and components above.",
   },
+  skylight: {
+    name: "Skylight",
+    description: "Skylight maritime intelligence — an Ai2 product for ending illegal, unreported, and unregulated fishing",
+    heroBlurb: "Skylight fuses satellite data and machine learning to surface vessel behaviour for coast guards and enforcement agencies. Interfaces read as instruments: dense, precise, calm by default. Light theme only \u2014 there is no dark mode.",
+    formTitle: "Vessel query form",
+    formBlurb: "A real form composed from inputs, select, radio, and switch. Skylight runs dense: analysts compare many vessels at once, so grouping is tighter than the marketing surfaces suggest.",
+    cardTitle: "Detection card",
+    cardBlurb: "Body copy, chip tags, stacked avatars, and a primary action \u2014 composed from the foundations and components above.",
+    logo: "skylight/assets/logo-icon.svg",
+    wordmark: "skylight/assets/logo.svg",
+    wordmarkDark: "skylight/assets/logo-white.svg",
+  },
   "earthranger": {
     name: "EarthRanger",
     /* Manually bumped from earthranger/DESIGN.md's `version:` frontmatter
@@ -2392,7 +2584,23 @@ const META = {
 /* ─────────────────────────────────────────────────────────────────
    Renderers
 ───────────────────────────────────────────────────────────────── */
-function hexFor(name) {
+/* Skylight's primitives. Several names (teal, dark-teal, cream) also exist
+   in Strata's ramp with different values, so this map is consulted FIRST
+   while Skylight is active rather than falling through to Strata's. */
+const SKY_PRIMITIVES = {
+  "deep-sea": "#09383e", "shallows": "#248e85", "sea-foam": "#82cdc7",
+  "ocean-spray": "#b9e2e4", "cream": "#faf2e9",
+  "horizon": "#262580", "endless-sky": "#3ab5c5",
+  "black": "#10171a", "dark-gray": "#596670", "medium-gray": "#959da4",
+  "low-gray": "#9f9f9f", "border-gray": "#dee0e0", "white": "#ffffff",
+  "surface-subtle": "#f5f6f8", "surface-muted": "#f3f5f7", "surface-sunken": "#e4e7eb",
+  "hover-action": "#d3e9ee", "teal": "#3ab5c5", "button-hover": "#4aadb9",
+  "dark-teal": "#1d98a8", "medium-teal": "#227e97", "deep-blue": "#175869",
+  "alert-red": "#f81336",
+};
+
+function hexFor(name, systemKey) {
+  if (systemKey === "skylight" && SKY_PRIMITIVES[name]) return SKY_PRIMITIVES[name];
   const found = PRIMITIVES.find(([n]) => n === name);
   if (found) return found[1];
   if (ER_PRIMITIVES[name]) return ER_PRIMITIVES[name];
@@ -2421,7 +2629,7 @@ function renderAliases(systemKey) {
       <span class="alias-name">${alias}</span>
       <span class="alias-arrow">→</span>
       <span class="alias-value">
-        <span class="alias-dot" style="background:${hexFor(prim)}"></span>
+        <span class="alias-dot" style="background:${hexFor(prim, systemKey)}"></span>
         <span class="alias-target">${prim}</span>
       </span>
     </div>
@@ -2445,7 +2653,8 @@ function renderTypography() {
 
 function renderSpacing(systemKey) {
   const wrap = document.getElementById("spacing-scale");
-  wrap.innerHTML = SPACING.map(([name, val]) => `
+  const scale = systemKey === "skylight" ? SKY_SPACING : SPACING;
+  wrap.innerHTML = scale.map(([name, val]) => `
     <div class="scale-row">
       <span class="scale-name">${name}</span>
       <span class="scale-bar" style="width:${val}px"></span>
@@ -2456,7 +2665,9 @@ function renderSpacing(systemKey) {
 
 function renderRadii(systemKey) {
   const wrap = document.getElementById("radii-grid");
-  const scale = systemKey === "earthranger" ? ER_RADII : RADII;
+  const scale = systemKey === "earthranger" ? ER_RADII
+              : systemKey === "skylight"    ? SKY_RADII
+              : RADII;
   wrap.innerHTML = scale.map(([name, val]) => `
     <div class="radius-cell" style="border-radius:${val}px;">
       <span class="name">${name}</span>
@@ -2622,7 +2833,7 @@ document.querySelectorAll(".er-mode-toggle button").forEach((btn) => {
 
 /* Arrow-key swap so users can A/B between systems quickly without leaving
    the scroll position. Skips when the user is typing into a field. */
-const SYSTEM_ORDER = ["strata", "asta", "olmo-earth", "earthranger"];
+const SYSTEM_ORDER = ["strata", "asta", "olmo-earth", "earthranger", "skylight"];
 document.addEventListener("keydown", (e) => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   if (e.target.matches("input, textarea, select, [contenteditable]")) return;
