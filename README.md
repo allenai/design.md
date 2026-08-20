@@ -130,18 +130,14 @@ Two steps. `compose` regenerates the products that overlay Strata (Asta, OlmoEar
 
 You don't have to run this by hand: the Release workflow rebuilds and commits before it tags, so editing a spec in the browser is enough.
 
-`tokens.json` is deliberately not the CLI's DTCG export, and the difference is what makes it usable in code:
+`tokens.json` is **W3C Design Tokens (DTCG)** — the same format `@google/design.md export --format dtcg` targets, and the same one Figma's token plugins, [Style Dictionary](https://styledictionary.com) and [Terrazzo](https://terrazzo.app) consume. So a product can point standard tooling at it and generate whatever its stack needs, rather than reading a shape invented here.
 
-| | `export --format dtcg` | `tokens.json` |
-|---|---|---|
-| `components` section | omitted | included — all 50 for OlmoEarth |
-| `lineHeight` on typography | dropped | kept |
-| colours | DTCG objects (`colorSpace`, float channels) | the hex string you wrote |
-| sizes | split into `{ value, unit }` | verbatim, `"16px"` |
-| group names | renamed (`color`) | as written (`colors`) |
+We generate it instead of using the CLI's exporter because that exporter is currently lossy — it omits the entire `components` section, drops `lineHeight` from every typography role, and emits alpha colours without an `alpha` channel, so its output fails the schema it declares ([google-labs-code/design.md#172](https://github.com/google-labs-code/design.md/issues/172)). Ours matches its structure deliberately: when those are fixed, this script goes away and the CLI's output takes its place without consumers noticing.
 
-The DTCG format is a lossy translation into a shared interchange shape — good for handing tokens to Figma or Style Dictionary, not enough to build a product theme from, since half the component layer and every line-height would be missing. If you ever need it, the CLI command above writes it on demand; nothing in this repo generates it, because nothing consumes it yet.
+All four products validate against the 2025.10 schema with zero errors. Two places where the spec and the format don't line up, handled rather than papered over:
 
+- **`letterSpacing`** is required by the composite `typography` type and the DESIGN.md format has no such key, so it's emitted as `0` — what these roles render as today.
+- **A role that can't be a composite becomes a group of primitive tokens.** EarthRanger writes `fontStyle: Regular` rather than a weight, and an absolute `lineHeight: 28.8px` where DTCG wants a multiplier. Emitting it as separate `fontFamily`, `fontSize` and `lineHeight` tokens stays valid and loses nothing, where converting 28.8px into a multiplier would mean inventing a number the spec never states.
 
 ## Using these specs in a product
 
