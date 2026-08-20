@@ -19,10 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: oven-sh/setup-bun@v2
-
-      # setup-node is what wires up registry auth for `npm publish`, even though
-      # the repo itself builds with bun.
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -35,15 +31,15 @@ jobs:
       # `id-token: write` above is already granted for provenance.
       - run: npm install -g npm@11
 
-      - run: bun install --frozen-lockfile
+      - run: npm ci
 
-      # Nobody should need bun on their machine to cut a release: a spec edited in
+      # Nobody should need a toolchain on their machine to cut a release: a spec edited in
       # the browser leaves the composed DESIGN.md and tokens.json behind, so the
       # release rebuilds them and commits the result before tagging. This also
       # makes a hand-edited generated file harmless — it gets overwritten rather
       # than shipped, which is what the old staleness check was protecting against.
       - name: Rebuild generated files
-        run: bun run build
+        run: npm run build
 
       - name: Commit anything that changed
         run: |
@@ -59,7 +55,7 @@ jobs:
           git push
 
       - name: Lint specs
-        run: bun run lint
+        run: npm run lint
 
       - name: Read package identity
         id: pkg

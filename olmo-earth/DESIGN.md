@@ -4,6 +4,7 @@ description: Ai2 design system — OlmoEarth product interface
 version: 0.0.1
 
 assets:
+  # ── Assets that align with the design system ──────────────────────
   logo: assets/logo.svg
   wordmark: assets/wordmark.svg
 

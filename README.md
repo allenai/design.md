@@ -75,69 +75,60 @@ Each product system defines only what differs from Strata — brand accent overr
 
 ## Editing a product design system
 
-Edit `[product]/DESIGN.src.md` (the overlay), then run the compose script to regenerate `DESIGN.md`:
+Edit `[product]/DESIGN.src.md` (the overlay), then rebuild:
 
 ```bash
-bun run compose:asta
-bun run compose:olmo-earth
-# or rebuild everything:
-bun run compose
+npm run build
 ```
+
+You can skip that if you'd rather: [cutting a release](#cutting-a-release) rebuilds
+and commits for you, so editing a spec in GitHub's web editor is enough.
 
 Only define what differs from Strata in the overlay — colors, tokens, or components that are specific to that product. Everything else is inherited automatically from `strata/DESIGN.md`.
 
-## Tooling
-
-Two separate things generate output here, and they're for different jobs.
-
-### The DESIGN.md CLI — validation, diffing, interop
-
-The [DESIGN.md CLI](https://github.com/google-labs-code/design.md), published by Google as `@google/design.md`. No installation required — use `npx`:
+## Commands
 
 ```bash
-# Validate. Exit 0 if valid, 1 if errors. Output is JSON.
-npx @google/design.md lint strata/DESIGN.md
+npm install       # once
+npm run build     # recompose the overlay specs, rebuild every tokens.json
+npm run lint      # validate all four specs
+```
 
-# Review token-level changes between two versions
+`npm run build` is the only one you need day to day. Both it and `lint` are also
+run for you when [cutting a release](#cutting-a-release).
+
+Rebuild or check a single product while iterating:
+
+```bash
+npm run compose:olmo-earth
+npm run tokens:olmo-earth
+npx @google/design.md lint olmo-earth/DESIGN.md
+```
+
+Two more from the [DESIGN.md CLI](https://github.com/google-labs-code/design.md),
+useful occasionally:
+
+```bash
+# What changed between two versions of a spec
 npx @google/design.md diff strata/DESIGN.md strata/DESIGN-v2.md
 
-# Print the DESIGN.md format spec, e.g. to give an agent the context to read these files
+# Print the DESIGN.md format spec, e.g. to give an agent context for reading these files
 npx @google/design.md spec
 ```
 
-It also exports to other ecosystems' formats:
+## Cutting a release
 
-```bash
-# Tailwind v3 theme config
-npx @google/design.md export --format json-tailwind strata/DESIGN.md > strata/tailwind.theme.json
+A release is what makes a spec change available to the products using it. Nothing
+else — merging, committing — has any effect on them.
 
-# Tailwind v4 CSS custom properties
-npx @google/design.md export --format css-tailwind strata/DESIGN.md > strata/theme.css
+1. Edit `version` in [`package.json`](package.json): last number for a fix, middle
+   for additions, first for anything renamed or removed.
+2. Commit that to `main`.
+3. **Actions → Release → Run workflow → `main`.**
 
-# W3C Design Tokens (DTCG) — interoperable with Figma, Style Dictionary, etc.
-npx @google/design.md export --format dtcg strata/DESIGN.md > strata/tokens.dtcg.json
-```
-
-Use these when the destination is another design-token tool.
-
-### `bun run build` — what ships in the package
-
-```bash
-bun run build     # compose + tokens; run this before committing
-```
-
-Two steps. `compose` regenerates the products that overlay Strata (Asta, OlmoEarth) from `strata/DESIGN.md` plus their own `DESIGN.src.md`. `tokens` writes each product's `tokens.json`, which is what a product theme reads. Both are committed, and both ship in the package.
-
-You don't have to run this by hand: the Release workflow rebuilds and commits before it tags, so editing a spec in the browser is enough.
-
-`tokens.json` is **W3C Design Tokens (DTCG)** — the same format `@google/design.md export --format dtcg` targets, and the same one Figma's token plugins, [Style Dictionary](https://styledictionary.com) and [Terrazzo](https://terrazzo.app) consume. So a product can point standard tooling at it and generate whatever its stack needs, rather than reading a shape invented here.
-
-We generate it instead of using the CLI's exporter because that exporter is currently lossy — it omits the entire `components` section, drops `lineHeight` from every typography role, and emits alpha colours without an `alpha` channel, so its output fails the schema it declares ([google-labs-code/design.md#172](https://github.com/google-labs-code/design.md/issues/172)). Ours matches its structure deliberately: when those are fixed, this script goes away and the CLI's output takes its place without consumers noticing.
-
-All four products validate against the 2025.10 schema with zero errors. Two places where the spec and the format don't line up, handled rather than papered over:
-
-- **`letterSpacing`** is required by the composite `typography` type and the DESIGN.md format has no such key, so it's emitted as `0` — what these roles render as today.
-- **A role that can't be a composite becomes a group of primitive tokens.** EarthRanger writes `fontStyle: Regular` rather than a weight, and an absolute `lineHeight: 28.8px` where DTCG wants a multiplier. Emitting it as separate `fontFamily`, `fontSize` and `lineHeight` tokens stays valid and loses nothing, where converting 28.8px into a multiplier would mean inventing a number the spec never states.
+The workflow rebuilds the generated files and commits them, lints every spec,
+tags the commit, and creates a GitHub release. Products pick it up from that tag.
+Re-running is harmless: it skips a version that already exists.
 
 ## Using these specs in a product
 
@@ -176,13 +167,47 @@ A tagged version is what makes a spec change visible to the products using it. R
 
 Version numbers say what to expect: a new **first** number means something was renamed or removed and may break your build, a new **middle** number means tokens were added, and a new **last** number means a fix or a small correction.
 
-## Contributing
+## Why it's built this way
 
-When updating tokens, rebuild and lint before committing:
+Skip unless something here surprises you.
+
+**`tokens.json` is [W3C Design Tokens](https://www.designtokens.org) (DTCG).** That
+means Figma's token plugins, [Style Dictionary](https://styledictionary.com) and
+[Terrazzo](https://terrazzo.app) can all read it, so a product can generate whatever
+its stack needs instead of parsing a shape invented here.
+
+**We generate it rather than using `@google/design.md export --format dtcg`,
+which is what we'd prefer.** That exporter is currently lossy: it omits the entire
+`components` section, drops `lineHeight` from every typography role, and emits
+alpha colours without an `alpha` channel — so its output fails the schema it
+declares ([design.md#172](https://github.com/google-labs-code/design.md/issues/172)).
+`scripts/emit-tokens.ts` matches its structure deliberately. To check whether it's
+been fixed:
 
 ```bash
-bun run build     # recompose the overlay products, regenerate tokens
-npm run lint      # validate every product's spec
+npm run tokens:upstream     # regenerate using the CLI instead
+git diff                    # if the output is equivalent, the CLI has caught up
 ```
 
-Or skip it: the Release workflow rebuilds and commits the generated files itself, so editing a spec through GitHub's web editor is enough. It lints too, and won't cut a release if a spec fails.
+When it has, point `tokens` at `tokens:upstream` in `package.json` and delete
+`scripts/emit-tokens.ts`. Consumers won't notice.
+
+**Two places the spec and DTCG don't line up**, handled rather than papered over:
+
+- `letterSpacing` is required by DTCG's composite `typography` type and the
+  DESIGN.md format has no such key, so it's emitted as `0` — what these roles
+  render as today.
+- A role that can't be a composite becomes a group of primitive tokens instead.
+  EarthRanger writes `fontStyle: Regular` rather than a weight, and an absolute
+  `lineHeight: 28.8px` where DTCG wants a multiplier. Emitting those as separate
+  tokens stays valid and loses nothing, where converting 28.8px into a multiplier
+  would mean inventing a number the spec never states.
+
+**Node, not bun.** Both scripts are plain TypeScript that Node runs directly, and
+the CLI is invoked with `npx`, so a second runtime and a second lockfile bought
+nothing.
+
+**Not on npm yet.** Publishing needs `@allenai` npm org membership. The release
+workflow publishes as soon as an `NPM_AUTH_TOKEN` secret exists and does nothing
+about it until then — installing from git works either way, and npm would add a
+registry page and provenance rather than versioning.
