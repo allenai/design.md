@@ -163,16 +163,8 @@ which is what we'd prefer.** That exporter is currently lossy: it omits the enti
 `components` section, drops `lineHeight` from every typography role, and emits
 alpha colours without an `alpha` channel — so its output fails the schema it
 declares ([design.md#172](https://github.com/google-labs-code/design.md/issues/172)).
-`scripts/emit-tokens.ts` matches its structure deliberately. To check whether it's
-been fixed:
-
-```bash
-npm run tokens:upstream     # regenerate using the CLI instead
-git diff                    # if the output is equivalent, the CLI has caught up
-```
-
-When it has, point `tokens` at `tokens:upstream` in `package.json` and delete
-`scripts/emit-tokens.ts`. Consumers won't notice.
+`scripts/emit-tokens.ts` matches its structure deliberately, so switching is a
+[three-step migration](#migrating-to-the-clis-exporter) whenever that's fixed.
 
 **Two places the spec and DTCG don't line up**, handled rather than papered over:
 
@@ -193,3 +185,33 @@ nothing.
 workflow publishes as soon as an `NPM_AUTH_TOKEN` secret exists and does nothing
 about it until then — installing from git works either way, and npm would add a
 registry page and provenance rather than versioning.
+
+## Migrating to the CLI's exporter
+
+`scripts/emit-tokens.ts` exists only because `@google/design.md export --format
+dtcg` is missing things we need. When that's fixed, this repo should stop
+generating tokens itself.
+
+**1. Check whether it has caught up.**
+
+```bash
+npm run tokens:upstream     # regenerate olmo-earth/tokens.json using the CLI
+git diff                    # compare against what our script produced
+```
+
+What to look for in the diff: a `components` section, a `lineHeight` on every
+typography role, and an `alpha` channel on the translucent colours. If those are
+present and the values match, it has caught up. [design.md#172](https://github.com/google-labs-code/design.md/issues/172)
+tracks it.
+
+**2. Point `tokens` at the CLI.** In `package.json`:
+
+```json
+"tokens": "npm run tokens:upstream"
+```
+
+**3. Delete `scripts/emit-tokens.ts`** and the `tokens:olmo-earth` script.
+
+Consumers see nothing: the file keeps its name, its path and its shape, so no
+product needs a change. If the diff in step 1 isn't empty, it's worth reading
+before switching — a difference there is a difference every consumer will get.
