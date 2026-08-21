@@ -1,0 +1,94 @@
+:root {
+  --ai2-extra-dark-teal: #032629;
+  --ai2-dark-teal: #0a3235;
+  --ai2-beige: #faf2e9;
+  --ai2-pink: #f0529c;
+  --ai2-teal: #105257;
+  --ai2-speech-teal: #1c5b5f;
+  --ai2-pink-surface: #fef6fa;
+  --ai2-green: #0fcb8c;
+  /* Never use gray for a live fork branch; reserve it for disabled or intentionally
+     de-emphasized states. */
+  --ai2-gray: #343434;
+  --ai2-gray-20: #d6d6d6;
+  --ai2-gray-40: #aeaeae;
+  --ai2-gray-60: #858585;
+  --ai2-gray-80: #5d5d5d;
+  --ai2-white: #ffffff;
+  --ai2-font: Manrope, Arial, sans-serif;
+
+  /* Explanatory diagrams */
+  /* Verbatim data only (a raw dataset row, a code string), never a label face. */
+  --ai2-mono: "Roboto Mono", ui-monospace, monospace;
+  /* Surfaces are for marks that ARE the content, never for a container that only groups
+     other marks — that one takes no fill, no border and no accent rule (2026-08-13).
+     See references/explanatory-diagrams.md, "No Group Chrome". */
+  --ai2-card: #f7ede0;              /* warm surface for archetypes that call for it */
+  --ai2-card-radius: 8px;           /* explanatory content nodes; chart marks stay square */
+  --ai2-branch-stroke: 2px;
+  /* Load-bearing only as a tile divider, or as the edge of a mark whose fill is close to
+     the canvas. A solid fill needs no border; do not stack fill + hairline + accent rule. */
+  --ai2-hairline: rgba(10, 50, 53, 0.16);
+  --ai2-muted: rgba(10, 50, 53, 0.6);
+  /* A solid green fill under light text needs a darker green than the --ai2-green
+     mint; the OlmoEarth ramp only lightens it, so take that value from the
+     OlmoEarth design source rather than hardcoding one here. */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--ai2-beige);
+  color: var(--ai2-dark-teal);
+  font-family: var(--ai2-font);
+}
+
+.ai2-chart {
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  padding: 48px;
+  background: var(--ai2-beige);
+  color: var(--ai2-dark-teal);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.ai2-chart h1 {
+  margin: 0;
+  max-width: 860px;
+  font-size: 32px;
+  line-height: 1.12;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.ai2-subtitle {
+  margin: 10px 0 28px;
+  max-width: 820px;
+  font-size: 16px;
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+.ai2-footnotes {
+  margin-top: 28px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(10, 50, 53, 0.22);
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(10, 50, 53, 0.78);
+}
+
+.ai2-source-data {
+  margin-top: 18px;
+  font-family: Manrope, Arial, sans-serif;
+  font-size: 11px;
+  color: rgba(10, 50, 53, 0.72);
+}
+
+.ai2-literal-data {
+  font-family: var(--ai2-mono);
+}

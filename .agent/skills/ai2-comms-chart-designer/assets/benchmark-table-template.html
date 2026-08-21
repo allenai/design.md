@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ai2 Benchmark Table</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ai2-chart-tokens.css">
+  <style>
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 13px 12px; border-bottom: 1px solid rgba(10, 50, 53, 0.18); text-align: right; }
+    th:first-child, td:first-child { text-align: left; width: 34%; }
+    th { color: var(--ai2-dark-teal); font-weight: 800; }
+    td { font-weight: 600; }
+    .winner { color: var(--ai2-dark-teal); font-weight: 800; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+    .highlight-row td:first-child { color: var(--ai2-pink); font-weight: 800; }
+    @media (max-width: 720px) {
+      .ai2-chart { padding: 28px; }
+      table { font-size: 12px; }
+      th, td { padding: 10px 8px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="ai2-chart">
+    <h1>Leaderboard table title</h1>
+    <p class="ai2-subtitle">Scores on BenchmarkName. Higher is better unless noted in the column header.</p>
+    <table aria-label="Benchmark leaderboard">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Task A (%)</th>
+          <th>Task B (%)</th>
+          <th>Avg. cost / problem ($)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight-row">
+          <td>Ai2 Model</td>
+          <td class="winner">84.2</td>
+          <td>71.0</td>
+          <td>0.42</td>
+        </tr>
+        <tr>
+          <td>Baseline Model A</td>
+          <td>76.3</td>
+          <td class="winner">72.5</td>
+          <td>0.91</td>
+        </tr>
+        <tr>
+          <td>Baseline Model B</td>
+          <td>68.8</td>
+          <td>65.4</td>
+          <td class="winner">0.31</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="ai2-footnotes">Source: replace with paper, leaderboard, or internal run. Bold and underline mark the best value in each column under the stated metric direction.</p>
+  </main>
+</body>
+</html>

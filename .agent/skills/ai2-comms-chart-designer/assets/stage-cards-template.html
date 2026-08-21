@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ai2 numbered stage cards template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!--
+  Numbered stage cards for a processing pipeline. See references/explanatory-diagrams.md.
+  These cards ARE the content marks, so they earn a surface. Do not wrap the row in a group
+  container — a container that only groups other marks takes no fill, no border and no accent
+  rule (see "No Group Chrome"). The quiet surface and border are both load-bearing here: the
+  surface separates the mark from the canvas and the border carries stage identity.
+  Add class "is-focal" to the bottleneck or focal stage: it gets an accent border,
+  a faint accent tint, and the accent badge. Set --accent (OlmoEarth green #0fcb8c for
+  a product deliverable, #f0529c for general comms). One focal stage per row.
+-->
+<style>
+  :root{
+    --dark-teal:#0a3235; --beige:#faf2e9; --card:#f7ede0;
+    --hairline:rgba(10,50,53,.16); --muted:rgba(10,50,53,.6);
+    --accent:#0fcb8c; --accent-tint:rgba(15,203,140,.1);
+    --card-radius:8px;
+    --sans:'Manrope',Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--beige);color:var(--dark-teal);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:48px 24px;}
+  .row{display:flex;align-items:stretch;gap:18px;flex-wrap:wrap;}
+  .card{flex:1 1 240px;background:var(--card);border:2px solid var(--hairline);
+    border-radius:var(--card-radius);padding:26px 24px 22px;display:flex;flex-direction:column;}
+  .card.is-focal{border-color:var(--accent);background:var(--accent-tint);}
+  .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .num{font-family:var(--sans);font-weight:700;font-size:13px;color:var(--muted);letter-spacing:.1em;}
+  .badge{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;
+    padding:4px 9px;border-radius:6px;background:var(--dark-teal);color:var(--beige);}
+  .is-focal .badge{background:var(--accent);color:var(--dark-teal);}
+  .title{font-size:22px;font-weight:700;margin:0 0 10px;letter-spacing:-.01em;}
+  .body{font-size:14.5px;line-height:1.5;color:var(--muted);margin:0;}
+  .rule{border:0;border-top:1px solid var(--hairline);margin:22px 0 12px;}
+  .foot{font-family:var(--sans);font-weight:700;font-size:11.5px;letter-spacing:.025em;color:var(--muted);}
+  .is-focal .foot{color:var(--accent);}
+  .card .body{flex:1;}
+  .arrow{position:relative;flex:0 0 40px;align-self:center;height:18px;}
+  .arrow::before{content:"";position:absolute;left:0;right:6px;top:8px;border-top:2px solid var(--dark-teal);}
+  .arrow::after{content:"";position:absolute;right:0;top:3px;border-left:8px solid var(--dark-teal);
+    border-top:5px solid transparent;border-bottom:5px solid transparent;}
+  @media (max-width:760px){ .arrow{transform:rotate(90deg)} .row{flex-direction:column} }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="row">
+      <div class="card">
+        <div class="head"><span class="num">01</span><span class="badge">CPU</span></div>
+        <h2 class="title">Data acquisition</h2>
+        <p class="body">Finds and downloads the satellite imagery required for each partition.</p>
+        <hr class="rule"><span class="foot">Heavily I/O-bound</span>
+      </div>
+      <div class="arrow" aria-hidden="true"></div>
+      <div class="card is-focal">
+        <div class="head"><span class="num">02</span><span class="badge">GPU</span></div>
+        <h2 class="title">Run inference</h2>
+        <p class="body">Performs the model's forward pass on the partition and writes minimally processed outputs to storage.</p>
+        <hr class="rule"><span class="foot">Heavily GPU-bound</span>
+      </div>
+      <div class="arrow" aria-hidden="true"></div>
+      <div class="card">
+        <div class="head"><span class="num">03</span><span class="badge">CPU</span></div>
+        <h2 class="title">Postprocessing</h2>
+        <p class="body">Applies any postprocessing, re-projection, and masking required to produce the final output.</p>
+        <hr class="rule"><span class="foot">CPU-bound</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

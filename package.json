@@ -20,6 +20,7 @@
     "asta",
     "olmo-earth",
     "earthranger",
+    "skylight",
     "docs/spec.md",
     "!earthranger/mockup-map-layers.html"
   ],
@@ -28,6 +29,7 @@
     "./asta": "./asta/DESIGN.md",
     "./olmo-earth": "./olmo-earth/DESIGN.md",
     "./earthranger": "./earthranger/DESIGN.md",
+    "./skylight": "./skylight/DESIGN.md",
     "./strata/voice": "./strata/VOICE.md",
     "./asta/voice": "./asta/VOICE.md",
     "./olmo-earth/voice": "./olmo-earth/VOICE.md",
@@ -35,6 +37,7 @@
     "./asta/assets/*": "./asta/assets/*",
     "./olmo-earth/assets/*": "./olmo-earth/assets/*",
     "./earthranger/assets/*": "./earthranger/assets/*",
+    "./skylight/assets/*": "./skylight/assets/*",
     "./assets/*": "./strata/assets/*",
     "./package.json": "./package.json",
     "./olmo-earth/tokens.json": "./olmo-earth/tokens.json"
@@ -51,7 +54,7 @@
     "tokens:olmo-earth": "node scripts/emit-tokens.ts --spec olmo-earth/DESIGN.md --out olmo-earth/tokens.json",
     "tokens": "npm run tokens:olmo-earth",
     "tokens:upstream": "npx @google/design.md@latest export --format dtcg olmo-earth/DESIGN.md > olmo-earth/tokens.json",
-    "lint": "npx @google/design.md lint strata/DESIGN.md && npx @google/design.md lint asta/DESIGN.md && npx @google/design.md lint olmo-earth/DESIGN.md && npx @google/design.md lint earthranger/DESIGN.md"
+    "lint": "npx @google/design.md lint strata/DESIGN.md && npx @google/design.md lint asta/DESIGN.md && npx @google/design.md lint olmo-earth/DESIGN.md && npx @google/design.md lint earthranger/DESIGN.md && npx @google/design.md lint skylight/DESIGN.md"
   },
   "dependencies": {
     "yaml": "^2.7.1"

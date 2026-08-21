@@ -88,7 +88,7 @@ Only define what differs from Strata in the overlay — colors, tokens, or compo
 ```bash
 npm install       # once
 npm run build     # recompose the overlay specs, rebuild olmo-earth/tokens.json
-npm run lint      # validate all four specs
+npm run lint      # validate every product's spec
 ```
 
 Rebuild or check a single product while iterating:
