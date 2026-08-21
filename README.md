@@ -75,64 +75,143 @@ Each product system defines only what differs from Strata — brand accent overr
 
 ## Editing a product design system
 
-Edit `[product]/DESIGN.src.md` (the overlay), then run the compose script to regenerate `DESIGN.md`:
+Edit `[product]/DESIGN.src.md` (the overlay), then rebuild:
 
 ```bash
-bun run compose:asta
-bun run compose:olmo-earth
-# or rebuild everything:
-bun run compose
+npm run build
 ```
 
 Only define what differs from Strata in the overlay — colors, tokens, or components that are specific to that product. Everything else is inherited automatically from `strata/DESIGN.md`.
 
-## Tooling
-
-These files are validated using the [DESIGN.md CLI](https://github.com/google-labs-code/design.md), published by Google as `@google/design.md` on npm. No installation required — use `npx`:
-
-### Validate a file
+## Commands
 
 ```bash
-npx @google/design.md lint strata/DESIGN.md
+npm install       # once
+npm run build     # recompose the overlay specs, rebuild olmo-earth/tokens.json
+npm run lint      # validate every product's spec
 ```
 
-Exit code `0` if valid, `1` if errors are found. Output is JSON.
-
-### Compare two versions
+Rebuild or check a single product while iterating:
 
 ```bash
+npm run compose:olmo-earth
+npm run tokens:olmo-earth
+npx @google/design.md lint olmo-earth/DESIGN.md
+```
+
+Also from the [DESIGN.md CLI](https://github.com/google-labs-code/design.md):
+
+```bash
+# What changed between two versions of a spec
 npx @google/design.md diff strata/DESIGN.md strata/DESIGN-v2.md
-```
 
-Useful for reviewing token-level changes in pull requests.
-
-### Export tokens
-
-```bash
-# Tailwind v3 theme config
-npx @google/design.md export --format json-tailwind strata/DESIGN.md > strata/tailwind.theme.json
-
-# Tailwind v4 CSS custom properties
-npx @google/design.md export --format css-tailwind strata/DESIGN.md > strata/theme.css
-
-# W3C Design Tokens (DTCG) format — interoperable with Figma, Style Dictionary, etc.
-npx @google/design.md export --format dtcg strata/DESIGN.md > strata/tokens.json
-```
-
-### Inject the spec into an agent prompt
-
-```bash
+# Print the DESIGN.md format spec, e.g. to give an agent context for reading these files
 npx @google/design.md spec
 ```
 
-Outputs the DESIGN.md format specification — useful for giving an agent the context it needs to correctly interpret these files.
+## Cutting a release
 
-## Contributing
+1. Edit `version` in [`package.json`](package.json): last number for a fix, middle
+   for additions, first for anything renamed or removed.
+2. Commit that to `main`.
+3. **Actions → Release → Run workflow → `main`.**
 
-When updating tokens, always run the linter before committing:
+The workflow rebuilds the generated files and commits them, lints every spec,
+tags the commit, and creates a GitHub release. Products pick it up from that tag.
+Re-running is harmless: it skips a version that already exists.
+
+## Using these specs in a product
 
 ```bash
-npx @google/design.md lint strata/DESIGN.md
-npx @google/design.md lint asta/DESIGN.md
-npx @google/design.md lint olmo-earth/DESIGN.md
+npm install "github:allenai/design.md#semver:^0.1.0"
 ```
+
+The `#semver:` range resolves against this repo's release tags, and your lockfile
+records the exact commit, so builds are reproducible. Pin harder if you'd rather:
+`#v0.1.0` for one release, or a commit SHA for absolute certainty.
+
+### What you can import
+
+```js
+// The tokens, as plain JSON with every reference already resolved to a literal
+import tokens from "@allenai/design-system/olmo-earth/tokens.json";
+tokens.colors["dark-teal"];             // "#0a3235"
+tokens.components["button-default"];    // { backgroundColor, textColor, typography, … }
+
+// The spec itself — for docs, or to hand to an agent
+const specPath = require.resolve("@allenai/design-system/olmo-earth");
+
+// Brand assets
+import logo from "@allenai/design-system/olmo-earth/assets/logo.svg";
+```
+
+TypeScript needs no extra types here: with `resolveJsonModule`, it infers exact keys and per-component shapes from the JSON, so `tokens.colors["dark-teel"]` is a compile error.
+
+The other products' specs and assets are exported the same way — `strata`, `asta`, `earthranger`, and `<product>/voice` where a `VOICE.md` exists. Only OlmoEarth has a generated `tokens.json`; the others can have one when something needs it.
+
+## Why it's built this way
+
+Skip unless something here surprises you.
+
+**`tokens.json` is [W3C Design Tokens](https://www.designtokens.org) (DTCG).** That
+means Figma's token plugins, [Style Dictionary](https://styledictionary.com) and
+[Terrazzo](https://terrazzo.app) can all read it, so a product can generate whatever
+its stack needs instead of parsing a shape invented here.
+
+**We generate it rather than using `@google/design.md export --format dtcg`,
+which is what we'd prefer.** That exporter is currently lossy: it omits the entire
+`components` section, drops `lineHeight` from every typography role, and emits
+alpha colours without an `alpha` channel — so its output fails the schema it
+declares ([design.md#172](https://github.com/google-labs-code/design.md/issues/172)).
+`scripts/emit-tokens.ts` matches its structure deliberately, so switching is a
+[three-step migration](#migrating-to-the-clis-exporter) whenever that's fixed.
+
+**Two places the spec and DTCG don't line up**, handled rather than papered over:
+
+- `letterSpacing` is required by DTCG's composite `typography` type and the
+  DESIGN.md format has no such key, so it's emitted as `0` — what these roles
+  render as today.
+- A role that can't be a composite becomes a group of primitive tokens instead.
+  EarthRanger writes `fontStyle: Regular` rather than a weight, and an absolute
+  `lineHeight: 28.8px` where DTCG wants a multiplier. Emitting those as separate
+  tokens stays valid and loses nothing, where converting 28.8px into a multiplier
+  would mean inventing a number the spec never states.
+
+**Node, not bun.** Both scripts are plain TypeScript that Node runs directly, and
+the CLI is invoked with `npx`, so a second runtime and a second lockfile bought
+nothing.
+
+**Not on npm yet.** Publishing needs `@allenai` npm org membership. The release
+workflow publishes as soon as an `NPM_AUTH_TOKEN` secret exists and does nothing
+about it until then — installing from git works either way, and npm would add a
+registry page and provenance rather than versioning.
+
+## Migrating to the CLI's exporter
+
+`scripts/emit-tokens.ts` exists only because `@google/design.md export --format
+dtcg` is missing things we need. When that's fixed, this repo should stop
+generating tokens itself.
+
+**1. Check whether it has caught up.**
+
+```bash
+npm run tokens:upstream     # regenerate olmo-earth/tokens.json using the CLI
+git diff                    # compare against what our script produced
+```
+
+What to look for in the diff: a `components` section, a `lineHeight` on every
+typography role, and an `alpha` channel on the translucent colours. If those are
+present and the values match, it has caught up. [design.md#172](https://github.com/google-labs-code/design.md/issues/172)
+tracks it.
+
+**2. Point `tokens` at the CLI.** In `package.json`:
+
+```json
+"tokens": "npm run tokens:upstream"
+```
+
+**3. Delete `scripts/emit-tokens.ts`** and the `tokens:olmo-earth` script.
+
+Consumers see nothing: the file keeps its name, its path and its shape, so no
+product needs a change. If the diff in step 1 isn't empty, it's worth reading
+before switching — a difference there is a difference every consumer will get.
