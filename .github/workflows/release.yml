@@ -67,6 +67,18 @@ jobs:
           echo "name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
           echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
 
+      # A tag that already exists means the version was not bumped, and the
+      # release action treats re-tagging as success — so the run would go green
+      # having shipped nothing. Fail here instead, where the reason is obvious.
+      - name: Refuse to release a version that is already tagged
+        run: |
+          TAG="v${{ steps.pkg.outputs.version }}"
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            echo "::error::$TAG already exists. Bump \"version\" in package.json and merge that before releasing."
+            exit 1
+          fi
+          echo "::notice::Releasing $TAG."
+
       # Makes a re-run harmless rather than a hard failure on an already-taken
       # version.
       - name: Check whether this version is already on npm

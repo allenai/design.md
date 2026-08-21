@@ -116,6 +116,9 @@ npx @google/design.md spec
 2. Commit that to `main`.
 3. **Actions → Release → Run workflow → `main`.**
 
+If the version already has a tag, the run fails and says so — that means step 1
+hasn't happened yet.
+
 The workflow rebuilds the generated files and commits them, lints every spec,
 tags the commit, and creates a GitHub release. Products pick it up from that tag.
 Re-running is harmless: it skips a version that already exists.
