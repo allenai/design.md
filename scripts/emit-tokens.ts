@@ -92,6 +92,19 @@ function resolveValue(value: unknown, tree: Tree): unknown {
  *  `#0326291a` becomes components + alpha: 0.102. */
 function colorValue(raw: string): Tree {
   const hex = raw.trim();
+  // `rgba(0, 0, 0, 0.08)` — the only way to state an alpha that eight-digit hex
+  // can't reach, and several values here are MUI's, which use exactly those.
+  const rgba = /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+)\s*)?\)$/.exec(hex);
+  if (rgba) {
+    const [r, g, b] = [1, 2, 3].map((i) => Number(rgba[i]));
+    const value: Tree = {
+      colorSpace: 'srgb',
+      components: [r, g, b].map((c) => Math.round((c / 255) * 1000) / 1000),
+    };
+    if (rgba[4] !== undefined) value.alpha = Number(rgba[4]);
+    value.hex = `#${[r, g, b].map((c) => c.toString(16).padStart(2, '0')).join('')}`;
+    return value;
+  }
   // The one keyword the specs use. DTCG has no keywords, so it is fully
   // transparent black — which is what `transparent` computes to in CSS.
   if (hex === 'transparent') {

@@ -318,26 +318,28 @@ components:
 
   # ── Inputs ────────────────────────────────────────────────────────
   input-default:
-    backgroundColor: "{colors.white}"
+    backgroundColor: "rgba(0, 0, 0, 0)"
     textColor: "{colors.text}"
     typography: "{typography.body-md}"
-    rounded: "{rounded.3xs}"
-    padding: "{spacing.xs}"
+    rounded: 4px
+    padding: 14px
+    borderColor: "rgba(0, 0, 0, 0.23)"
   input-error:
     backgroundColor: "{colors.white}"
     textColor: "{colors.error-red-dark}"
     rounded: "{rounded.3xs}"
   input-disabled:
-    backgroundColor: "{colors.gray-20}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.3xs}"
+    backgroundColor: "rgba(0, 0, 0, 0)"
+    textColor: "rgba(0, 0, 0, 0.38)"
+    rounded: 4px
+    borderColor: "rgba(0, 0, 0, 0.26)"
   input-size-sm:
     height: 40px
-    padding: "{spacing.2xs}"
+    padding: 8.5px
     typography: "{typography.body-sm}"
   input-size-md:
     height: 56px
-    padding: "{spacing.xs}"
+    padding: 16.5px
     typography: "{typography.body-md}"
   input-size-lg:
     height: 48px
@@ -348,32 +350,32 @@ components:
   # Checkbox
   checkbox-default:
     backgroundColor: "{colors.white}"
-    borderColor: "{colors.teal-80}"
-    width: 18px
-    height: 18px
+    borderColor: "{colors.teal}"
+    width: 24px
+    height: 24px
     rounded: 2px
   checkbox-checked:
-    backgroundColor: "{colors.interactive-default}"
+    backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.cream}"
 
   # Radio
   radio-default:
     backgroundColor: "{colors.white}"
-    borderColor: "{colors.teal-80}"
-    width: 18px
-    height: 18px
+    borderColor: "{colors.teal}"
+    width: 24px
+    height: 24px
   radio-checked:
-    backgroundColor: "{colors.interactive-default}"
+    backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.cream}"
 
   # Switch
   switch-default:
-    backgroundColor: "{colors.white}"
+    backgroundColor: "rgba(0, 0, 0, 0.38)"
     borderColor: "{colors.teal-80}"
-    width: 34px
-    height: 14px
+    width: 58px
+    height: 38px
   switch-checked:
-    backgroundColor: "{colors.interactive-default}"
+    backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.cream}"
 
   # Slider
@@ -385,11 +387,12 @@ components:
 
   # ── Chips ─────────────────────────────────────────────────────────
   chip-default:
-    backgroundColor: "{colors.extra-subtle}"
-    textColor: "{colors.on-extra-subtle}"
+    backgroundColor: "rgba(0, 0, 0, 0.08)"
+    textColor: "{colors.text}"
     typography: "{typography.body-sm}"
-    rounded: "{rounded.3xs}"
+    rounded: 16px
     padding: "{spacing.xs}"
+    height: 32px
   chip-primary:
     backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.cream}"
@@ -414,11 +417,11 @@ components:
   # Sizes
   chip-size-sm:
     height: 24px
-    padding: 8px
+    padding: "{spacing.2xs}"
     typography: "{typography.body-sm}"
   chip-size-md:
     height: 32px
-    padding: 12px
+    padding: "{spacing.xs}"
     typography: "{typography.body-sm}"
   chip-size-lg:
     height: 48px
@@ -460,18 +463,25 @@ components:
     width: 36px
     height: 36px
     typography: "{typography.body-md}"
+  chip-outlined:
+    backgroundColor: "rgba(0, 0, 0, 0)"
+    textColor: "{colors.text}"
+    borderColor: "#bdbdbd"
+    rounded: 16px
+    height: 32px
 
-  # The confusion matrix's diagonal, as green at even opacities over white.
+  # The confusion matrix's diagonal, as green at even opacities over white. Stated
+  # as rgba so the steps land on exactly 10% through 50%.
   confusion-diagonal-1:
-    backgroundColor: "#0fcb8c1a"
+    backgroundColor: "rgba(15, 203, 140, 0.1)"
   confusion-diagonal-2:
-    backgroundColor: "#0fcb8c33"
+    backgroundColor: "rgba(15, 203, 140, 0.2)"
   confusion-diagonal-3:
-    backgroundColor: "#0fcb8c4d"
+    backgroundColor: "rgba(15, 203, 140, 0.3)"
   confusion-diagonal-4:
-    backgroundColor: "#0fcb8c66"
+    backgroundColor: "rgba(15, 203, 140, 0.4)"
   confusion-diagonal-5:
-    backgroundColor: "#0fcb8c80"
+    backgroundColor: "rgba(15, 203, 140, 0.5)"
 ---
 
 ## Overview

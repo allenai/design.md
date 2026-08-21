@@ -66,29 +66,78 @@ typography:
     fontFamily: "Manrope, Arial, sans-serif"
 
 components:
-  # Studio's default chip is a metadata tag, so it takes the 10% tonal layer
-  # rather than a teal fill: a table of teal chips dominates its own rows.
+  # These record what Studio renders today, measured from the browser rather than
+  # transcribed from intent. Most of it is MUI's defaults: the point of writing
+  # them down is that the theme can now read them, so changing one is a change
+  # here rather than a change in application code.
+
+  # Chips are pills with a black 8% fill — MUI's default, not a choice anyone made.
   chip-default:
-    backgroundColor: "{colors.extra-subtle}"
-    textColor: "{colors.on-extra-subtle}"
+    backgroundColor: "rgba(0, 0, 0, 0.08)"
+    textColor: "{colors.text}"
+    rounded: 16px
+    height: 32px
+  chip-outlined:
+    backgroundColor: "rgba(0, 0, 0, 0)"
+    textColor: "{colors.text}"
+    borderColor: "#bdbdbd"
+    rounded: 16px
+    height: 32px
   chip-primary:
     backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.cream}"
-  # Chip and input sizes are MUI's, which is what Studio renders. Stated so the
-  # spec and the product agree, not because these heights were designed.
   chip-size-sm:
     height: 24px
-    padding: 8px
   chip-size-md:
     height: 32px
-    padding: 12px
+
+  # Inputs are transparent over the page, which is why a field currently reads as
+  # part of the page rather than as somewhere to type. Recorded as-is; putting them
+  # on white is a change to make deliberately, in this file.
+  input-default:
+    backgroundColor: "rgba(0, 0, 0, 0)"
+    textColor: "{colors.text}"
+    borderColor: "rgba(0, 0, 0, 0.23)"
+    rounded: 4px
+    padding: 14px
+  input-disabled:
+    backgroundColor: "rgba(0, 0, 0, 0)"
+    textColor: "rgba(0, 0, 0, 0.38)"
+    borderColor: "rgba(0, 0, 0, 0.26)"
+    rounded: 4px
+  input-error:
+    textColor: "{colors.error-red-dark}"
   input-size-sm:
     height: 40px
+    padding: 8.5px
   input-size-md:
     height: 56px
-  # MUI's switch track is 34x14 rather than 34x18.
+    padding: 16.5px
+
+  # 24px, not the 18px Strata specifies, and teal when unchecked because MUI draws
+  # an unchecked control in text.secondary.
+  checkbox-default:
+    borderColor: "{colors.teal}"
+    width: 24px
+    height: 24px
+  checkbox-checked:
+    backgroundColor: "{colors.interactive-primary}"
+  radio-default:
+    borderColor: "{colors.teal}"
+    width: 24px
+    height: 24px
+  radio-checked:
+    backgroundColor: "{colors.interactive-primary}"
+
+  # A 58x38 control around a 34x14 track: the track is what the spec was
+  # describing, the root is what occupies the layout.
   switch-default:
-    height: 14px
+    backgroundColor: "rgba(0, 0, 0, 0.38)"
+    width: 58px
+    height: 38px
+  switch-checked:
+    backgroundColor: "{colors.interactive-primary}"
+
   button-primary:
     backgroundColor: "{colors.interactive-primary}"
     textColor: "{colors.cream}"
@@ -96,17 +145,18 @@ components:
     backgroundColor: "{colors.interactive-primary-hover}"
     textColor: "{colors.cream}"
 
-  # The confusion matrix's diagonal, as green at even opacities over white.
+  # The confusion matrix's diagonal, as green at even opacities over white. Stated
+  # as rgba so the steps land on exactly 10% through 50%.
   confusion-diagonal-1:
-    backgroundColor: "#0fcb8c1a"
+    backgroundColor: "rgba(15, 203, 140, 0.1)"
   confusion-diagonal-2:
-    backgroundColor: "#0fcb8c33"
+    backgroundColor: "rgba(15, 203, 140, 0.2)"
   confusion-diagonal-3:
-    backgroundColor: "#0fcb8c4d"
+    backgroundColor: "rgba(15, 203, 140, 0.3)"
   confusion-diagonal-4:
-    backgroundColor: "#0fcb8c66"
+    backgroundColor: "rgba(15, 203, 140, 0.4)"
   confusion-diagonal-5:
-    backgroundColor: "#0fcb8c80"
+    backgroundColor: "rgba(15, 203, 140, 0.5)"
 ---
 
 ## Overview
