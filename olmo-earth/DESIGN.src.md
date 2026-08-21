@@ -131,8 +131,10 @@ components:
 
   # A 58x38 control around a 34x14 track: the track is what the spec was
   # describing, the root is what occupies the layout.
+  # The track is plain black: MUI applies the 38% as element opacity, so stating
+  # an alpha here too would apply it twice and lighten the control.
   switch-default:
-    backgroundColor: "rgba(0, 0, 0, 0.38)"
+    backgroundColor: "#000000"
     width: 58px
     height: 38px
   switch-checked:

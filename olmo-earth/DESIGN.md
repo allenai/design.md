@@ -370,7 +370,7 @@ components:
 
   # Switch
   switch-default:
-    backgroundColor: "rgba(0, 0, 0, 0.38)"
+    backgroundColor: "#000000"
     borderColor: "{colors.teal-80}"
     width: 58px
     height: 38px
