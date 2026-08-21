@@ -122,8 +122,6 @@ Re-running is harmless: it skips a version that already exists.
 
 ## Using these specs in a product
 
-A product installs this repo as a package, so it depends on a *version* rather than copying files out of GitHub.
-
 ```bash
 npm install "github:allenai/design.md#semver:^0.1.0"
 ```
