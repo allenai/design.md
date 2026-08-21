@@ -16,6 +16,10 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # `if:` can read env but not secrets, so the token's presence is surfaced here
+    # for the two steps that branch on whether npm publishing is set up yet.
+    env:
+      NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -76,13 +80,13 @@ jobs:
           fi
 
       - name: Publish to npm
-        if: steps.exists.outputs.published == 'false' && secrets.NPM_AUTH_TOKEN != ''
+        if: steps.exists.outputs.published == 'false' && env.NPM_AUTH_TOKEN != ''
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
       - name: Note that npm was skipped
-        if: secrets.NPM_AUTH_TOKEN == ''
+        if: env.NPM_AUTH_TOKEN == ''
         run: |
           echo "::notice::No NPM_AUTH_TOKEN, so nothing was published to npm. \
           Tagging anyway — consumers can install this version straight from git \
