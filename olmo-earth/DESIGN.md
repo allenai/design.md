@@ -186,6 +186,20 @@ typography:
     fontWeight: 400
     lineHeight: 1.6
 
+  # The small emphasised label above a value, or naming a section. Studio uses it
+  # in 72 places. These are the values it renders today, which are MUI's defaults
+  # — see the note below about the weight.
+  subtitle-md:
+    fontFamily: "Manrope, Arial, sans-serif"
+    fontSize: 1rem
+    fontWeight: 400
+    lineHeight: 1.75
+  subtitle-sm:
+    fontFamily: "Manrope, Arial, sans-serif"
+    fontSize: 0.875rem
+    fontWeight: 500
+    lineHeight: 1.57
+
 spacing:
   2xs: 8px
   xs: 12px
@@ -514,6 +528,16 @@ Three groups here are **provisional**, recorded so they stop being invisible:
 
 Every heading renders in **Manrope**. PP Telegraf is named upstream as the heading
 face but has never been loaded here, and adopting it would need a license.
+
+**The subtitle weight is an open question.** `subtitle-md` and `subtitle-sm` record
+what Studio renders, which is MUI's default — but of the 72 call sites, **24
+override the weight**: 17 to `600`, 5 to `bold`, 2 to `700`. A third of the callers
+disagreeing with the value, and agreeing with each other, is the codebase asking
+for `600` — which is also the weight `heading-md` and `heading-sm` already use.
+
+Changing it here would make all 72 consistent and let Studio delete those 24 local
+overrides. Left as it renders for now so the change is a decision rather than a
+side effect of writing the role down.
 
 ## Layout
 
