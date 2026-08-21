@@ -77,11 +77,11 @@ colors:
   text-error: "{colors.error-red}"
   interactive-default: "{colors.teal}"
   interactive-default-hover: "{colors.teal-80}"
-  interactive-primary: "{colors.pink}"
-  interactive-primary-hover: "{colors.pink-60}"
+  interactive-primary: "{colors.dark-teal}"
+  interactive-primary-hover: "#084245"
   interactive-secondary: "{colors.green}"
   interactive-secondary-hover: "{colors.green-60}"
-  link: "{colors.interactive-primary}"
+  link: "{colors.teal}"
   link-reversed: "{colors.interactive-secondary}"
 
   # ── Subtle surfaces ───────────────────────────────────────────────
@@ -96,29 +96,67 @@ colors:
   # standard page text instead.
   on-extra-subtle: "{colors.text}"
 
+  # A surface one step lighter than gray-20, for panel and preview backgrounds.
+  # The inherited scale goes straight from white to gray-20, so Studio invented
+  # this five times over before it was named.
+  gray-10: "#f5f5f5"
+
+  # Task and model state. Distinct from the semantic colors above: these read as
+  # neutral progress rather than success or warning, and they predate the spec.
+  status-neutral: "#9e9e9e"
+  status-warning: "#ff9800"
+  status-success: "#4caf50"
+
+  # Map draw and layer styling. Provisional — these are MapLibre and
+  # mapbox-gl-draw defaults that Studio adopted rather than colors anyone chose.
+  map-draw: "#fbb03b"
+  map-selection: "#3bb2d0"
+  map-boundary: "#6d8196"
+
+  # Charts. Also provisional, and currently two unrelated palettes: four fixed
+  # series colors from Recharts, and twelve categorical colors from matplotlib's
+  # tab10/tab20 assigned by hashing a label. Consolidating them needs a decision
+  # about how many distinguishable hues Studio's charts actually need.
+  chart-series-1: "#0088fe"
+  chart-series-2: "#00c49f"
+  chart-series-3: "#ffbb28"
+  chart-series-4: "#ff8042"
+  chart-categorical-1: "#1f77b4"
+  chart-categorical-2: "#ff7f0e"
+  chart-categorical-3: "#2ca02c"
+  chart-categorical-4: "#d62728"
+  chart-categorical-5: "#9467bd"
+  chart-categorical-6: "#8c564b"
+  chart-categorical-7: "#e377c2"
+  chart-categorical-8: "#7f7f7f"
+  chart-categorical-9: "#bcbd22"
+  chart-categorical-10: "#17becf"
+  chart-categorical-11: "#ff9896"
+  chart-categorical-12: "#aec7e8"
+
 typography:
   display:
-    fontFamily: PP Telegraf, Manrope, Arial, sans-serif
+    fontFamily: "Manrope, Arial, sans-serif"
     fontSize: 3rem
     fontWeight: 700
     lineHeight: 1.1
   heading-xl:
-    fontFamily: PP Telegraf, Manrope, Arial, sans-serif
+    fontFamily: "Manrope, Arial, sans-serif"
     fontSize: 2.5rem
     fontWeight: 700
     lineHeight: 1.2
   heading-lg:
-    fontFamily: PP Telegraf, Manrope, Arial, sans-serif
+    fontFamily: "Manrope, Arial, sans-serif"
     fontSize: 2rem
     fontWeight: 700
     lineHeight: 1.2
   heading-md:
-    fontFamily: PP Telegraf, Manrope, Arial, sans-serif
+    fontFamily: "Manrope, Arial, sans-serif"
     fontSize: 1.5rem
     fontWeight: 600
     lineHeight: 1.3
   heading-sm:
-    fontFamily: PP Telegraf, Manrope, Arial, sans-serif
+    fontFamily: "Manrope, Arial, sans-serif"
     fontSize: 1.25rem
     fontWeight: 600
     lineHeight: 1.4
@@ -195,13 +233,13 @@ components:
     textColor: "{colors.extra-dark-teal}"
   button-primary:
     backgroundColor: "{colors.interactive-primary}"
-    textColor: "{colors.extra-dark-teal}"
+    textColor: "{colors.cream}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   button-primary-hover:
     backgroundColor: "{colors.interactive-primary-hover}"
-    textColor: "{colors.extra-dark-teal}"
+    textColor: "{colors.cream}"
   button-secondary:
     backgroundColor: "{colors.interactive-secondary}"
     textColor: "{colors.extra-dark-teal}"
@@ -294,11 +332,11 @@ components:
     textColor: "{colors.text}"
     rounded: "{rounded.3xs}"
   input-size-sm:
-    height: 32px
+    height: 40px
     padding: "{spacing.2xs}"
     typography: "{typography.body-sm}"
   input-size-md:
-    height: 36px
+    height: 56px
     padding: "{spacing.xs}"
     typography: "{typography.body-md}"
   input-size-lg:
@@ -333,7 +371,7 @@ components:
     backgroundColor: "{colors.white}"
     borderColor: "{colors.teal-80}"
     width: 34px
-    height: 18px
+    height: 14px
   switch-checked:
     backgroundColor: "{colors.interactive-default}"
     textColor: "{colors.cream}"
@@ -347,14 +385,14 @@ components:
 
   # ── Chips ─────────────────────────────────────────────────────────
   chip-default:
-    backgroundColor: "{colors.interactive-default}"
-    textColor: "{colors.cream}"
+    backgroundColor: "{colors.extra-subtle}"
+    textColor: "{colors.on-extra-subtle}"
     typography: "{typography.body-sm}"
     rounded: "{rounded.3xs}"
     padding: "{spacing.xs}"
   chip-primary:
     backgroundColor: "{colors.interactive-primary}"
-    textColor: "{colors.extra-dark-teal}"
+    textColor: "{colors.cream}"
     rounded: "{rounded.3xs}"
   chip-secondary:
     backgroundColor: "{colors.interactive-secondary}"
@@ -375,12 +413,12 @@ components:
 
   # Sizes
   chip-size-sm:
-    height: 32px
-    padding: "{spacing.2xs}"
+    height: 24px
+    padding: 8px
     typography: "{typography.body-sm}"
   chip-size-md:
-    height: 36px
-    padding: "{spacing.xs}"
+    height: 32px
+    padding: 12px
     typography: "{typography.body-sm}"
   chip-size-lg:
     height: 48px
@@ -422,6 +460,18 @@ components:
     width: 36px
     height: 36px
     typography: "{typography.body-md}"
+
+  # The confusion matrix's diagonal, as green at even opacities over white.
+  confusion-diagonal-1:
+    backgroundColor: "#0fcb8c1a"
+  confusion-diagonal-2:
+    backgroundColor: "#0fcb8c33"
+  confusion-diagonal-3:
+    backgroundColor: "#0fcb8c4d"
+  confusion-diagonal-4:
+    backgroundColor: "#0fcb8c66"
+  confusion-diagonal-5:
+    backgroundColor: "#0fcb8c80"
 ---
 
 ## Overview
@@ -430,18 +480,30 @@ _To be populated with product-specific design rationale._
 
 ## Colors
 
-_Define any color overrides or additions here._
+Studio's primary action is **dark teal**, not the pink Strata specifies. Pink remains
+in the palette as an accent; `interactive-primary` points at dark teal, so buttons,
+chips and avatars all follow without being overridden one at a time. The primary
+hover goes *darker* (`#084245`) where Strata's goes lighter.
+
+`gray-10` fills a gap rather than adding a shade: the inherited neutral scale steps
+from white straight to `gray-20`, and a panel background needs something in between.
+
+Three groups here are **provisional**, recorded so they stop being invisible:
+
+- **Status colors** for task and model state. They overlap the semantic colors
+  without matching them, and whether they collapse into `success-green` and
+  friends is undecided.
+- **Map colors** are MapLibre and mapbox-gl-draw defaults Studio adopted rather
+  than chose. Whether map styling belongs in a design system at all is open.
+- **Chart colors** are currently two unrelated palettes — four fixed series colors
+  from Recharts, twelve categorical ones from matplotlib assigned by hashing a
+  label. The Analytics page draws a pie chart from one and a bar chart from the
+  other, on the same screen.
 
 ## Typography
 
-Three typeface roles are used: **PP Telegraf** (with Manrope as fallback) for headings, **Manrope** for body copy, and **Roboto Mono** for code and technical output. PP Telegraf is a licensed display typeface; Manrope is the open-source fallback and is used directly for body text at all sizes. Both Manrope and Roboto Mono are available via [Google Fonts](https://fonts.google.com).
-
-The type scale runs from `body-xs` (12px) through `display` (48px) with consistent line height ratios. Heading weights default to bold (700) or semibold (600). Body weights default to regular (400).
-
-- Use `display` and `heading-xl` only for hero moments — page titles, empty states, major section headers.
-- `body-md` is the default reading size for prose and UI copy.
-- `body-sm` is used for button labels, captions, and metadata.
-- `mono` (`Roboto Mono`) is reserved for code snippets, model output, and any content where exact character spacing matters.
+Every heading renders in **Manrope**. PP Telegraf is named upstream as the heading
+face but has never been loaded here, and adopting it would need a license.
 
 ## Layout
 
@@ -469,8 +531,25 @@ Border radii follow the same numeric scale as spacing (`3xs` through `3xl`). The
 
 ## Components
 
-_Define any component overrides or additions here._
+The default chip takes the 10% tonal layer rather than a teal fill: Studio's chips
+are mostly metadata tags, and a teal fill reads as an emphasis they don't carry.
+Contrast against the dark-teal text stays above 10:1 on both cream and white.
+
+Chip, input and switch dimensions are stated as MUI renders them. That is a
+description, not a decision — those numbers came from the framework, and if the
+system wants its own density scale these are the values it would be replacing.
+
+Two things the format can't express, so they live here as prose: the checkbox's 2px
+corner radius and its border color, which MUI draws as an SVG path rather than a
+styled box.
 
 ## Do's and Don'ts
 
-_Define any product-specific guardrails here._
+- **Do** reach for the tonal layers (`extra-subtle`, `subtle`) for chips, hovers
+  and empty states, rather than a filled brand color.
+- **Do** put text on white inside a form. Inputs sit on white against the cream
+  page, which is what makes a field read as somewhere to type.
+- **Don't** use `interactive-primary` for more than the single most important
+  action on a screen. It's dark teal here, which is quiet enough to overuse.
+- **Don't** use the chart or map colors for interface chrome — they're chosen for
+  distinguishability against imagery, not for hierarchy.
