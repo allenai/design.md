@@ -1,6 +1,7 @@
 # Sunset Example — SciArena
 
 A worked example of a Type 15 release (application/demo sunset with a learnings recap). Use it the way `references/newsletter-example.md` is used — a concrete shape reference, not a template to fill in; `references/worked-shapes.md` describes the remaining genres the same way. Source: the SciArena interactive model-evaluation arena, retired July 15, 2026; this block was prepended to the original launch post (`allenai.org/blog/sciarena`), which the live URL redirects to.
+Punctuation caveat: this is copy as it shipped, so its dash spacing is not uniform. The house convention in `references/house-style-patterns.md` (Dash spacing) governs new copy and overrides what you see here. Take the shape and rhythm from this file, not its punctuation.
 
 Release type: Type 15 (application/demo sunset + learnings recap). See `references/release-types.md`.
 

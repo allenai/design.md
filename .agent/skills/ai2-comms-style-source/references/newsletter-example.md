@@ -4,6 +4,8 @@ Concrete shape and rhythm reference. The product specifics (Olmo Hybrid, MolmoSp
 
 This example contains all three newsletter parts: a lead story, a news roundup with four items, and event coverage. Use it to confirm headline form, em-dash density, paragraph length, and the practical-close rhythm at the end of event coverage.
 
+Punctuation caveat: this is copy as it shipped, so its dash spacing is not uniform. The house convention in `references/house-style-patterns.md` (Dash spacing) governs new copy and overrides what you see here. Take the shape and rhythm from this file, not its punctuation.
+
 ---
 
 ## Lead Story

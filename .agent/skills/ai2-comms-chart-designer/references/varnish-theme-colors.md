@@ -7,13 +7,29 @@ disagrees with the relevant `DESIGN.md`, `DESIGN.md` wins and this file is the b
 
 ## Comms Working Set
 
-- Ai2 pink: `#f0529c`.
-- Ai2 dark teal: `#0a3235`.
-- Ai2 beige: `#faf2e9`.
-- Extra-dark teal: `#032629`.
-- Neutral teal: `#105257`.
+Each row names the `DESIGN.md` token first; cite the token, not the hex, when the
+deliverable can reference the design system. The hex is a convenience for a standalone
+chart file.
+
+| `DESIGN.md` token | Value | Role in comms deliverables |
+|---|---|---|
+| `pink` | `#f0529c` | General-comms focal accent |
+| `dark-teal` | `#0a3235` | Primary text |
+| `cream` | `#faf2e9` | Canvas |
+| `extra-dark-teal` | `#032629` | Deepest surface |
+| `teal` | `#105257` | Neutral branch |
+| `green` | `#0fcb8c` | OlmoEarth focal accent (product deliverables only) |
+
+Two values are comms-only and have no `DESIGN.md` token — they exist for the
+branching-comparison archetype and are defined here rather than in the design system:
+
 - Prompt-bubble teal: `#1c5b5f`.
 - Pink branch surface: `#fef6fa`.
+
+**Naming note.** These skills and the bundled templates say *beige* for the token
+`DESIGN.md` names `cream`, including the CSS variable in `assets/ai2-chart-tokens.css`.
+Same value, two names. `cream` is the canonical one; treat *beige* as a comms alias and
+do not introduce it into anything that reads the design system directly.
 - Manrope is the comms and chart font. In a data chart it is the only font. Set small labels in sentence case with modest or no tracking; avoid all caps except established acronyms, model names and literal source strings.
 - Roboto Mono is depictive only: use it for literal data, code, or token mappings such as `-pril → ACE inhibitor`, not for generic labels.
 
