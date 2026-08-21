@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ai2 Benchmark Bar Chart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ai2-chart-tokens.css">
+  <style>
+    .bars { display: grid; gap: 12px; }
+    .row { display: grid; grid-template-columns: 220px 1fr 72px; align-items: center; gap: 14px; }
+    .label { font-size: 14px; font-weight: 700; line-height: 1.25; }
+    .track { height: 30px; background: rgba(10, 50, 53, 0.10); border-radius: 0; overflow: visible; }
+    .bar { height: 100%; width: var(--w); background: var(--bar-color, var(--ai2-teal)); border-radius: 0; }
+    .row.highlight .bar { background: var(--ai2-pink); }
+    .value { font-size: 14px; font-weight: 800; color: var(--ai2-dark-teal); text-align: right; }
+    @media (max-width: 720px) {
+      .ai2-chart { padding: 28px; }
+      .row { grid-template-columns: 1fr; gap: 6px; }
+      .value { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <main class="ai2-chart">
+    <h1>Benchmark comparison title</h1>
+    <p class="ai2-subtitle">Performance on BenchmarkName using MetricName. Higher is better.</p>
+    <section class="bars" aria-label="Benchmark results">
+      <div class="row highlight" style="--w: 100%">
+        <div class="label">Ai2 Model</div>
+        <div class="track"><div class="bar"></div></div>
+        <div class="value">84.2%</div>
+      </div>
+      <div class="row" style="--w: 90.6%">
+        <div class="label">Baseline Model A</div>
+        <div class="track"><div class="bar"></div></div>
+        <div class="value">76.3%</div>
+      </div>
+      <div class="row" style="--w: 81.7%">
+        <div class="label">Baseline Model B</div>
+        <div class="track"><div class="bar"></div></div>
+        <div class="value">68.8%</div>
+      </div>
+    </section>
+    <p class="ai2-footnotes">Source: replace with paper, leaderboard, or internal run. Note harness, split, scoring setup, run count, and any non-apples-to-apples caveat.</p>
+    <pre class="ai2-source-data">Data: [{"model":"Ai2 Model","score":84.2,"highlight":true}]</pre>
+  </main>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ai2 branching comparison template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+<!--
+  Ground truth: assets/ground-truth/branching-comparison.png.
+  Preserve the 7:5 composition, shared input, branch-color continuity, balanced line breaks,
+  and large negative space. The canonical board has five nodes. Keep 4–6; delete identity or
+  pass-through cards even if branch lengths become unequal, and never add branch labels,
+  footer labels, shadows, gradients, or a group wrapper. End branches on different assertions.
+  Before export: keep the whole fork visible at phone width, squint-test it at 50%, use no gray
+  for a live branch, keep monospace to at most two literal spans, and keep each card to 2–8
+  words over no more than two lines.
+-->
+<style>
+  :root{
+    --canvas:#faf2e9;
+    --ink:#0a3235;
+    --neutral:#105257;
+    --speech:#1c5b5f;
+    --accent:#f0529c;
+    --accent-surface:#fef6fa;
+    --neutral-surface:#ffffff;
+    --sans:"Manrope",Arial,sans-serif;
+    --mono:"Roboto Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased}
+  .scroller{width:100%}
+  .figure{width:min(1400px,100%);margin:0 auto}
+  svg{display:block;width:100%;height:auto;aspect-ratio:7/5;background:var(--canvas)}
+  .board-title{font-family:var(--sans);font-size:48px;font-weight:800;letter-spacing:-.025em}
+  .prompt{font-family:var(--sans);font-size:32px;font-weight:700;letter-spacing:-.015em}
+  .card-copy{font-family:var(--sans);font-size:24px;font-weight:700;letter-spacing:-.012em}
+  .token{font-family:var(--mono);font-size:20px;font-weight:500}
+  .token .focal{font-weight:700;fill:var(--accent)}
+  .connector{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+    vector-effect:non-scaling-stroke}
+  .card{stroke-width:2;vector-effect:non-scaling-stroke}
+</style>
+</head>
+<body>
+<div class="scroller">
+<figure class="figure">
+<svg viewBox="0 0 1400 1000" role="img" aria-labelledby="figure-title figure-desc">
+  <title id="figure-title">When a model reads a drug’s class from its name—not its knowledge</title>
+  <desc id="figure-desc">A shared drug question branches into a suffix shortcut and a drug-knowledge path, each ending in a different basis for the answer.</desc>
+
+  <defs>
+    <marker id="arrow-accent" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#f0529c"/>
+    </marker>
+    <marker id="arrow-neutral" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#105257"/>
+    </marker>
+  </defs>
+
+  <g fill="#0a3235" text-anchor="middle">
+    <text class="board-title" x="700" y="145">When a model reads a drug’s class</text>
+    <text class="board-title" x="700" y="200">from its name—not its knowledge</text>
+  </g>
+
+  <g aria-label="Shared prompt">
+    <rect x="478" y="315" width="444" height="92" rx="9" fill="#1c5b5f"/>
+    <path d="M497 407 H516 L497 426 Z" fill="#1c5b5f"/>
+    <text class="prompt" x="700" y="372" fill="#faf2e9" text-anchor="middle">Tell me about lisinopril.</text>
+  </g>
+
+  <g aria-hidden="true">
+    <path class="connector" d="M700 407 V482" stroke="#0a3235"/>
+    <path class="connector" d="M700 482 C700 492 692 500 680 500 H385 C375 500 367 508 367 518 V560"
+          stroke="#f0529c" marker-end="url(#arrow-accent)"/>
+    <path class="connector" d="M700 482 C700 492 708 500 720 500 H1015 C1025 500 1033 508 1033 518 V560"
+          stroke="#105257" marker-end="url(#arrow-neutral)"/>
+    <path class="connector" d="M367 650 V745" stroke="#f0529c" marker-end="url(#arrow-accent)"/>
+    <path class="connector" d="M1033 650 V745" stroke="#105257" marker-end="url(#arrow-neutral)"/>
+  </g>
+
+  <g aria-label="Suffix shortcut path">
+    <rect class="card" x="145" y="560" width="444" height="90" rx="9" fill="#fef6fa" stroke="#f0529c"/>
+    <text class="card-copy" x="367" y="601" fill="#0a3235" text-anchor="middle">Recognizes suffix</text>
+    <text class="token" x="367" y="631" fill="#0a3235" text-anchor="middle"><tspan class="focal">-pril</tspan><tspan> → ACE inhibitor</tspan></text>
+
+    <rect class="card" x="145" y="745" width="444" height="90" rx="9" fill="#fef6fa" stroke="#f0529c"/>
+    <text class="card-copy" x="367" y="787" fill="#0a3235" text-anchor="middle">Generates answer based</text>
+    <text class="card-copy" x="367" y="815" fill="#0a3235" text-anchor="middle">on inference from the suffix</text>
+  </g>
+
+  <g aria-label="Drug knowledge path">
+    <rect class="card" x="811" y="560" width="444" height="90" rx="9" fill="#ffffff" stroke="#105257"/>
+    <text class="card-copy" x="1033" y="601" fill="#0a3235" text-anchor="middle">Retrieves drug-specific</text>
+    <text class="card-copy" x="1033" y="629" fill="#0a3235" text-anchor="middle">knowledge</text>
+
+    <rect class="card" x="811" y="745" width="444" height="90" rx="9" fill="#ffffff" stroke="#105257"/>
+    <text class="card-copy" x="1033" y="787" fill="#0a3235" text-anchor="middle">Generates answer based</text>
+    <text class="card-copy" x="1033" y="815" fill="#0a3235" text-anchor="middle">on knowledge of the drug</text>
+  </g>
+</svg>
+</figure>
+</div>
+</body>
+</html>
