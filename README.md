@@ -81,21 +81,15 @@ Edit `[product]/DESIGN.src.md` (the overlay), then rebuild:
 npm run build
 ```
 
-You can skip that if you'd rather: [cutting a release](#cutting-a-release) rebuilds
-and commits for you, so editing a spec in GitHub's web editor is enough.
-
 Only define what differs from Strata in the overlay — colors, tokens, or components that are specific to that product. Everything else is inherited automatically from `strata/DESIGN.md`.
 
 ## Commands
 
 ```bash
 npm install       # once
-npm run build     # recompose the overlay specs, rebuild every tokens.json
+npm run build     # recompose the overlay specs, rebuild olmo-earth/tokens.json
 npm run lint      # validate all four specs
 ```
-
-`npm run build` is the only one you need day to day. Both it and `lint` are also
-run for you when [cutting a release](#cutting-a-release).
 
 Rebuild or check a single product while iterating:
 
@@ -105,8 +99,7 @@ npm run tokens:olmo-earth
 npx @google/design.md lint olmo-earth/DESIGN.md
 ```
 
-Two more from the [DESIGN.md CLI](https://github.com/google-labs-code/design.md),
-useful occasionally:
+Also from the [DESIGN.md CLI](https://github.com/google-labs-code/design.md):
 
 ```bash
 # What changed between two versions of a spec
@@ -117,9 +110,6 @@ npx @google/design.md spec
 ```
 
 ## Cutting a release
-
-A release is what makes a spec change available to the products using it. Nothing
-else — merging, committing — has any effect on them.
 
 1. Edit `version` in [`package.json`](package.json): last number for a fix, middle
    for additions, first for anything renamed or removed.
@@ -159,13 +149,7 @@ import logo from "@allenai/design-system/olmo-earth/assets/logo.svg";
 
 TypeScript needs no extra types here: with `resolveJsonModule`, it infers exact keys and per-component shapes from the JSON, so `tokens.colors["dark-teel"]` is a compile error.
 
-Swap `olmo-earth` for `strata`, `asta` or `earthranger`. Each product also exposes `<product>/voice` where it has a `VOICE.md`.
-
-### Keeping up to date
-
-A tagged version is what makes a spec change visible to the products using it. Renovate and Dependabot both understand git dependencies, so a new tag opens a pull request in each product repo — a designer changing a token becomes something a product team reviews, rather than something they have to remember to check for.
-
-Version numbers say what to expect: a new **first** number means something was renamed or removed and may break your build, a new **middle** number means tokens were added, and a new **last** number means a fix or a small correction.
+The other products' specs and assets are exported the same way — `strata`, `asta`, `earthranger`, and `<product>/voice` where a `VOICE.md` exists. Only OlmoEarth has a generated `tokens.json`; the others can have one when something needs it.
 
 ## Why it's built this way
 
